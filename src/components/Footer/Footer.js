@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.footer`
   max-width: 900px;
   padding: 70px 65px;
   margin: 0 auto;

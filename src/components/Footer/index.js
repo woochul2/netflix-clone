@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Title, LinkContainer, Link, Text } from './Footer';
 
 export default function Footer({ children, ...restProps }) {
-  return <Container>{children}</Container>;
+  return <Container {...restProps}>{children}</Container>;
 }
 
 Footer.Title = function FooterTitle({ children, ...restProps }) {
