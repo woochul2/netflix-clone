@@ -1,6 +1,13 @@
 import React, { createContext, useState, useContext } from 'react';
-import { Container, Title, Item, Question, Answer } from './Accordion';
-import { Plus } from '../../icons';
+import {
+  Container,
+  Title,
+  ItemContainer,
+  Item,
+  Question,
+  Answer,
+} from './Accordion';
+import { AiOutlinePlus } from 'react-icons/ai';
 
 const ToggleContext = createContext();
 
@@ -10,6 +17,13 @@ export default function Accordion({ children, ...restProps }) {
 
 Accordion.Title = function AccordionTitle({ children, ...restProps }) {
   return <Title {...restProps}>{children}</Title>;
+};
+
+Accordion.ItemContainer = function AccordionItemContainer({
+  children,
+  ...restProps
+}) {
+  return <ItemContainer {...restProps}>{children}</ItemContainer>;
 };
 
 Accordion.Item = function AccordionItem({ children, ...restProps }) {
@@ -33,7 +47,7 @@ Accordion.Question = function AccordionQuestion({ children, ...restProps }) {
     <Question onClick={() => setIsOpen(!isOpen)} {...restProps}>
       <span tabIndex="-1">
         {children}
-        {isOpen ? <Plus className="rotate" /> : <Plus />}
+        {isOpen ? <AiOutlinePlus className="rotate" /> : <AiOutlinePlus />}
       </span>
     </Question>
   );

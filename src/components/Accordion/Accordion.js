@@ -1,20 +1,11 @@
 import styled from 'styled-components';
 
-export const Container = styled.ul`
-  list-style: none;
-  width: 70%;
-  min-width: 320px;
-  max-width: 815px;
-  margin: 0 auto;
-  padding: 70px;
-
-  @media (max-width: 949px) {
-    width: 80%;
-    padding: 50px 0;
-  }
+export const Container = styled.div`
+  border-bottom: 8px solid hsl(0, 0%, 13%);
+  padding: 70px 45px;
 
   @media (max-width: 549px) {
-    width: 100%;
+    padding: 50px 0;
   }
 `;
 
@@ -28,6 +19,23 @@ export const Title = styled.h1`
 
   @media (max-width: 549px) {
     font-size: 1.625rem;
+  }
+`;
+
+export const ItemContainer = styled.ul`
+  min-width: 320px;
+  max-width: 815px;
+  list-style: none;
+  width: 70%;
+  margin: 0 auto;
+  padding: 0;
+
+  @media (max-width: 949px) {
+    width: 90%;
+  }
+
+  @media (max-width: 549px) {
+    width: 100%;
   }
 `;
 
@@ -72,13 +80,9 @@ export const Question = styled.button`
     position: absolute;
     right: 1em;
     top: 50%;
-    width: 1em;
-    height: 1em;
+    width: 1.4em;
+    height: 1.4em;
     transform: translateY(-50%);
-
-    path {
-      stroke: hsl(0, 0%, 100%);
-    }
 
     &.rotate {
       transform: translateY(-50%) rotate(45deg);
@@ -91,10 +95,10 @@ export const Answer = styled.div`
   margin-bottom: 8px;
   background-color: hsl(0, 0%, 19%);
   transition: max-height 0.25s cubic-bezier(0.5, 0, 0.1, 1);
+  overflow: hidden;
 
   &.closed {
     max-height: 0;
-    overflow: hidden;
   }
 
   &.open {
