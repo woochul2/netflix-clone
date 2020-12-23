@@ -27,7 +27,7 @@ export const Logo = styled.h1`
   }
 `;
 
-export const Item = styled.div`
+export const Item = styled.form`
   display: flex;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.75);
@@ -41,6 +41,17 @@ export const Item = styled.div`
 `;
 
 export const Title = styled.h1``;
+
+export const Error = styled.p`
+  min-width: 260px;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: hsl(0, 0%, 100%);
+  background-color: hsl(32, 98%, 46%);
+  font-size: 0.875rem;
+  font-weight: bold;
+`;
 
 export const InputContainer = styled.div`
   position: relative;

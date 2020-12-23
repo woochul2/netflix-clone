@@ -4,6 +4,7 @@ import {
   Logo,
   Item,
   Title,
+  Error,
   InputContainer,
   Input,
   Label,
@@ -11,7 +12,6 @@ import {
 } from './Form';
 
 const FocusContext = createContext();
-const ValueContext = createContext();
 
 export default function Form({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>;
@@ -25,37 +25,35 @@ Form.Item = function FormItem({ children, ...restProps }) {
   return <Item {...restProps}>{children}</Item>;
 };
 
+Form.Error = function FormError({ children, ...restProps }) {
+  return <Error {...restProps}>{children}</Error>;
+};
+
 Form.Title = function FormTitle({ children, ...restProps }) {
   return <Title {...restProps}>{children}</Title>;
 };
 
 Form.InputContainer = function FormInputContainer({ children, ...restProps }) {
   const [isFocused, setIsFocused] = useState(false);
-  const [value, setValue] = useState('');
 
   return (
     <FocusContext.Provider value={{ isFocused, setIsFocused }}>
-      <ValueContext.Provider value={{ value, setValue }}>
-        <InputContainer {...restProps}>{children}</InputContainer>
-      </ValueContext.Provider>
+      <InputContainer {...restProps}>{children}</InputContainer>
     </FocusContext.Provider>
   );
 };
 
 Form.Input = function FormInput({ ...restProps }) {
   const { setIsFocused } = useContext(FocusContext);
-  const { value, setValue } = useContext(ValueContext);
 
   return (
     <Input
-      type="email"
       onFocus={() => {
         setIsFocused(true);
       }}
       onBlur={() => {
         setIsFocused(false);
       }}
-      value={value}
       onChange={(event) => {
         setValue(event.target.value);
       }}
@@ -66,10 +64,9 @@ Form.Input = function FormInput({ ...restProps }) {
 
 Form.Label = function FormLabel({ children, ...restProps }) {
   const { isFocused } = useContext(FocusContext);
-  const { value } = useContext(ValueContext);
 
   return (
-    <Label isFocused={isFocused} value={value} {...restProps}>
+    <Label isFocused={isFocused} {...restProps}>
       {children}
     </Label>
   );
