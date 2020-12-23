@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.header`
   border-bottom: 8px solid hsl(0, 0%, 13%);
@@ -42,11 +43,12 @@ export const Logo = styled.h1`
   }
 `;
 
-export const Button = styled.button`
+export const Button = styled(Link)`
   cursor: pointer;
   border: 0;
   border-radius: 4px;
   padding: 0;
+  text-decoration: none;
 
   span {
     display: block;

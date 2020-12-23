@@ -1,8 +1,12 @@
 import React from 'react';
-import { Container, Title, LinkContainer, Link, Text } from './Footer';
+import { Container, Inner, Title, LinkContainer, Link, Text } from './Footer';
 
 export default function Footer({ children, ...restProps }) {
-  return <Container {...restProps}>{children}</Container>;
+  return (
+    <Container {...restProps}>
+      <Inner>{children}</Inner>
+    </Container>
+  );
 }
 
 Footer.Title = function FooterTitle({ children, ...restProps }) {

@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 
 export const Container = styled.footer`
-  max-width: 900px;
-  padding: 70px 65px;
-  margin: 0 auto;
   color: hsl(0, 0%, 45%);
+  background: rgba(0, 0, 0, 0.75);
+  width: 100%;
+`;
+
+export const Inner = styled.div`
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 70px 65px;
 `;
 
 export const Title = styled.p`

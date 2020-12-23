@@ -12,6 +12,7 @@ export const Container = styled.div`
 export const Title = styled.h1`
   text-align: center;
   font-size: 3.125rem;
+  min-width: 350px;
 
   @media (max-width: 949px) {
     font-size: 2.5rem;

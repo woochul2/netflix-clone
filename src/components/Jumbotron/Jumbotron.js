@@ -14,6 +14,7 @@ export const Inner = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: ${({ direction }) => direction};
+  min-width: 350px;
   max-width: 1100px;
   margin: auto;
 

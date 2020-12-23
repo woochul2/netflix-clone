@@ -1,33 +1,35 @@
 import React, { createContext, useState, useContext } from 'react';
 import {
   Container,
-  Title,
+  Logo,
   Item,
+  Title,
   InputContainer,
   Input,
   Label,
   Button,
-} from './EmailForm';
+} from './Form';
 
 const FocusContext = createContext();
 const ValueContext = createContext();
 
-export default function EmailForm({ children, ...restProps }) {
+export default function Form({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>;
 }
 
-EmailForm.Title = function EmailFormTitle({ children, ...restProps }) {
-  return <Title {...restProps}>{children}</Title>;
+Form.Logo = function FormLogo({ children, ...restProps }) {
+  return <Logo {...restProps}>{children}</Logo>;
 };
 
-EmailForm.Item = function EmailFormItem({ children, ...restProps }) {
+Form.Item = function FormItem({ children, ...restProps }) {
   return <Item {...restProps}>{children}</Item>;
 };
 
-EmailForm.InputContainer = function EmailFormInputContainer({
-  children,
-  ...restProps
-}) {
+Form.Title = function FormTitle({ children, ...restProps }) {
+  return <Title {...restProps}>{children}</Title>;
+};
+
+Form.InputContainer = function FormInputContainer({ children, ...restProps }) {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState('');
 
@@ -40,7 +42,7 @@ EmailForm.InputContainer = function EmailFormInputContainer({
   );
 };
 
-EmailForm.Input = function EmailFormInput({ ...restProps }) {
+Form.Input = function FormInput({ ...restProps }) {
   const { setIsFocused } = useContext(FocusContext);
   const { value, setValue } = useContext(ValueContext);
 
@@ -62,7 +64,7 @@ EmailForm.Input = function EmailFormInput({ ...restProps }) {
   );
 };
 
-EmailForm.Label = function EmailFormLabel({ children, ...restProps }) {
+Form.Label = function FormLabel({ children, ...restProps }) {
   const { isFocused } = useContext(FocusContext);
   const { value } = useContext(ValueContext);
 
@@ -73,10 +75,6 @@ EmailForm.Label = function EmailFormLabel({ children, ...restProps }) {
   );
 };
 
-EmailForm.Button = function EmailFormButton({ children, ...restProps }) {
-  return (
-    <Button onClick={(event) => event.preventDefault()} {...restProps}>
-      {children}
-    </Button>
-  );
+Form.Button = function FormButton({ children, ...restProps }) {
+  return <Button {...restProps}>{children}</Button>;
 };
