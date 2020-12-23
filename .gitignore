@@ -1,2 +1,3 @@
 node_modules
-src/firebaseConfig.js
+.eslintcache
+src/firebase-config.js

@@ -11,7 +11,7 @@ export default function Faqs() {
         <Title>자주 묻는 질문</Title>
         <ItemsContainer>
           {faqsData.map((item) => (
-            <Item item={item} />
+            <Item key={item.id} item={item} />
           ))}
         </ItemsContainer>
         <EmailForm />

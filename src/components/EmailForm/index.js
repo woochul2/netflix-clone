@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
-import {
-  Container,
-  Title,
-  Item,
-  InputContainer,
-  Input,
-  Label,
-  Button,
-} from './styles';
+import { Container, Title, Item, InputContainer, ButtonLink } from './styles';
 import { BsChevronRight } from 'react-icons/bs';
 
 export default function EmailForm() {
   const [isFocused, setIsFocused] = useState(false);
-  const [value, setValue] = useState('');
+  const [email, setEmail] = useState('');
 
   return (
     <Container>
@@ -21,27 +13,25 @@ export default function EmailForm() {
         입력하세요.
       </Title>
       <Item>
-        <InputContainer>
-          <Input
-            type="email"
-            onFocus={() => {
-              setIsFocused(true);
-            }}
-            onBlur={() => {
-              setIsFocused(false);
-            }}
-            value={value}
-            onChange={(event) => {
-              setValue(event.target.value);
-            }}
-          />
-          <Label isFocused={isFocused} value={value}>
-            이메일 주소
-          </Label>
+        <InputContainer
+          isFocused={isFocused}
+          value={email}
+          onFocus={() => {
+            setIsFocused(true);
+          }}
+          onBlur={() => {
+            setIsFocused(false);
+          }}
+          onChange={(event) => {
+            setEmail(event.target.value);
+          }}
+        >
+          <input type="email" />
+          <label>이메일 주소</label>
         </InputContainer>
-        <Button onClick={(event) => event.preventDefault()}>
+        <ButtonLink to="#">
           시작하기 <BsChevronRight />
-        </Button>
+        </ButtonLink>
       </Item>
     </Container>
   );

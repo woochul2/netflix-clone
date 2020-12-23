@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
-import { Container, Logo, Item, Title, Error, Button } from './styles';
+import { Container, LogoLink, Form, Title, Error, ButtonLink } from './styles';
 import { firebase } from '../../firebase';
-import { Footer } from '../';
 import Input from './Input';
+import { Footer } from '../';
 
-export default function Form() {
+const footerData = [
+  '자주 묻는 질문',
+  '고객 센터',
+  '이용 약관',
+  '개인정보',
+  '쿠키 설정',
+  '회사 정보',
+];
+
+export default function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
@@ -25,8 +34,8 @@ export default function Form() {
 
   return (
     <Container backgroundImage="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80">
-      <Logo>Netflix</Logo>
-      <Item onSubmit={handleSignIn}>
+      <LogoLink to="/">Netflix</LogoLink>
+      <Form onSubmit={handleSignIn}>
         <Title>로그인</Title>
         {error && <Error>이메일 또는 비밀번호를 잘못 입력하셨습니다.</Error>}
         <Input
@@ -41,9 +50,9 @@ export default function Form() {
           setValue={setPassword}
           label="비밀번호"
         />
-        <Button>로그인</Button>
-      </Item>
-      <Footer />
+        <ButtonLink to="#">로그인</ButtonLink>
+      </Form>
+      <Footer data={footerData} />
     </Container>
   );
 }

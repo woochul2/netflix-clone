@@ -13,8 +13,8 @@ export default function Jumbotron() {
   return (
     <>
       {jumboData.map((item) => (
-        <Container key={item.id} direction={item.direction}>
-          <Inner>
+        <Container key={item.id}>
+          <Inner direction={item.direction}>
             <TextContainer>
               <Title>{item.title}</Title>
               <SubTitle>{item.subTitle}</SubTitle>

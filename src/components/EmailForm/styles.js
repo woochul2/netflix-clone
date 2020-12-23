@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { BasicInputContainer, BasicButtonLink } from '../../common-styles';
 
 export const Container = styled.form`
   display: flex;
@@ -39,11 +40,8 @@ export const Item = styled.div`
   }
 `;
 
-export const InputContainer = styled.div`
-  position: relative;
-  display: flex;
+export const InputContainer = styled(BasicInputContainer)`
   min-width: 500px;
-  width: 100%;
   max-width: 500px;
 
   @media (max-width: 1449px) {
@@ -59,48 +57,26 @@ export const InputContainer = styled.div`
     min-width: 300px;
     height: 48px;
   }
-`;
 
-export const Input = styled.input`
-  outline: none;
-  border: solid 1px hsl(0, 0%, 55%);
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  width: 100%;
-  padding: 10px;
-`;
+  input {
+    border: solid 1px hsl(0, 0%, 55%);
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
 
-export const Label = styled.label`
-  position: absolute;
-  top: ${({ isFocused, value }) => (isFocused || value ? '20%' : '50%')};
-  left: 10px;
-  font-size: ${({ isFocused, value }) =>
-    isFocused || value ? '0.8rem' : '1rem'};
-  font-weight: ${({ isFocused, value }) =>
-    isFocused || value ? 'bold' : '400'};
-  transform: translateY(-50%);
-  transition: all 0.1s ease;
-  color: hsl(0, 0%, 55%);
-
-  @media (max-width: 739px) {
-    font-size: 0.875rem;
+  label {
+    @media (max-width: 739px) {
+      font-size: 0.875rem;
+    }
   }
 `;
 
-export const Button = styled.button`
-  cursor: pointer;
-  border: none;
+export const ButtonLink = styled(BasicButtonLink)`
   border-left: 1px solid hsl(0, 0%, 20%);
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
-  background-color: hsl(357, 92%, 46%);
   padding: 0.6em 0.9em;
-  color: hsl(0, 0%, 100%);
   font-size: 1.875rem;
-
-  &:active {
-    background-color: hsl(358, 91%, 40%);
-  }
 
   svg {
     width: 0.8em;

@@ -1,10 +1,6 @@
 import React from 'react';
-import { Form } from '../components';
+import { SignInForm } from '../components';
 
 export default function SignIn() {
-  return (
-    <>
-      <Form />
-    </>
-  );
+  return <SignInForm />;
 }

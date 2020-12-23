@@ -1,4 +1,9 @@
 import styled from 'styled-components';
+import {
+  BasicLogoLink,
+  BasicInputContainer,
+  BasicButtonLink,
+} from '../../common-styles';
 
 export const Container = styled.div`
   display: flex;
@@ -15,11 +20,7 @@ export const Container = styled.div`
   }
 `;
 
-export const Logo = styled.h1`
-  color: hsl(358, 90%, 47%);
-  text-transform: uppercase;
-  font-size: 3rem;
-  margin: 0;
+export const LogoLink = styled(BasicLogoLink)`
   width: 95%;
 
   @media (max-width: 439px) {
@@ -27,7 +28,7 @@ export const Logo = styled.h1`
   }
 `;
 
-export const Item = styled.form`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.75);
@@ -53,56 +54,29 @@ export const Error = styled.p`
   font-weight: bold;
 `;
 
-export const InputContainer = styled.div`
-  position: relative;
-  display: flex;
+export const InputContainer = styled(BasicInputContainer)`
   min-width: 400px;
-  width: 100%;
   margin-bottom: 20px;
 
   @media (max-width: 739px) {
     min-width: 300px;
   }
+
+  input {
+    border-radius: 4px;
+    height: 40px;
+    color: hsl(0, 0%, 100%);
+    background-color: hsl(0, 0%, 20%);
+  }
 `;
 
-export const InputBox = styled.input`
-  outline: none;
-  border: none;
+export const ButtonLink = styled(BasicButtonLink)`
   border-radius: 4px;
-  width: 100%;
-  padding: 10px;
-  height: 40px;
-  color: hsl(0, 0%, 100%);
-  background-color: hsl(0, 0%, 20%);
-`;
-
-export const Label = styled.label`
-  position: absolute;
-  top: ${({ isFocused, value }) => (isFocused || value ? '20%' : '50%')};
-  left: 10px;
-  font-size: ${({ isFocused, value }) =>
-    isFocused || value ? '0.8rem' : '1rem'};
-  font-weight: ${({ isFocused, value }) =>
-    isFocused || value ? 'bold' : '400'};
-  transform: translateY(-50%);
-  transition: all 0.1s ease;
-  color: hsl(0, 0%, 55%);
-`;
-
-export const Button = styled.button`
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
-  background-color: hsl(357, 92%, 46%);
+  min-width: 300px;
   padding: 0.8em;
-  color: hsl(0, 0%, 100%);
   font-size: 1rem;
   font-weight: bold;
-  min-width: 300px;
-
-  &:active {
-    background-color: hsl(358, 91%, 40%);
-  }
+  text-align: center;
 
   svg {
     width: 0.8em;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { BasicButtonLink, BasicLogoLink } from '../../common-styles';
 
 export const Container = styled.header`
   border-bottom: 8px solid hsl(0, 0%, 13%);
@@ -24,11 +24,8 @@ export const Top = styled.div`
   padding-top: 10px;
 `;
 
-export const Logo = styled.h1`
-  color: hsl(358, 90%, 47%);
-  text-transform: uppercase;
-  font-size: 3rem;
-  margin: 0;
+export const LogoLink = styled(BasicLogoLink)`
+  cursor: alias;
 
   @media (max-width: 1449px) {
     font-size: 2.5rem;
@@ -43,41 +40,21 @@ export const Logo = styled.h1`
   }
 `;
 
-export const Button = styled(Link)`
-  cursor: pointer;
-  border: 0;
+export const ButtonLink = styled(BasicButtonLink)`
   border-radius: 4px;
-  padding: 0;
-  text-decoration: none;
+  padding: 10px 17px;
 
-  span {
-    display: block;
-    color: hsl(0, 0%, 100%);
-    background-color: hsl(358, 90%, 47%);
-    border-radius: 4px;
-    padding: 10px 17px;
-
-    @media (max-width: 549px) {
-      padding: 6px;
-    }
-  }
-
-  &:focus,
-  span {
-    outline: none;
-  }
-
-  &:focus > span {
-    box-shadow: 0 0 0 1px hsl(0, 0%, 100%);
+  @media (max-width: 549px) {
+    padding: 6px;
   }
 `;
 
 export const Title = styled.h1`
   min-width: 320px;
   max-width: 800px;
-  font-size: 4rem;
   margin: 150px auto 0;
   padding: 0 5%;
+  font-size: 4rem;
 
   @media (max-width: 1449px) {
     max-width: 640px;
