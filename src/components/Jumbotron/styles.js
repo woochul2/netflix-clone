@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Item = styled.div`
+export const Container = styled.div`
   border-bottom: 8px solid hsl(0, 0%, 13%);
   padding: 70px 45px;
 

@@ -65,7 +65,7 @@ export const InputContainer = styled.div`
   }
 `;
 
-export const Input = styled.input`
+export const InputBox = styled.input`
   outline: none;
   border: none;
   border-radius: 4px;

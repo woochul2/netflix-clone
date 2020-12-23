@@ -1,40 +1,28 @@
 import React from 'react';
 import {
-  Item,
+  Container,
   Inner,
   TextContainer,
   Title,
   SubTitle,
   Image,
-} from './Jumbotron';
+} from './styles';
+import jumboData from './jumboData';
 
-export default function Jumbotron({
-  children,
-  direction = 'row',
-  ...restProps
-}) {
+export default function Jumbotron() {
   return (
-    <Item {...restProps}>
-      <Inner direction={direction}>{children}</Inner>
-    </Item>
+    <>
+      {jumboData.map((item) => (
+        <Container key={item.id} direction={item.direction}>
+          <Inner>
+            <TextContainer>
+              <Title>{item.title}</Title>
+              <SubTitle>{item.subTitle}</SubTitle>
+            </TextContainer>
+            <Image src={item.image} alt={item.alt} />
+          </Inner>
+        </Container>
+      ))}
+    </>
   );
 }
-
-Jumbotron.TextContainer = function JumbotronTextConainter({
-  children,
-  ...restProps
-}) {
-  return <TextContainer {...restProps}>{children}</TextContainer>;
-};
-
-Jumbotron.Title = function JumbotronTitle({ children, ...restProps }) {
-  return <Title {...restProps}>{children}</Title>;
-};
-
-Jumbotron.SubTitle = function JumbotronSubTitle({ children, ...restProps }) {
-  return <SubTitle {...restProps}>{children}</SubTitle>;
-};
-
-Jumbotron.Image = function JumbotronImage({ ...restProps }) {
-  return <Image {...restProps} />;
-};

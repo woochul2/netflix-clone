@@ -1,77 +1,49 @@
-import React, { createContext, useState, useContext } from 'react';
-import {
-  Container,
-  Logo,
-  Item,
-  Title,
-  Error,
-  InputContainer,
-  Input,
-  Label,
-  Button,
-} from './Form';
+import React, { useState } from 'react';
+import { Container, Logo, Item, Title, Error, Button } from './styles';
+import { firebase } from '../../firebase';
+import { Footer } from '../';
+import Input from './Input';
 
-const FocusContext = createContext();
+export default function Form() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
 
-export default function Form({ children, ...restProps }) {
-  return <Container {...restProps}>{children}</Container>;
+  const handleSignIn = (event) => {
+    event.preventDefault();
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log(123);
+      })
+      .catch(() => {
+        setError(true);
+      });
+  };
+
+  return (
+    <Container backgroundImage="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80">
+      <Logo>Netflix</Logo>
+      <Item onSubmit={handleSignIn}>
+        <Title>로그인</Title>
+        {error && <Error>이메일 또는 비밀번호를 잘못 입력하셨습니다.</Error>}
+        <Input
+          type="email"
+          value={email}
+          setValue={setEmail}
+          label="이메일 주소"
+        />
+        <Input
+          type="password"
+          value={password}
+          setValue={setPassword}
+          label="비밀번호"
+        />
+        <Button>로그인</Button>
+      </Item>
+      <Footer />
+    </Container>
+  );
 }
-
-Form.Logo = function FormLogo({ children, ...restProps }) {
-  return <Logo {...restProps}>{children}</Logo>;
-};
-
-Form.Item = function FormItem({ children, ...restProps }) {
-  return <Item {...restProps}>{children}</Item>;
-};
-
-Form.Error = function FormError({ children, ...restProps }) {
-  return <Error {...restProps}>{children}</Error>;
-};
-
-Form.Title = function FormTitle({ children, ...restProps }) {
-  return <Title {...restProps}>{children}</Title>;
-};
-
-Form.InputContainer = function FormInputContainer({ children, ...restProps }) {
-  const [isFocused, setIsFocused] = useState(false);
-
-  return (
-    <FocusContext.Provider value={{ isFocused, setIsFocused }}>
-      <InputContainer {...restProps}>{children}</InputContainer>
-    </FocusContext.Provider>
-  );
-};
-
-Form.Input = function FormInput({ ...restProps }) {
-  const { setIsFocused } = useContext(FocusContext);
-
-  return (
-    <Input
-      onFocus={() => {
-        setIsFocused(true);
-      }}
-      onBlur={() => {
-        setIsFocused(false);
-      }}
-      onChange={(event) => {
-        setValue(event.target.value);
-      }}
-      {...restProps}
-    />
-  );
-};
-
-Form.Label = function FormLabel({ children, ...restProps }) {
-  const { isFocused } = useContext(FocusContext);
-
-  return (
-    <Label isFocused={isFocused} {...restProps}>
-      {children}
-    </Label>
-  );
-};
-
-Form.Button = function FormButton({ children, ...restProps }) {
-  return <Button {...restProps}>{children}</Button>;
-};

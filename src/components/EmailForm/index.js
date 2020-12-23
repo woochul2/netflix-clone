@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Title,
@@ -7,76 +7,42 @@ import {
   Input,
   Label,
   Button,
-} from './EmailForm';
+} from './styles';
+import { BsChevronRight } from 'react-icons/bs';
 
-const FocusContext = createContext();
-const ValueContext = createContext();
-
-export default function EmailForm({ children, ...restProps }) {
-  return <Container {...restProps}>{children}</Container>;
-}
-
-EmailForm.Title = function EmailFormTitle({ children, ...restProps }) {
-  return <Title {...restProps}>{children}</Title>;
-};
-
-EmailForm.Item = function EmailFormItem({ children, ...restProps }) {
-  return <Item {...restProps}>{children}</Item>;
-};
-
-EmailForm.InputContainer = function EmailFormInputContainer({
-  children,
-  ...restProps
-}) {
+export default function EmailForm() {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState('');
 
   return (
-    <FocusContext.Provider value={{ isFocused, setIsFocused }}>
-      <ValueContext.Provider value={{ value, setValue }}>
-        <InputContainer {...restProps}>{children}</InputContainer>
-      </ValueContext.Provider>
-    </FocusContext.Provider>
+    <Container>
+      <Title>
+        시청할 준비가 되셨나요? 멤버십을 등록하거나 재시작하려면 이메일 주소를
+        입력하세요.
+      </Title>
+      <Item>
+        <InputContainer>
+          <Input
+            type="email"
+            onFocus={() => {
+              setIsFocused(true);
+            }}
+            onBlur={() => {
+              setIsFocused(false);
+            }}
+            value={value}
+            onChange={(event) => {
+              setValue(event.target.value);
+            }}
+          />
+          <Label isFocused={isFocused} value={value}>
+            이메일 주소
+          </Label>
+        </InputContainer>
+        <Button onClick={(event) => event.preventDefault()}>
+          시작하기 <BsChevronRight />
+        </Button>
+      </Item>
+    </Container>
   );
-};
-
-EmailForm.Input = function EmailFormInput({ ...restProps }) {
-  const { setIsFocused } = useContext(FocusContext);
-  const { value, setValue } = useContext(ValueContext);
-
-  return (
-    <Input
-      type="email"
-      onFocus={() => {
-        setIsFocused(true);
-      }}
-      onBlur={() => {
-        setIsFocused(false);
-      }}
-      value={value}
-      onChange={(event) => {
-        setValue(event.target.value);
-      }}
-      {...restProps}
-    />
-  );
-};
-
-EmailForm.Label = function EmailFormLabel({ children, ...restProps }) {
-  const { isFocused } = useContext(FocusContext);
-  const { value } = useContext(ValueContext);
-
-  return (
-    <Label isFocused={isFocused} value={value} {...restProps}>
-      {children}
-    </Label>
-  );
-};
-
-EmailForm.Button = function EmailFormButton({ children, ...restProps }) {
-  return (
-    <Button onClick={(event) => event.preventDefault()} {...restProps}>
-      {children}
-    </Button>
-  );
-};
+}

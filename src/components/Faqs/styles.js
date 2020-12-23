@@ -23,7 +23,7 @@ export const Title = styled.h1`
   }
 `;
 
-export const ItemContainer = styled.ul`
+export const ItemsContainer = styled.ul`
   min-width: 320px;
   max-width: 815px;
   list-style: none;
@@ -40,7 +40,7 @@ export const ItemContainer = styled.ul`
   }
 `;
 
-export const Item = styled.li`
+export const ItemContainer = styled.li`
   font-size: 1.625rem;
 
   @media (max-width: 949px) {
