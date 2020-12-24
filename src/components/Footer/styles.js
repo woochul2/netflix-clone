@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import * as BREAKPOINTS from '../../constants/breakpoints';
 
 export const Container = styled.footer`
   color: hsl(0, 0%, 45%);
-  background: rgba(0, 0, 0, 0.75);
+  background: hsla(0, 0%, 0%, 0.75);
   width: 100%;
 `;
 
@@ -28,7 +29,7 @@ export const Link = styled.li`
   width: 25%;
   min-width: 100px;
 
-  @media (max-width: 740px) {
+  @media (max-width: ${BREAKPOINTS.MIDDLE}) {
     width: 33%;
   }
 

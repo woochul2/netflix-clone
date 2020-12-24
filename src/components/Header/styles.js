@@ -1,16 +1,17 @@
 import styled from 'styled-components';
 import { BasicButtonLink, BasicLogoLink } from '../../common-styles';
+import * as BREAKPOINTS from '../../constants/breakpoints';
 
 export const Container = styled.header`
   border-bottom: 8px solid hsl(0, 0%, 13%);
   padding: 0 45px 140px;
   text-align: center;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.55)),
+  background: linear-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.55)),
     url(${({ backgroundImage }) => backgroundImage}) no-repeat;
   background-size: cover;
   background-position: 50% 40%;
 
-  @media (max-width: 549px) {
+  @media (max-width: ${BREAKPOINTS.SMALL}) {
     padding: 0 0 70px 0;
   }
 `;
@@ -25,17 +26,15 @@ export const Top = styled.div`
 `;
 
 export const LogoLink = styled(BasicLogoLink)`
-  cursor: alias;
-
-  @media (max-width: 1449px) {
+  @media (max-width: ${BREAKPOINTS.XLARGE}) {
     font-size: 2.5rem;
   }
 
-  @media (max-width: 949px) {
+  @media (max-width: ${BREAKPOINTS.LARGE}) {
     font-size: 2rem;
   }
 
-  @media (max-width: 549px) {
+  @media (max-width: ${BREAKPOINTS.SMALL}) {
     font-size: 1.6rem;
   }
 `;
@@ -44,7 +43,7 @@ export const ButtonLink = styled(BasicButtonLink)`
   border-radius: 4px;
   padding: 10px 17px;
 
-  @media (max-width: 549px) {
+  @media (max-width: ${BREAKPOINTS.SMALL}) {
     padding: 6px;
   }
 `;
@@ -56,12 +55,12 @@ export const Title = styled.h1`
   padding: 0 5%;
   font-size: 4rem;
 
-  @media (max-width: 1449px) {
+  @media (max-width: ${BREAKPOINTS.XLARGE}) {
     max-width: 640px;
     font-size: 3.125rem;
   }
 
-  @media (max-width: 549px) {
+  @media (max-width: ${BREAKPOINTS.SMALL}) {
     font-size: 1.75rem;
   }
 `;
@@ -74,11 +73,11 @@ export const SubTitle = styled.h2`
   margin: 1rem auto 0;
   padding: 0 5%;
 
-  @media (max-width: 1449px) {
+  @media (max-width: ${BREAKPOINTS.XLARGE}) {
     max-width: 640px;
   }
 
-  @media (max-width: 549px) {
+  @media (max-width: ${BREAKPOINTS.SMALL}) {
     font-size: 1.125rem;
   }
 `;

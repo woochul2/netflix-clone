@@ -2,8 +2,8 @@ html {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   line-height: 1.45;
   word-break: keep-all;
-  background-color: black;
-  color: #fff;
+  background-color: hsl(0, 0%, 0%);
+  color: hsl(0, 0%, 100%);
 }
 
 * {

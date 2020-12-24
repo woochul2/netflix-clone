@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { BasicInputContainer, BasicButtonLink } from '../../common-styles';
+import * as BREAKPOINTS from '../../constants/breakpoints';
 
 export const Container = styled.form`
   display: flex;
@@ -18,13 +19,13 @@ export const Title = styled.h3`
   text-align: center;
   padding: 0 4% 20px;
 
-  @media (max-width: 949px) {
+  @media (max-width: ${BREAKPOINTS.LARGE}) {
     max-width: 450px;
     font-size: 1.45rem;
     padding-bottom: 12px;
   }
 
-  @media (max-width: 739px) {
+  @media (max-width: ${BREAKPOINTS.MIDDLE}) {
     font-size: 1.1rem;
   }
 `;
@@ -34,7 +35,7 @@ export const Item = styled.div`
   justify-content: center;
   width: 100%;
 
-  @media (max-width: 949px) {
+  @media (max-width: ${BREAKPOINTS.LARGE}) {
     flex-direction: column;
     align-items: center;
   }
@@ -44,16 +45,16 @@ export const InputContainer = styled(BasicInputContainer)`
   min-width: 500px;
   max-width: 500px;
 
-  @media (max-width: 1449px) {
+  @media (max-width: ${BREAKPOINTS.XLARGE}) {
     min-width: 450px;
   }
 
-  @media (max-width: 949px) {
+  @media (max-width: ${BREAKPOINTS.LARGE}) {
     margin-bottom: 20px;
     height: 60px;
   }
 
-  @media (max-width: 739px) {
+  @media (max-width: ${BREAKPOINTS.MIDDLE}) {
     min-width: 300px;
     height: 48px;
   }
@@ -65,7 +66,7 @@ export const InputContainer = styled(BasicInputContainer)`
   }
 
   label {
-    @media (max-width: 739px) {
+    @media (max-width: ${BREAKPOINTS.MIDDLE}) {
       font-size: 0.875rem;
     }
   }
@@ -83,11 +84,11 @@ export const ButtonLink = styled(BasicButtonLink)`
     height: 0.8em;
   }
 
-  @media (max-width: 1449px) {
+  @media (max-width: ${BREAKPOINTS.XLARGE}) {
     font-size: 1.625rem;
   }
 
-  @media (max-width: 949px) {
+  @media (max-width: ${BREAKPOINTS.LARGE}) {
     border-radius: 2px;
     font-size: 1rem;
   }

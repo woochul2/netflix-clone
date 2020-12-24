@@ -4,6 +4,7 @@ import {
   BasicInputContainer,
   BasicButtonLink,
 } from '../../common-styles';
+import * as BREAKPOINTS from '../../constants/breakpoints';
 
 export const Container = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ export const Container = styled.div`
   background-position: 50% 40%;
   padding-top: 10px;
 
-  @media (max-width: 739px) {
+  @media (max-width: ${BREAKPOINTS.MIDDLE}) {
     background: none;
     align-items: stretch;
   }
@@ -31,12 +32,12 @@ export const LogoLink = styled(BasicLogoLink)`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: hsla(0, 0%, 0%, 0.75);
   padding: 50px 70px 100px;
   border-radius: 4px;
   margin-bottom: 100px;
 
-  @media (max-width: 739px) {
+  @media (max-width: ${BREAKPOINTS.MIDDLE}) {
     padding: 50px 20px;
   }
 `;
@@ -58,7 +59,7 @@ export const InputContainer = styled(BasicInputContainer)`
   min-width: 400px;
   margin-bottom: 20px;
 
-  @media (max-width: 739px) {
+  @media (max-width: ${BREAKPOINTS.MIDDLE}) {
     min-width: 300px;
   }
 
