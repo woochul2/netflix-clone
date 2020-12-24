@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import {
   BasicLogoLink,
   BasicInputContainer,
-  BasicButtonLink,
+  BasicButton,
 } from '../../common-styles';
 import * as BREAKPOINTS from '../../constants/breakpoints';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
   display: flex;
@@ -22,7 +23,8 @@ export const Container = styled.div`
 `;
 
 export const LogoLink = styled(BasicLogoLink)`
-  width: 95%;
+  align-self: baseline;
+  margin-left: 20px;
 
   @media (max-width: 439px) {
     font-size: 1.6rem;
@@ -71,7 +73,7 @@ export const InputContainer = styled(BasicInputContainer)`
   }
 `;
 
-export const ButtonLink = styled(BasicButtonLink)`
+export const Button = styled(BasicButton)`
   border-radius: 4px;
   min-width: 300px;
   padding: 0.8em;
@@ -82,5 +84,19 @@ export const ButtonLink = styled(BasicButtonLink)`
   svg {
     width: 0.8em;
     height: 0.8em;
+  }
+`;
+
+export const SignUpText = styled.p`
+  margin-top: 30px;
+  color: hsl(0, 0%, 45%);
+`;
+
+export const SignUpLink = styled(Link)`
+  text-decoration: none;
+  color: hsl(0, 0%, 100%);
+
+  &:hover {
+    text-decoration: underline;
   }
 `;

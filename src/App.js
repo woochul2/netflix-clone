@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Home, SignIn } from './pages';
+import { Home, SignIn, SignUp } from './pages';
 import * as ROUTES from './constants/routes';
 
 export default function App() {
@@ -9,8 +9,11 @@ export default function App() {
       <Route exact path={ROUTES.HOME}>
         <Home />
       </Route>
-      <Route exact path={ROUTES.Sign_In}>
+      <Route exact path={ROUTES.SIGN_IN}>
         <SignIn />
+      </Route>
+      <Route exact path={ROUTES.SIGN_UP}>
+        <SignUp />
       </Route>
     </Router>
   );

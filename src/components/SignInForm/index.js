@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
-import { Container, LogoLink, Form, Title, Error, ButtonLink } from './styles';
 import { firebase } from '../../firebase';
+import * as ROUTES from '../../constants/routes';
+import {
+  Container,
+  LogoLink,
+  Form,
+  Title,
+  Error,
+  Button,
+  SignUpText,
+  SignUpLink,
+} from './styles';
 import Input from './Input';
 import { Footer } from '../';
 
@@ -25,7 +35,7 @@ export default function SignInForm() {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        console.log(123);
+        // 로그인 완료 후 페이지 이동
       })
       .catch(() => {
         setError(true);
@@ -50,7 +60,11 @@ export default function SignInForm() {
           setValue={setPassword}
           label="비밀번호"
         />
-        <ButtonLink to="#">로그인</ButtonLink>
+        <Button>로그인</Button>
+        <SignUpText>
+          Netflix 회원이 아닌가요?{' '}
+          <SignUpLink to={ROUTES.HOME}>지금 가입하세요</SignUpLink>.
+        </SignUpText>
       </Form>
       <Footer data={footerData} />
     </Container>

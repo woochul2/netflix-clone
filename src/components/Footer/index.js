@@ -1,9 +1,12 @@
 import React from 'react';
 import { Container, Inner, Title, LinkContainer, Link, Text } from './styles';
 
-export default function Footer({ data = [] }) {
+export default function Footer({
+  data = [],
+  background = 'hsla(0, 0%, 0%, 0.75)',
+}) {
   return (
-    <Container>
+    <Container background={background}>
       <Inner>
         <Title>질문이 있으신가요?</Title>
         <LinkContainer>

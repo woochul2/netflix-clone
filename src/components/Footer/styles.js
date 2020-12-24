@@ -3,7 +3,7 @@ import * as BREAKPOINTS from '../../constants/breakpoints';
 
 export const Container = styled.footer`
   color: hsl(0, 0%, 45%);
-  background: hsla(0, 0%, 0%, 0.75);
+  background: ${({ background }) => background};
   width: 100%;
 `;
 

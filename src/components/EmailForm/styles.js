@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BasicInputContainer, BasicButtonLink } from '../../common-styles';
+import { BasicInputContainer, BasicButton } from '../../common-styles';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 
 export const Container = styled.form`
@@ -72,7 +72,7 @@ export const InputContainer = styled(BasicInputContainer)`
   }
 `;
 
-export const ButtonLink = styled(BasicButtonLink)`
+export const Button = styled(BasicButton)`
   border-left: 1px solid hsl(0, 0%, 20%);
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;

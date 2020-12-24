@@ -27,16 +27,24 @@ export const BasicInputContainer = styled.div`
   }
 `;
 
-export const BasicButtonLink = styled(Link)`
-  cursor: pointer;
-  border: 0;
-  text-decoration: none;
-  color: hsl(0, 0%, 100%);
-  background-color: hsl(357, 92%, 46%);
+const basicButtonStyles = {
+  cursor: 'pointer',
+  border: 0,
+  color: 'hsl(0, 0%, 100%)',
+  'background-color': 'hsl(357, 92%, 46%)',
 
-  &:active {
-    background-color: hsl(358, 91%, 40%);
-  }
+  '&:active': {
+    'background-color': 'hsl(357, 92%, 40%)',
+  },
+};
+
+export const BasicButton = styled.button`
+  ${basicButtonStyles}
+`;
+
+export const BasicButtonLink = styled(Link)`
+  ${basicButtonStyles}
+  text-decoration: none;
 `;
 
 export const BasicLogoLink = styled(Link)`
@@ -45,5 +53,5 @@ export const BasicLogoLink = styled(Link)`
   text-decoration: none;
   font-size: 3rem;
   font-weight: bold;
-  color: hsl(358, 90%, 47%);
+  color: hsl(357, 92%, 46%);
 `;
