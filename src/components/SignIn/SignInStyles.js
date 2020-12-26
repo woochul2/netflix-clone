@@ -5,18 +5,19 @@ import {
   BasicInputContainer,
   BasicButton,
 } from '../common-styles';
-import * as BREAKPOINTS from '../../constants/breakpoints';
+import * as STYLES from '../../constants/styles';
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 21.875rem;
   background: url(${({ backgroundImage }) => backgroundImage});
   background-size: cover;
   background-position: 50% 40%;
-  padding-top: 10px;
+  padding-top: 0.625rem;
 
-  @media (max-width: ${BREAKPOINTS.MIDDLE}) {
+  @media (max-width: ${STYLES.breakpoints.md}) {
     background: none;
     align-items: stretch;
   }
@@ -24,9 +25,9 @@ export const Container = styled.div`
 
 export const LogoLinkContainer = styled(BasicLogoLinkContainer)`
   align-self: baseline;
-  margin-left: 20px;
+  margin-left: 1.25rem;
 
-  @media (max-width: 439px) {
+  @media (max-width: ${STYLES.breakpoints.sm}) {
     font-size: 1.6rem;
   }
 `;
@@ -35,58 +36,55 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   background-color: hsla(0, 0%, 0%, 0.75);
-  padding: 50px 70px 100px;
-  border-radius: 4px;
-  margin-bottom: 100px;
+  padding: 3.125rem 4.375rem 6.25rem;
+  border-radius: 0.25rem;
+  margin-bottom: 6.25rem;
 
-  @media (max-width: ${BREAKPOINTS.MIDDLE}) {
-    padding: 50px 20px;
+  @media (max-width: ${STYLES.breakpoints.md}) {
+    padding: 0.625rem 1.25rem 3.125rem;
   }
 `;
 
 export const Title = styled.h1``;
 
 export const Error = styled.p`
-  min-width: 260px;
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  border-radius: 4px;
-  color: hsl(0, 0%, 100%);
-  background-color: hsl(32, 98%, 46%);
+  margin-bottom: 1.25rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.25rem;
+  color: ${STYLES.colors.white};
+  background-color: ${STYLES.colors.orange};
   font-size: 0.875rem;
   font-weight: bold;
 `;
 
 export const InputContainer = styled(BasicInputContainer)`
-  min-width: 400px;
-  margin-bottom: 20px;
-
-  @media (max-width: ${BREAKPOINTS.MIDDLE}) {
-    min-width: 300px;
+  min-width: 25rem;
+  margin-bottom: 1.25rem;
+  @media (max-width: ${STYLES.breakpoints.md}) {
+    min-width: 18.75rem;
   }
 
   input {
-    border-radius: 4px;
-    height: 40px;
-    color: hsl(0, 0%, 100%);
-    background-color: hsl(0, 0%, 20%);
+    border-radius: 0.25rem;
+    height: 3.75rem;
+    color: ${STYLES.colors.white};
+    background-color: ${STYLES.colors.gray3};
   }
 `;
 
 export const Button = styled(BasicButton)`
-  min-width: 300px;
-  border-radius: 4px;
-  padding: 10px 0;
+  border-radius: 0.25rem;
+  padding: 0.625rem 0;
 `;
 
 export const SignUpText = styled.p`
-  margin-top: 30px;
-  color: hsl(0, 0%, 45%);
+  margin-top: 1.875rem;
+  color: ${STYLES.colors.gray};
 `;
 
 export const SignUpLink = styled(Link)`
   text-decoration: none;
-  color: hsl(0, 0%, 100%);
+  color: ${STYLES.colors.white};
 
   &:hover {
     text-decoration: underline;

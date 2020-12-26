@@ -13,6 +13,7 @@ import LogoLink from '../LogoLink';
 import Input from '../Input';
 import Footer from '../Footer';
 import * as ROUTES from '../../constants/routes';
+import * as STYLES from '../../constants/styles';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -20,12 +21,12 @@ export default function SignUp() {
 
   useEffect(() => {
     const body = document.querySelector('body');
-    body.style.backgroundColor = 'hsl(0, 0%, 100%)';
-    body.style.color = 'hsl(0, 0%, 20%)';
+    body.style.backgroundColor = STYLES.colors.white;
+    body.style.color = STYLES.colors.gray3;
 
     return () => {
-      body.style.backgroundColor = 'hsl(0, 0%, 0%)';
-      body.style.color = 'hsl(0, 0%, 100%)';
+      body.style.backgroundColor = STYLES.colors.black;
+      body.style.color = STYLES.colors.white;
     };
   }, []);
 

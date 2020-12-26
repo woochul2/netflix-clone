@@ -5,22 +5,22 @@ import {
   BasicInputContainer,
   BasicButton,
 } from '../common-styles';
-import * as BREAKPOINTS from '../../constants/breakpoints';
+import * as STYLES from '../../constants/styles';
 
 export const Container = styled.div`
-  min-width: 300px;
+  min-width: 18.75rem;
 `;
 
 export const Top = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
-  border-bottom: 1px solid hsl(0, 0%, 90%);
+  padding: 0.625rem 3%;
+  border-bottom: 0.06rem solid ${STYLES.colors.gray4};
 `;
 
 export const LogoLinkContainer = styled(BasicLogoLinkContainer)`
-  @media (max-width: ${BREAKPOINTS.SMALL}) {
+  @media (max-width: ${STYLES.breakpoints.sm}) {
     font-size: 1.2rem;
   }
 `;
@@ -29,22 +29,22 @@ export const ButtonLink = styled(Link)`
   text-decoration: none;
   font-weight: bold;
   font-size: 1.2rem;
-  color: hsl(0, 0%, 20%);
+  color: ${STYLES.colors.gray3};
 
   &:hover {
     text-decoration: underline;
   }
 
-  @media (max-width: ${BREAKPOINTS.MIDDLE}) {
+  @media (max-width: ${STYLES.breakpoints.md}) {
     font-size: 1rem;
   }
 `;
 
 export const Form = styled.form`
-  max-width: 440px;
+  max-width: 27.5rem;
   display: flex;
   flex-direction: column;
-  margin: 50px auto 100px;
+  margin: 3.125rem auto 6.25rem;
 `;
 
 export const Title = styled.h1`
@@ -52,17 +52,17 @@ export const Title = styled.h1`
 `;
 
 export const InputContainer = styled(BasicInputContainer)`
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 
   input {
-    border: 1px solid hsl(0, 0%, 55%);
-    border-radius: 2px;
-    height: 40px;
+    border: 0.06rem solid ${STYLES.colors.gray2};
+    border-radius: 0.125rem;
+    height: 3.75rem;
   }
 `;
 
 export const Button = styled(BasicButton)`
-  border-radius: 2px;
-  padding: 20px;
+  border-radius: 0.125rem;
+  padding: 1rem;
   font-size: 1.1rem;
 `;

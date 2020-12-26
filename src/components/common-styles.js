@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import * as STYLES from '../constants/styles';
 
 export const BasicInputContainer = styled.div`
   position: relative;
@@ -10,32 +11,32 @@ export const BasicInputContainer = styled.div`
     outline: none;
     border: none;
     width: 100%;
-    padding: 10px;
+    padding: 0.625rem;
   }
 
   label {
     user-select: none;
     position: absolute;
     top: ${({ isFocused, value }) => (isFocused || value ? '20%' : '50%')};
-    left: 10px;
+    left: 0.625rem;
     transform: translateY(-50%);
     transition: all 0.1s ease;
     font-size: ${({ isFocused, value }) =>
       isFocused || value ? '0.8rem' : '1rem'};
     font-weight: ${({ isFocused, value }) =>
       isFocused || value ? 'bold' : '400'};
-    color: hsl(0, 0%, 55%);
+    color: ${STYLES.colors.gray};
   }
 `;
 
 const basicButtonStyles = {
   'user-select': 'none',
   cursor: 'pointer',
-  color: 'hsl(0, 0%, 100%)',
-  'background-color': 'hsl(357, 92%, 46%)',
+  color: STYLES.colors.white,
+  'background-color': STYLES.colors.red,
 
   '&:active': {
-    'background-color': 'hsl(357, 92%, 40%)',
+    'background-color': STYLES.colors.red2,
   },
 };
 
@@ -60,5 +61,5 @@ export const BasicLogoLinkContainer = styled(Link)`
   text-decoration: none;
   font-size: 3rem;
   font-weight: bold;
-  color: hsl(357, 92%, 46%);
+  color: ${STYLES.colors.red};
 `;
