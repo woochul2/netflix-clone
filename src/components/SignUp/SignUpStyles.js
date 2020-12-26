@@ -8,7 +8,10 @@ import {
 import * as STYLES from '../../constants/styles';
 
 export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   min-width: 18.75rem;
+  min-height: 100vh;
 `;
 
 export const Top = styled.div`
@@ -41,10 +44,12 @@ export const ButtonLink = styled(Link)`
 `;
 
 export const Form = styled.form`
-  max-width: 27.5rem;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  margin: 3.125rem auto 6.25rem;
+  max-width: 27.5rem;
+  margin: 0 auto;
+  padding-top: 5rem;
 `;
 
 export const Title = styled.h1`

@@ -12,6 +12,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   min-width: 21.875rem;
+  min-height: 100vh;
   background: url(${({ backgroundImage }) => backgroundImage});
   background-size: cover;
   background-position: 50% 40%;
@@ -33,6 +34,7 @@ export const LogoLinkContainer = styled(BasicLogoLinkContainer)`
 `;
 
 export const Form = styled.form`
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   background-color: hsla(0, 0%, 0%, 0.75);
