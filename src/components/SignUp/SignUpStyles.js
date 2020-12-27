@@ -58,13 +58,17 @@ export const Title = styled.h1`
 `;
 
 export const InputContainer = styled(BasicInputContainer)`
-  margin-bottom: 1.25rem;
-
   input {
     border: 0.06rem solid ${STYLES.colors.gray2};
     border-radius: 0.125rem;
     height: 3.75rem;
   }
+`;
+
+export const Error = styled.p`
+  font-size: 0.8rem;
+  padding: 0.1rem 0 0.5rem;
+  color: ${STYLES.colors.red3};
 `;
 
 export const Button = styled(BasicButton)`

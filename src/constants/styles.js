@@ -14,6 +14,7 @@ export const colors = {
   white: 'hsl(0, 0%, 100%)',
   red1: 'hsl(357, 92%, 46%)',
   red2: 'hsl(357, 92%, 40%)',
+  red3: 'hsl(357, 62%, 46%)',
   orange: 'hsl(32, 98%, 46%)',
 };
 

@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { firebase } from '../../firebase';
+import * as ROUTES from '../../constants/routes';
 import {
   Container,
   Top,
@@ -7,20 +10,51 @@ import {
   Form,
   Title,
   InputContainer,
+  Error,
   Button,
 } from './SignUpStyles';
 import LogoLink from '../LogoLink';
 import Input from '../Input';
 import Footer from '../Footer';
-import * as ROUTES from '../../constants/routes';
 
-export default function SignUp() {
+export default function SignUp(props) {
+  const currEmail = props.email;
+  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+
+  useEffect(() => {
+    setEmail(currEmail);
+  }, []);
+
+  const handleEmailChange = (event) => {
+    setEmailErrorMessage('');
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPasswordErrorMessage('');
+    setPassword(event.target.value);
+  };
 
   const handleSignUp = (event) => {
     event.preventDefault();
-    // TODO: 가입 완료 후 Browse 페이지로 이동
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => history.push(ROUTES.BROWSE))
+      .catch((error) => {
+        if (error.code == 'auth/email-already-in-use') {
+          setEmailErrorMessage('이미 사용 중인 이메일 주소입니다.');
+        } else if (error.code == 'auth/invalid-email') {
+          setEmailErrorMessage('올바른 이메일 주소를 입력해 주세요.');
+        } else if (error.code == 'auth/weak-password') {
+          setPasswordErrorMessage('비밀번호는 6자 이상이어야 합니다.');
+        }
+      });
   };
 
   return (
@@ -35,16 +69,18 @@ export default function SignUp() {
           Container={InputContainer}
           type="email"
           value={email}
-          setValue={setEmail}
+          onChange={handleEmailChange}
           labelValue="이메일 주소"
         />
+        <Error>{emailErrorMessage}</Error>
         <Input
           Container={InputContainer}
           type="password"
           value={password}
-          setValue={setPassword}
+          onChange={handlePasswordChange}
           labelValue="비밀번호를 추가하세요"
         />
+        <Error>{passwordErrorMessage}</Error>
         <Button>가입</Button>
       </Form>
       <Footer variant="signup" background="hsl(0, 0%, 95%)" />

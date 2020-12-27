@@ -4,7 +4,7 @@ export default function Input({
   Container,
   type,
   value,
-  setValue,
+  onChange,
   labelValue,
 }) {
   const [isFocused, setIsFocused] = useState(false);
@@ -19,9 +19,8 @@ export default function Input({
         setIsFocused(false);
       }}
       value={value}
-      onChange={(event) => setValue(event.target.value)}
     >
-      <input type={type} />
+      <input type={type} value={value} onChange={onChange} />
       <label>{labelValue}</label>
     </Container>
   );

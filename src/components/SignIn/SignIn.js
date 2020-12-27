@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { firebase } from '../../firebase';
 import * as ROUTES from '../../constants/routes';
 import {
@@ -17,9 +18,18 @@ import Input from '../Input';
 import Footer from '../Footer';
 
 export default function SignIn() {
+  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
 
   const handleSignIn = (event) => {
     event.preventDefault();
@@ -28,10 +38,18 @@ export default function SignIn() {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        // TODO: 로그인 완료 후 페이지 이동
+        history.push(ROUTES.BROWSE);
       })
-      .catch(() => {
-        setError(true);
+      .catch((error) => {
+        if (error.code == 'auth/invalid-email') {
+          setErrorMessage('올바른 이메일 주소를 입력해 주세요.');
+        } else if (error.code == 'auth/user-disabled') {
+          setErrorMessage('정지ㅅㄱ');
+        } else if (error.code == 'auth/user-not-found') {
+          setErrorMessage('존재하지 않는 이메일 주소입니다.');
+        } else if (error.code == 'auth/wrong-password') {
+          setErrorMessage('비밀번호를 잘못 입력하셨습니다.');
+        }
       });
   };
 
@@ -40,19 +58,19 @@ export default function SignIn() {
       <LogoLink Container={LogoLinkContainer} />
       <Form onSubmit={handleSignIn}>
         <Title>로그인</Title>
-        {error && <Error>이메일 또는 비밀번호를 잘못 입력하셨습니다.</Error>}
+        {errorMessage && <Error>{errorMessage}</Error>}
         <Input
           Container={InputContainer}
           type="email"
           value={email}
-          setValue={setEmail}
+          onChange={handleEmailChange}
           labelValue="이메일 주소"
         />
         <Input
           Container={InputContainer}
           type="password"
           value={password}
-          setValue={setPassword}
+          onChange={handlePasswordChange}
           labelValue="비밀번호"
         />
         <Button>로그인</Button>

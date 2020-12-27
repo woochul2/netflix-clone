@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { BasicInputContainer, BasicButton } from '../../common-styles';
 import * as STYLES from '../../../constants/styles';
 
-export const Container = styled.form`
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,7 +34,7 @@ export const Title = styled.h3`
   }
 `;
 
-export const Item = styled.div`
+export const Form = styled.form`
   display: flex;
   justify-content: center;
   width: 100%;
@@ -96,4 +96,10 @@ export const Button = styled(BasicButton)`
     border-radius: 0.125rem;
     font-size: 1rem;
   }
+`;
+
+export const Error = styled.p`
+  color: ${STYLES.colors.orange};
+  font-weight: bold;
+  padding-top: 0.4rem;
 `;

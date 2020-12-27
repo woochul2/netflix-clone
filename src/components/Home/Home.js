@@ -8,10 +8,10 @@ import Faq from './Faq';
 import EmailForm from './EmailForm';
 import Footer from '../Footer';
 
-export default function Home() {
+export default function Home({ email, setEmail }) {
   return (
     <Container>
-      <Header />
+      <Header email={email} setEmail={setEmail} />
       {jumbotronsData.map((item) => (
         <Jumbotron key={item.id} item={item} />
       ))}
@@ -22,7 +22,7 @@ export default function Home() {
             <Faq key={item.id} item={item} />
           ))}
         </FaqsContent>
-        <EmailForm />
+        <EmailForm email={email} setEmail={setEmail} />
       </FaqsContainer>
       <Footer variant="home" />
     </Container>
