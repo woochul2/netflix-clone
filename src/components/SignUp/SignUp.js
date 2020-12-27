@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Top,
@@ -13,22 +13,10 @@ import LogoLink from '../LogoLink';
 import Input from '../Input';
 import Footer from '../Footer';
 import * as ROUTES from '../../constants/routes';
-import * as STYLES from '../../constants/styles';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  useEffect(() => {
-    const body = document.querySelector('body');
-    body.style.backgroundColor = STYLES.colors.white;
-    body.style.color = STYLES.colors.gray3;
-
-    return () => {
-      body.style.backgroundColor = STYLES.colors.black;
-      body.style.color = STYLES.colors.white;
-    };
-  }, []);
 
   const handleSignUp = (event) => {
     event.preventDefault();

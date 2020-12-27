@@ -4,11 +4,6 @@ html {
   word-break: keep-all;
 }
 
-body {
-  background-color: hsl(0, 0%, 0%);
-  color: hsl(0, 0%, 100%);
-}
-
 * {
   margin: 0;
 }

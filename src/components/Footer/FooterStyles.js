@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import * as STYLES from '../../constants/styles';
 
 export const Container = styled.footer`
-  color: ${STYLES.colors.gray};
+  color: ${STYLES.colors.gray1};
   background: ${({ background }) => background};
   width: 100%;
   padding: 4.375rem 3.75rem;

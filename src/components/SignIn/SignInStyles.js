@@ -13,13 +13,15 @@ export const Container = styled.div`
   align-items: center;
   min-width: 21.875rem;
   min-height: 100vh;
-  background: url(${({ backgroundImage }) => backgroundImage});
+  color: ${STYLES.colors.white};
+  background-color: ${STYLES.colors.black};
+  background-image: url(${({ backgroundImage }) => backgroundImage});
   background-size: cover;
   background-position: 50% 40%;
   padding-top: 0.625rem;
 
   @media (max-width: ${STYLES.breakpoints.md}) {
-    background: none;
+    background-image: none;
     align-items: stretch;
   }
 `;
@@ -81,7 +83,7 @@ export const Button = styled(BasicButton)`
 
 export const SignUpText = styled.p`
   margin-top: 1.875rem;
-  color: ${STYLES.colors.gray};
+  color: ${STYLES.colors.gray1};
 `;
 
 export const SignUpLink = styled(Link)`

@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import * as STYLES from '../../constants/styles';
 
+export const Container = styled.div`
+  background-color: ${STYLES.colors.black};
+  color: ${STYLES.colors.white};
+`;
+
 export const FaqsContainer = styled.div`
   min-width: 21.875rem;
   padding: 4.375rem 2.875rem;

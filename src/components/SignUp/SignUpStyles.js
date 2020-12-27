@@ -12,6 +12,7 @@ export const Container = styled.div`
   flex-direction: column;
   min-width: 18.75rem;
   min-height: 100vh;
+  color: ${STYLES.colors.gray3};
 `;
 
 export const Top = styled.div`
@@ -49,7 +50,7 @@ export const Form = styled.form`
   flex-direction: column;
   max-width: 27.5rem;
   margin: 0 auto;
-  padding-top: 5rem;
+  padding: 5rem 0 7rem;
 `;
 
 export const Title = styled.h1`

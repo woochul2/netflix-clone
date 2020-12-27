@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaqsContainer, FaqsTitle, FaqsContent } from './HomeStyles';
+import { Container, FaqsContainer, FaqsTitle, FaqsContent } from './HomeStyles';
 import Header from './Header';
 import jumbotronsData from './jumbotrons-data';
 import Jumbotron from './Jumbotron';
@@ -10,7 +10,7 @@ import Footer from '../Footer';
 
 export default function Home() {
   return (
-    <>
+    <Container>
       <Header />
       {jumbotronsData.map((item) => (
         <Jumbotron key={item.id} item={item} />
@@ -25,6 +25,6 @@ export default function Home() {
         <EmailForm />
       </FaqsContainer>
       <Footer variant="home" />
-    </>
+    </Container>
   );
 }

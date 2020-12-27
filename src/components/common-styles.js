@@ -25,7 +25,7 @@ export const BasicInputContainer = styled.div`
       isFocused || value ? '0.8rem' : '1rem'};
     font-weight: ${({ isFocused, value }) =>
       isFocused || value ? 'bold' : '400'};
-    color: ${STYLES.colors.gray};
+    color: ${STYLES.colors.gray1};
   }
 `;
 
@@ -33,7 +33,7 @@ const basicButtonStyles = {
   'user-select': 'none',
   cursor: 'pointer',
   color: STYLES.colors.white,
-  'background-color': STYLES.colors.red,
+  'background-color': STYLES.colors.red1,
 
   '&:active': {
     'background-color': STYLES.colors.red2,
@@ -61,5 +61,5 @@ export const BasicLogoLinkContainer = styled(Link)`
   text-decoration: none;
   font-size: 3rem;
   font-weight: bold;
-  color: ${STYLES.colors.red};
+  color: ${STYLES.colors.red1};
 `;
