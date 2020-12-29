@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import * as STYLES from '../../constants/styles';
 import { TMDB_API_KEY } from '../../private-config';
 import {
   Container,

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import * as STYLES from '../constants/styles';
 
 export const BasicInputContainer = styled.div`
   position: relative;
@@ -25,18 +24,18 @@ export const BasicInputContainer = styled.div`
       isFocused || value ? '0.8rem' : '1rem'};
     font-weight: ${({ isFocused, value }) =>
       isFocused || value ? 'bold' : '400'};
-    color: ${STYLES.colors.gray1};
+    color: var(--gray);
   }
 `;
 
 const basicButtonStyles = {
   'user-select': 'none',
   cursor: 'pointer',
-  color: STYLES.colors.white1,
-  'background-color': STYLES.colors.red1,
+  color: 'var(--white)',
+  'background-color': 'var(--red)',
 
   '&:active': {
-    'background-color': STYLES.colors.red2,
+    'background-color': 'var(--dark-red)',
   },
 };
 
@@ -61,5 +60,5 @@ export const BasicLogoLinkContainer = styled(Link)`
   text-decoration: none;
   font-size: 3rem;
   font-weight: bold;
-  color: ${STYLES.colors.red1};
+  color: var(--red);
 `;

@@ -83,7 +83,7 @@ export default function SignUp(props) {
         <Error>{passwordErrorMessage}</Error>
         <Button>가입</Button>
       </Form>
-      <Footer variant="signup" background="hsl(0, 0%, 95%)" />
+      <Footer variant="signup" background="var(--dark-white)" />
     </Container>
   );
 }

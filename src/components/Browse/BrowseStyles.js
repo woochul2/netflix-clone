@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import * as STYLES from '../../constants/styles';
+import * as BREAKPOINTS from '../../constants/breakpoints';
 import { BasicLogoLinkContainer } from '../common-styles';
+
+export const sidePadding = '3.25rem';
 
 export const Container = styled.div`
   min-width: 18.75rem;
-  background-color: ${STYLES.colors.black2};
-  color: ${STYLES.colors.white2};
+  background-color: var(--light-black);
+  color: var(--darkest-white);
 `;
 
 export const Header = styled.header`
@@ -16,10 +18,10 @@ export const Header = styled.header`
   right: 0;
   display: flex;
   align-items: center;
-  padding: 0.875rem ${STYLES.browsePadding};
+  padding: 0.875rem ${sidePadding};
   ${({ isHeaderOnTop }) =>
     isHeaderOnTop
-      ? 'background: hsl(0, 0%, 8%)'
+      ? 'background: var(--light-black)'
       : 'background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0))'};
   transition: background-color 0.4s;
 `;
@@ -27,7 +29,7 @@ export const Header = styled.header`
 export const LogoLinkContainer = styled(BasicLogoLinkContainer)`
   font-size: 2rem;
 
-  @media (max-width: ${STYLES.breakpoints.md}) {
+  @media (max-width: ${BREAKPOINTS.MD}) {
     font-size: 1rem;
   }
 `;
@@ -39,20 +41,20 @@ export const Navtab = styled(Link)`
   text-decoration: none;
   font-weight: bold;
   font-size: 0.875rem;
-  color: ${STYLES.colors.white2};
+  color: var(--darkest-white);
 
-  @media (max-width: ${STYLES.breakpoints.lg}) {
+  @media (max-width: ${BREAKPOINTS.LG}) {
     font-size: 0.8rem;
   }
 
-  @media (max-width: ${STYLES.breakpoints.md}) {
+  @media (max-width: ${BREAKPOINTS.MD}) {
     margin-left: 1rem;
     font-size: 0.75rem;
   }
 `;
 
 export const Main = styled.main`
-  padding: 5rem ${STYLES.browsePadding};
+  padding: 5rem ${sidePadding};
 `;
 
 export const Notification = styled.div`
@@ -61,16 +63,16 @@ export const Notification = styled.div`
   font-weight: bold;
   font-size: 1.25rem;
   min-width: 28.125rem;
-  color: ${STYLES.colors.orange};
-  background-color: ${STYLES.colors.gray3};
+  color: var(--orange);
+  background-color: var(--lightest-black);
   margin-bottom: 4rem;
 
-  @media (max-width: ${STYLES.breakpoints.lg}) {
+  @media (max-width: ${BREAKPOINTS.LG}) {
     font-size: 1rem;
     margin-bottom: 3rem;
   }
 
-  @media (max-width: ${STYLES.breakpoints.md}) {
+  @media (max-width: ${BREAKPOINTS.MD}) {
     font-size: 0.875rem;
   }
 `;

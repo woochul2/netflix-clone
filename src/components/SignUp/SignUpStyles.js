@@ -5,14 +5,14 @@ import {
   BasicInputContainer,
   BasicButton,
 } from '../common-styles';
-import * as STYLES from '../../constants/styles';
+import * as BREAKPOINTS from '../../constants/breakpoints';
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 18.75rem;
   min-height: 100vh;
-  color: ${STYLES.colors.gray3};
+  color: var(--lightest-black);
 `;
 
 export const Top = styled.div`
@@ -20,11 +20,11 @@ export const Top = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0.625rem 3%;
-  border-bottom: 0.06rem solid ${STYLES.colors.gray4};
+  border-bottom: 0.06rem solid var(--darkest-white);
 `;
 
 export const LogoLinkContainer = styled(BasicLogoLinkContainer)`
-  @media (max-width: ${STYLES.breakpoints.sm}) {
+  @media (max-width: ${BREAKPOINTS.SM}) {
     font-size: 1.2rem;
   }
 `;
@@ -33,13 +33,13 @@ export const ButtonLink = styled(Link)`
   text-decoration: none;
   font-weight: bold;
   font-size: 1.2rem;
-  color: ${STYLES.colors.gray3};
+  color: var(--lightest-black);
 
   &:hover {
     text-decoration: underline;
   }
 
-  @media (max-width: ${STYLES.breakpoints.md}) {
+  @media (max-width: ${BREAKPOINTS.MD}) {
     font-size: 1rem;
   }
 `;
@@ -59,7 +59,7 @@ export const Title = styled.h1`
 
 export const InputContainer = styled(BasicInputContainer)`
   input {
-    border: 0.06rem solid ${STYLES.colors.gray2};
+    border: 0.06rem solid var(--light-gray);
     border-radius: 0.125rem;
     height: 3.75rem;
   }
@@ -68,7 +68,7 @@ export const InputContainer = styled(BasicInputContainer)`
 export const Error = styled.p`
   font-size: 0.8rem;
   padding: 0.1rem 0 0.5rem;
-  color: ${STYLES.colors.red3};
+  color: var(--deep-red);
 `;
 
 export const Button = styled(BasicButton)`

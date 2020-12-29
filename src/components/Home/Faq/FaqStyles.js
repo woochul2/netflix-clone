@@ -1,14 +1,14 @@
 import styled from 'styled-components';
-import * as STYLES from '../../../constants/styles';
+import * as BREAKPOINTS from '../../../constants/breakpoints';
 
 export const Container = styled.li`
   font-size: 1.625rem;
 
-  @media (max-width: ${STYLES.breakpoints.lg}) {
+  @media (max-width: ${BREAKPOINTS.LG}) {
     font-size: 1.25rem;
   }
 
-  @media (max-width: ${STYLES.breakpoints.sm}) {
+  @media (max-width: ${BREAKPOINTS.SM}) {
     font-size: 1.125rem;
   }
 `;
@@ -21,8 +21,8 @@ export const Question = styled.button`
   margin-bottom: 0.07rem;
   border: 0;
   text-align: left;
-  background-color: ${STYLES.colors.gray3};
-  color: ${STYLES.colors.white1};
+  background-color: var(--lightest-black);
+  color: var(--white);
 
   &:focus:not(:focus-visible) {
     outline: 0;
@@ -45,7 +45,7 @@ export const Answer = styled.div`
   max-height: ${({ isOpen }) => (isOpen ? '75rem' : 0)};
   transition: max-height 0.25s cubic-bezier(0.5, 0, 0.1, 1);
   margin-bottom: 0.5rem;
-  background-color: ${STYLES.colors.gray3};
+  background-color: var(--lightest-black);
 
   span {
     display: block;
