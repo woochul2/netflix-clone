@@ -13,8 +13,8 @@ export const Container = styled.div`
   align-items: center;
   min-width: 21.875rem;
   min-height: 100vh;
-  color: ${STYLES.colors.white};
-  background-color: ${STYLES.colors.black};
+  color: ${STYLES.colors.white1};
+  background-color: ${STYLES.colors.black1};
   background-image: url(${({ backgroundImage }) => backgroundImage});
   background-size: cover;
   background-position: 50% 40%;
@@ -55,7 +55,7 @@ export const Error = styled.p`
   margin-bottom: 1.25rem;
   padding: 0.625rem 1.25rem;
   border-radius: 0.25rem;
-  color: ${STYLES.colors.white};
+  color: ${STYLES.colors.white1};
   background-color: ${STYLES.colors.orange};
   font-size: 0.875rem;
   font-weight: bold;
@@ -71,7 +71,7 @@ export const InputContainer = styled(BasicInputContainer)`
   input {
     border-radius: 0.25rem;
     height: 3.75rem;
-    color: ${STYLES.colors.white};
+    color: ${STYLES.colors.white1};
     background-color: ${STYLES.colors.gray3};
   }
 `;
@@ -88,7 +88,7 @@ export const SignUpText = styled.p`
 
 export const SignUpLink = styled(Link)`
   text-decoration: none;
-  color: ${STYLES.colors.white};
+  color: ${STYLES.colors.white1};
 
   &:hover {
     text-decoration: underline;

@@ -5,7 +5,7 @@ export const Container = styled.footer`
   color: ${STYLES.colors.gray1};
   background: ${({ background }) => background};
   width: 100%;
-  padding: 4.375rem 3.75rem;
+  padding: ${({ padding }) => padding};
 `;
 
 export const Inner = styled.div`

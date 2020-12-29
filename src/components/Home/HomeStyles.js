@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import * as STYLES from '../../constants/styles';
 
 export const Container = styled.div`
-  background-color: ${STYLES.colors.black};
-  color: ${STYLES.colors.white};
+  background-color: ${STYLES.colors.black1};
+  color: ${STYLES.colors.white1};
 `;
 
 export const FaqsContainer = styled.div`

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, FaqsContainer, FaqsTitle, FaqsContent } from './HomeStyles';
 import Header from './Header';
 import jumbotronsData from './jumbotrons-data';
@@ -9,6 +9,10 @@ import EmailForm from './EmailForm';
 import Footer from '../Footer';
 
 export default function Home({ email, setEmail }) {
+  useEffect(() => {
+    setEmail('');
+  }, []);
+
   return (
     <Container>
       <Header email={email} setEmail={setEmail} />

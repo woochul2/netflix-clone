@@ -18,11 +18,11 @@ export const Question = styled.button`
   position: relative;
   width: 100%;
   padding: 1.4rem;
-  margin-bottom: 0.06rem;
+  margin-bottom: 0.07rem;
   border: 0;
   text-align: left;
   background-color: ${STYLES.colors.gray3};
-  color: ${STYLES.colors.white};
+  color: ${STYLES.colors.white1};
 
   &:focus:not(:focus-visible) {
     outline: 0;

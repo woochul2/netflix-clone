@@ -79,7 +79,7 @@ export default function SignIn() {
           <SignUpLink to={ROUTES.HOME}>지금 가입하세요</SignUpLink>.
         </SignUpText>
       </Form>
-      <Footer variant="signin" />
+      <Footer variant="signin" background="hsla(0, 0%, 0%, 0.75)" />
     </Container>
   );
 }

@@ -32,7 +32,7 @@ export const BasicInputContainer = styled.div`
 const basicButtonStyles = {
   'user-select': 'none',
   cursor: 'pointer',
-  color: STYLES.colors.white,
+  color: STYLES.colors.white1,
   'background-color': STYLES.colors.red1,
 
   '&:active': {

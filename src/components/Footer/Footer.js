@@ -10,7 +10,8 @@ import {
 
 export default function Footer({
   variant,
-  background = 'hsla(0, 0%, 0%, 0.75)',
+  background = 'none',
+  padding = '4.375rem 3.75rem',
 }) {
   const [data, setData] = useState([]);
 
@@ -42,13 +43,29 @@ export default function Footer({
         '법적 고지',
         'Netflix 오리지널',
       ]);
+    } else if (variant == 'browse') {
+      setData([
+        '오디오 및 자막',
+        '오디오 설명',
+        '고객 센터',
+        '기프트 카드',
+        '미디어 센터',
+        '투자 정보',
+        '입사 정보',
+        '이용 약관',
+        '개인정보',
+        '법적 고지',
+        '쿠키 설정',
+        '법인 정보',
+        '문의하기',
+      ]);
     }
   }, []);
 
   return (
-    <Container background={background}>
+    <Container background={background} padding={padding}>
       <Inner>
-        <Title>질문이 있으신가요?</Title>
+        {variant != 'browse' && <Title>질문이 있으신가요?</Title>}
         <LinksContainer>
           {data.map((text, idx) => (
             <Link key={idx}> {text}</Link>
