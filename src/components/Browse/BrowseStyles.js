@@ -54,3 +54,28 @@ export const Navtab = styled(Link)`
 export const Main = styled.main`
   padding: 5rem ${STYLES.browsePadding};
 `;
+
+export const Notification = styled.div`
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.25rem;
+  min-width: 28.125rem;
+  color: ${STYLES.colors.orange};
+  background-color: ${STYLES.colors.gray3};
+  margin-bottom: 4rem;
+
+  @media (max-width: ${STYLES.breakpoints.lg}) {
+    font-size: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: ${STYLES.breakpoints.md}) {
+    font-size: 0.875rem;
+  }
+`;
+
+export const TMDbLogo = styled.a`
+  width: 10em;
+  margin: 0 0.2em 0 0.3em;
+`;

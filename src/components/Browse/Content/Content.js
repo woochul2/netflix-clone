@@ -1,10 +1,12 @@
 import React from 'react';
 import { Container, Img } from './ContentStyles';
 
-export default function Content({ src }) {
+const TMDB_IMAGE_LINK = `https://image.tmdb.org/t/p/w500/`;
+
+export default function Content({ poster }) {
   return (
     <Container>
-      <Img src={src} />
+      <Img src={TMDB_IMAGE_LINK + poster} />
     </Container>
   );
 }
