@@ -8,11 +8,7 @@ import {
   Text,
 } from './FooterStyles';
 
-export default function Footer({
-  variant,
-  background = 'none',
-  padding = '4.375rem 3.75rem',
-}) {
+export default function Footer({ variant, background = 'none' }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -33,7 +29,7 @@ export default function Footer({
         '미디어 센터',
         '투자 정보',
         '입사 정보',
-        'Netflix 지원 디바이스',
+        'Netflix.clone 지원 디바이스',
         '이용 약관',
         '개인정보',
         '쿠키 설정',
@@ -41,7 +37,7 @@ export default function Footer({
         '문의하기',
         '속도 테스트',
         '법적 고지',
-        'Netflix 오리지널',
+        'Netflix.clone 오리지널',
       ]);
     } else if (variant == 'browse') {
       setData([
@@ -63,7 +59,7 @@ export default function Footer({
   }, []);
 
   return (
-    <Container background={background} padding={padding}>
+    <Container background={background}>
       <Inner>
         {variant != 'browse' && <Title>질문이 있으신가요?</Title>}
         <LinksContainer>
@@ -71,7 +67,7 @@ export default function Footer({
             <Link key={idx}> {text}</Link>
           ))}
         </LinksContainer>
-        <Text>Netflix 대한민국</Text>
+        <Text>Netflix.clone 대한민국</Text>
       </Inner>
     </Container>
   );

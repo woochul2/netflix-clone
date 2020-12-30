@@ -2,20 +2,19 @@ import React from 'react';
 import {
   Container,
   Top,
-  LogoLinkContainer,
+  LogoLink,
   ButtonLink,
   Title,
   SubTitle,
 } from './HeaderStyles';
-import LogoLink from '../../LogoLink';
-import EmailForm from '../EmailForm';
 import * as ROUTES from '../../../constants/routes';
+import EmailForm from '../EmailForm';
 
 export default function Header({ email, setEmail }) {
   return (
     <Container backgroundImage="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80">
       <Top>
-        <LogoLink Container={LogoLinkContainer} />
+        <LogoLink to={ROUTES.HOME}>NETFLIX.clone</LogoLink>
         <ButtonLink to={ROUTES.SIGN_IN}>로그인</ButtonLink>
       </Top>
       <Title>영화, TV 프로그램을 무제한으로.</Title>

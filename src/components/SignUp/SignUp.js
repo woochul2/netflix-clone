@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { firebase } from '../../firebase';
-import * as ROUTES from '../../constants/routes';
 import {
   Container,
   Top,
-  LogoLinkContainer,
+  LogoLink,
   ButtonLink,
   Form,
   Title,
@@ -13,7 +11,8 @@ import {
   Error,
   Button,
 } from './SignUpStyles';
-import LogoLink from '../LogoLink';
+import { firebase } from '../../firebase';
+import * as ROUTES from '../../constants/routes';
 import Input from '../Input';
 import Footer from '../Footer';
 
@@ -60,7 +59,7 @@ export default function SignUp(props) {
   return (
     <Container>
       <Top>
-        <LogoLink Container={LogoLinkContainer} />
+        <LogoLink to={ROUTES.HOME}>NETFLIX.clone</LogoLink>
         <ButtonLink to={ROUTES.SIGN_IN}>로그인</ButtonLink>
       </Top>
       <Form onSubmit={handleSignUp}>

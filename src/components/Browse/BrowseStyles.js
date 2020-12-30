@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { BasicLogoLink } from '../common-styles';
 import * as BREAKPOINTS from '../../constants/breakpoints';
-import { BasicLogoLinkContainer } from '../common-styles';
 
 export const sidePadding = '3.25rem';
 
@@ -26,7 +26,7 @@ export const Header = styled.header`
   transition: background-color 0.4s;
 `;
 
-export const LogoLinkContainer = styled(BasicLogoLinkContainer)`
+export const LogoLink = styled(BasicLogoLink)`
   font-size: 2rem;
 
   @media (max-width: ${BREAKPOINTS.MD}) {

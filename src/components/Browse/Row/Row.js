@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { TMDB_API_KEY } from '../../../private-config';
 import { Container, Title, ContentsContainer } from './RowStyles';
+import { TMDB_API_KEY } from '../../../private-config';
 import Content from '../Content';
 
 const TMDB_NETFLIX_TVSHOWS_LINK = `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=1&with_networks=213&with_genres=`;

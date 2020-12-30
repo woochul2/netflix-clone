@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { TMDB_API_KEY } from '../../private-config';
 import {
   Container,
   Header,
-  LogoLinkContainer,
+  LogoLink,
   Nav,
   Navtab,
   Main,
   Notification,
   TMDbLogo,
 } from './BrowseStyles';
-import LogoLink from '../LogoLink';
+import { TMDB_API_KEY } from '../../private-config';
+import * as ROUTES from '../../constants/routes';
 import Row from './Row';
 import Footer from '../Footer';
 
@@ -48,7 +48,7 @@ export default function Browse() {
   return (
     <Container>
       <Header isHeaderOnTop={isHeaderOnTop}>
-        <LogoLink Container={LogoLinkContainer} />
+        <LogoLink to={ROUTES.HOME}>NETFLIX.clone</LogoLink>
         <Nav>
           <Navtab to="#">TV Shows</Navtab>
         </Nav>
@@ -68,7 +68,7 @@ export default function Browse() {
           <Row key={item.id} genreId={item.id} genreName={item.name} />
         ))}
       </Main>
-      <Footer variant="browse" padding={STYLES.browsePadding} />
+      <Footer variant="browse" />
     </Container>
   );
 }

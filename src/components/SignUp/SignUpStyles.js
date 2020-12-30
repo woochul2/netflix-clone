@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import {
-  BasicLogoLinkContainer,
+  BasicLogoLink,
   BasicInputContainer,
   BasicButton,
 } from '../common-styles';
@@ -23,7 +23,7 @@ export const Top = styled.div`
   border-bottom: 0.06rem solid var(--darkest-white);
 `;
 
-export const LogoLinkContainer = styled(BasicLogoLinkContainer)`
+export const LogoLink = styled(BasicLogoLink)`
   @media (max-width: ${BREAKPOINTS.SM}) {
     font-size: 1.2rem;
   }

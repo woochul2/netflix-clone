@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import * as BREAKPOINTS from '../../../constants/breakpoints';
 import { divider } from '../HomeStyles';
+import * as BREAKPOINTS from '../../../constants/breakpoints';
 
 export const Container = styled.div`
   border-bottom: ${divider};

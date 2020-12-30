@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { firebase } from '../../firebase';
-import * as ROUTES from '../../constants/routes';
 import {
   Container,
-  LogoLinkContainer,
+  LogoLink,
   Form,
   Title,
   Error,
@@ -13,7 +11,8 @@ import {
   SignUpText,
   SignUpLink,
 } from './SignInStyles';
-import LogoLink from '../LogoLink';
+import { firebase } from '../../firebase';
+import * as ROUTES from '../../constants/routes';
 import Input from '../Input';
 import Footer from '../Footer';
 
@@ -55,7 +54,7 @@ export default function SignIn() {
 
   return (
     <Container backgroundImage="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80">
-      <LogoLink Container={LogoLinkContainer} />
+      <LogoLink to={ROUTES.HOME}>NETFLIX.clone</LogoLink>
       <Form onSubmit={handleSignIn}>
         <Title>로그인</Title>
         {errorMessage && <Error>{errorMessage}</Error>}
@@ -75,7 +74,7 @@ export default function SignIn() {
         />
         <Button>로그인</Button>
         <SignUpText>
-          Netflix 회원이 아닌가요?{' '}
+          Netflix.clone 회원이 아닌가요?{' '}
           <SignUpLink to={ROUTES.HOME}>지금 가입하세요</SignUpLink>.
         </SignUpText>
       </Form>

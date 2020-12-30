@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import * as ROUTES from '../../../constants/routes';
 import {
   Container,
   Title,
@@ -9,6 +8,7 @@ import {
   Button,
   Error,
 } from './EmailFormStyles';
+import * as ROUTES from '../../../constants/routes';
 import Input from '../../Input';
 import { BsChevronRight } from 'react-icons/bs';
 

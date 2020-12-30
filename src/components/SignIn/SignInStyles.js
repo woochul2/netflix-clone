@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import {
-  BasicLogoLinkContainer,
+  BasicLogoLink,
   BasicInputContainer,
   BasicButton,
 } from '../common-styles';
@@ -26,7 +26,7 @@ export const Container = styled.div`
   }
 `;
 
-export const LogoLinkContainer = styled(BasicLogoLinkContainer)`
+export const LogoLink = styled(BasicLogoLink)`
   align-self: baseline;
   margin-left: 1.25rem;
 

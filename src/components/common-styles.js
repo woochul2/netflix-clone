@@ -53,10 +53,9 @@ export const BasicButtonLink = styled(Link)`
   text-decoration: none;
 `;
 
-export const BasicLogoLinkContainer = styled(Link)`
+export const BasicLogoLink = styled(Link)`
   user-select: none;
   margin: 0;
-  text-transform: uppercase;
   text-decoration: none;
   font-size: 3rem;
   font-weight: bold;
