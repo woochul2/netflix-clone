@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import {
   Container,
   Header,
-  LogoLink,
   Nav,
+  LogoLink,
   Navtab,
+  SignOutButton,
   Main,
   Notification,
   TMDbLogo,
 } from './BrowseStyles';
 import { TMDB_API_KEY } from '../../private-config';
-import * as ROUTES from '../../constants/routes';
+import * as PATHS from '../../constants/paths';
+import { firebase } from '../../firebase';
 import Row from './Row';
 import Footer from '../Footer';
 
@@ -42,16 +44,19 @@ export default function Browse() {
   };
 
   useEffect(() => {
-    getTvGenres();
+    // getTvGenres();
   }, []);
 
   return (
     <Container>
       <Header isHeaderOnTop={isHeaderOnTop}>
-        <LogoLink to={ROUTES.HOME}>NETFLIX.clone</LogoLink>
         <Nav>
+          <LogoLink to={PATHS.HOME}>NETFLIX.clone</LogoLink>
           <Navtab to="#">TV Shows</Navtab>
         </Nav>
+        <SignOutButton onClick={() => firebase.auth().signOut()}>
+          로그아웃
+        </SignOutButton>
       </Header>
       <Main>
         <Notification>

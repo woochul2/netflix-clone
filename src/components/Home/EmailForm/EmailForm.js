@@ -8,7 +8,7 @@ import {
   Button,
   Error,
 } from './EmailFormStyles';
-import * as ROUTES from '../../../constants/routes';
+import * as PATHS from '../../../constants/paths';
 import Input from '../../Input';
 import { BsChevronRight } from 'react-icons/bs';
 
@@ -24,7 +24,7 @@ export default function EmailForm({ email, setEmail }) {
       return;
     }
 
-    history.push(ROUTES.SIGN_UP);
+    history.push(PATHS.SIGN_UP);
   };
 
   const handleChange = (event) => {

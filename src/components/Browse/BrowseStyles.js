@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { BasicLogoLink } from '../common-styles';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 
-export const sidePadding = '3.25rem';
+const sidePadding = '3.25rem';
 
 export const Container = styled.div`
   min-width: 18.75rem;
@@ -18,12 +18,17 @@ export const Header = styled.header`
   right: 0;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0.875rem ${sidePadding};
   ${({ isHeaderOnTop }) =>
     isHeaderOnTop
       ? 'background: var(--light-black)'
       : 'background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0))'};
   transition: background-color 0.4s;
+`;
+
+export const Nav = styled.nav`
+  min-width: 18.75rem;
 `;
 
 export const LogoLink = styled(BasicLogoLink)`
@@ -33,8 +38,6 @@ export const LogoLink = styled(BasicLogoLink)`
     font-size: 1rem;
   }
 `;
-
-export const Nav = styled.nav``;
 
 export const Navtab = styled(Link)`
   margin-left: 2rem;
@@ -52,6 +55,8 @@ export const Navtab = styled(Link)`
     font-size: 0.75rem;
   }
 `;
+
+export const SignOutButton = styled.button``;
 
 export const Main = styled.main`
   padding: 5rem ${sidePadding};

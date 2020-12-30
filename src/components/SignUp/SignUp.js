@@ -12,7 +12,7 @@ import {
   Button,
 } from './SignUpStyles';
 import { firebase } from '../../firebase';
-import * as ROUTES from '../../constants/routes';
+import * as PATHS from '../../constants/paths';
 import Input from '../Input';
 import Footer from '../Footer';
 
@@ -44,7 +44,7 @@ export default function SignUp(props) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => history.push(ROUTES.BROWSE))
+      .then(() => history.push(PATHS.BROWSE))
       .catch((error) => {
         if (error.code == 'auth/email-already-in-use') {
           setEmailErrorMessage('이미 사용 중인 이메일 주소입니다.');
@@ -59,8 +59,8 @@ export default function SignUp(props) {
   return (
     <Container>
       <Top>
-        <LogoLink to={ROUTES.HOME}>NETFLIX.clone</LogoLink>
-        <ButtonLink to={ROUTES.SIGN_IN}>로그인</ButtonLink>
+        <LogoLink to={PATHS.HOME}>NETFLIX.clone</LogoLink>
+        <ButtonLink to={PATHS.SIGN_IN}>로그인</ButtonLink>
       </Top>
       <Form onSubmit={handleSignUp}>
         <Title>비밀번호를 설정하고 멤버십을 시작하세요.</Title>
