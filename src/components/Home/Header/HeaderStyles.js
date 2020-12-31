@@ -9,7 +9,7 @@ export const Container = styled.header`
   padding: 0 3% 10rem;
   text-align: center;
   background: linear-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.55)),
-    url(${({ backgroundImage }) => backgroundImage}) no-repeat;
+    url(${({ backgroundImage }) => backgroundImage});
   background-size: cover;
   background-position-y: 40%;
 
