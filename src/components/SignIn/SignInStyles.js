@@ -61,16 +61,22 @@ export const Error = styled.p`
   font-weight: bold;
 `;
 
+export const InputBox = styled.div`
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  margin-bottom: 1.25rem;
+`;
+
 export const InputContainer = styled(BasicInputContainer)`
   min-width: 25rem;
-  margin-bottom: 1.25rem;
 
   @media (max-width: ${BREAKPOINTS.MD}) {
     min-width: 18.75rem;
   }
 
   input {
-    border-radius: 0.25rem;
     height: 3.75rem;
     color: var(--white);
     background-color: ${({ isFocused }) =>
@@ -78,7 +84,22 @@ export const InputContainer = styled(BasicInputContainer)`
   }
 `;
 
-export const Button = styled(BasicButton)`
+export const PasswordToggleButton = styled.button`
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--gray);
+
+  &:focus:not(:focus-visible) {
+    outline: 0;
+  }
+`;
+
+export const SubmitButton = styled(BasicButton)`
   border-radius: 0.25rem;
   padding: 0.625rem 0;
 `;

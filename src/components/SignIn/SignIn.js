@@ -6,8 +6,10 @@ import {
   Form,
   Title,
   Error,
+  InputBox,
   InputContainer,
-  Button,
+  PasswordToggleButton,
+  SubmitButton,
   SignUpText,
   SignUpLink,
 } from './SignInStyles';
@@ -16,10 +18,14 @@ import * as PATHS from '../../constants/paths';
 import Input from '../Input';
 import Footer from '../Footer';
 
+const PASSWORD = 'password';
+const TEXT = 'text';
+
 export default function SignIn() {
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordType, setPasswordType] = useState(PASSWORD);
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleEmailChange = (event) => {
@@ -28,6 +34,18 @@ export default function SignIn() {
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
+  };
+
+  const handlePasswordToggle = () => {
+    if (passwordType == PASSWORD) {
+      setPasswordType(TEXT);
+      return;
+    }
+
+    if (passwordType == TEXT) {
+      setPasswordType(PASSWORD);
+      return;
+    }
   };
 
   const handleSignIn = (event) => {
@@ -58,21 +76,28 @@ export default function SignIn() {
       <Form onSubmit={handleSignIn}>
         <Title>로그인</Title>
         {errorMessage && <Error>{errorMessage}</Error>}
-        <Input
-          Container={InputContainer}
-          type="email"
-          value={email}
-          onChange={handleEmailChange}
-          labelValue="이메일 주소"
-        />
-        <Input
-          Container={InputContainer}
-          type="password"
-          value={password}
-          onChange={handlePasswordChange}
-          labelValue="비밀번호"
-        />
-        <Button>로그인</Button>
+        <InputBox>
+          <Input
+            Container={InputContainer}
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            labelValue="이메일 주소"
+          />
+        </InputBox>
+        <InputBox>
+          <Input
+            Container={InputContainer}
+            type={passwordType}
+            value={password}
+            onChange={handlePasswordChange}
+            labelValue="비밀번호"
+          />
+          <PasswordToggleButton type="button" onClick={handlePasswordToggle}>
+            {passwordType == PASSWORD ? '표시' : '숨기기'}
+          </PasswordToggleButton>
+        </InputBox>
+        <SubmitButton type="submit">로그인</SubmitButton>
         <SignUpText>
           Netflix.clone 회원이 아닌가요?{' '}
           <SignUpLink to={PATHS.HOME}>지금 가입하세요</SignUpLink>.
