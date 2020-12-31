@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 export default function Input({
   Container,
@@ -6,11 +6,14 @@ export default function Input({
   value,
   onChange,
   labelValue,
+  ...restProps
 }) {
   const [isFocused, setIsFocused] = useState(false);
+  const textInput = useRef(null);
 
   return (
     <Container
+      {...restProps}
       isFocused={isFocused}
       onFocus={() => {
         setIsFocused(true);
@@ -20,8 +23,8 @@ export default function Input({
       }}
       value={value}
     >
-      <input type={type} value={value} onChange={onChange} />
-      <label>{labelValue}</label>
+      <input type={type} value={value} onChange={onChange} ref={textInput} />
+      <label onClick={() => textInput.current.focus()}>{labelValue}</label>
     </Container>
   );
 }

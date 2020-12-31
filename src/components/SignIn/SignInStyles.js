@@ -64,6 +64,7 @@ export const Error = styled.p`
 export const InputContainer = styled(BasicInputContainer)`
   min-width: 25rem;
   margin-bottom: 1.25rem;
+
   @media (max-width: ${BREAKPOINTS.MD}) {
     min-width: 18.75rem;
   }
@@ -72,7 +73,8 @@ export const InputContainer = styled(BasicInputContainer)`
     border-radius: 0.25rem;
     height: 3.75rem;
     color: var(--white);
-    background-color: var(--lightest-black);
+    background-color: ${({ isFocused }) =>
+      isFocused ? 'var(--dim-gray)' : 'var(--lightest-black)'};
   }
 `;
 

@@ -37,12 +37,18 @@ export const Title = styled.h3`
 export const Form = styled.form`
   display: flex;
   justify-content: center;
-  width: 100%;
+  align-items: flex-start;
 
   @media (max-width: ${BREAKPOINTS.LG}) {
     flex-direction: column;
     align-items: center;
   }
+`;
+
+export const InputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
 `;
 
 export const InputContainer = styled(BasicInputContainer)`
@@ -54,7 +60,6 @@ export const InputContainer = styled(BasicInputContainer)`
   }
 
   @media (max-width: ${BREAKPOINTS.LG}) {
-    margin-bottom: 1.25rem;
     height: 3.75rem;
   }
 
@@ -64,9 +69,23 @@ export const InputContainer = styled(BasicInputContainer)`
   }
 
   input {
-    border: solid 0.06rem var(--light-gray);
+    height: 4.375rem;
+    border: ${({ isFocused }) =>
+      isFocused
+        ? 'solid 0.06rem var(--blue)'
+        : 'solid 0.06rem var(--light-gray)'};
+    border-bottom: ${({ hasError }) =>
+      hasError && 'solid 0.16rem var(--orange)'};
     border-top-left-radius: 0.125rem;
     border-bottom-left-radius: 0.125rem;
+
+    @media (max-width: ${BREAKPOINTS.XL}) {
+      height: 4.063rem;
+    }
+
+    @media (max-width: ${BREAKPOINTS.LG}) {
+      height: 100%;
+    }
   }
 
   label {
@@ -74,6 +93,13 @@ export const InputContainer = styled(BasicInputContainer)`
       font-size: 0.875rem;
     }
   }
+`;
+
+export const Error = styled.p`
+  color: var(--orange);
+  font-weight: bold;
+  margin-bottom: 1rem;
+  padding-top: 0.4rem;
 `;
 
 export const Button = styled(BasicButton)`
@@ -95,11 +121,6 @@ export const Button = styled(BasicButton)`
   @media (max-width: ${BREAKPOINTS.LG}) {
     border-radius: 0.125rem;
     font-size: 1rem;
+    padding: 0.75rem 1rem;
   }
-`;
-
-export const Error = styled.p`
-  color: var(--orange);
-  font-weight: bold;
-  padding-top: 0.4rem;
 `;

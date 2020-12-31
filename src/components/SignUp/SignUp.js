@@ -70,6 +70,7 @@ export default function SignUp(props) {
           value={email}
           onChange={handleEmailChange}
           labelValue="이메일 주소"
+          hasError={emailErrorMessage}
         />
         <Error>{emailErrorMessage}</Error>
         <Input
@@ -78,6 +79,7 @@ export default function SignUp(props) {
           value={password}
           onChange={handlePasswordChange}
           labelValue="비밀번호를 추가하세요"
+          hasError={passwordErrorMessage}
         />
         <Error>{passwordErrorMessage}</Error>
         <Button>가입</Button>

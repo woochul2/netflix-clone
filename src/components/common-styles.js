@@ -14,6 +14,7 @@ export const BasicInputContainer = styled.div`
   }
 
   label {
+    cursor: text;
     user-select: none;
     position: absolute;
     top: ${({ isFocused, value }) => (isFocused || value ? '20%' : '50%')};

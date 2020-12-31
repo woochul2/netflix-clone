@@ -59,7 +59,11 @@ export const Title = styled.h1`
 
 export const InputContainer = styled(BasicInputContainer)`
   input {
-    border: 0.06rem solid var(--light-gray);
+    border: ${({ isFocused }) =>
+      isFocused
+        ? 'solid 0.06rem var(--blue)'
+        : 'solid 0.06rem var(--light-gray)'};
+    border: ${({ hasError }) => hasError && 'solid 0.06rem var(--deep-red)'};
     border-radius: 0.125rem;
     height: 3.75rem;
   }
