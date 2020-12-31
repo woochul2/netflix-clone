@@ -28,6 +28,8 @@ export const Header = styled.header`
 `;
 
 export const Nav = styled.nav`
+  display: flex;
+  align-items: center;
   min-width: 18.75rem;
 `;
 
@@ -56,8 +58,6 @@ export const Navtab = styled(Link)`
   }
 `;
 
-export const SignOutButton = styled.button``;
-
 export const Main = styled.main`
   padding: 5rem ${sidePadding};
 `;
@@ -69,7 +69,7 @@ export const Notification = styled.div`
   font-size: 1.25rem;
   min-width: 28.125rem;
   color: var(--orange);
-  background-color: var(--lightest-black);
+  background-color: var(--lighter-black);
   margin-bottom: 4rem;
 
   @media (max-width: ${BREAKPOINTS.LG}) {

@@ -5,14 +5,13 @@ import {
   Nav,
   LogoLink,
   Navtab,
-  SignOutButton,
   Main,
   Notification,
   TMDbLogo,
 } from './BrowseStyles';
 import { TMDB_API_KEY } from '../../private-config';
 import * as PATHS from '../../constants/paths';
-import { firebase } from '../../firebase';
+import Dropdown from './Dropdown';
 import Row from './Row';
 import Footer from '../Footer';
 
@@ -54,9 +53,7 @@ export default function Browse() {
           <LogoLink to={PATHS.HOME}>NETFLIX.clone</LogoLink>
           <Navtab to="#">TV Shows</Navtab>
         </Nav>
-        <SignOutButton onClick={() => firebase.auth().signOut()}>
-          로그아웃
-        </SignOutButton>
+        <Dropdown />
       </Header>
       <Main>
         <Notification>
