@@ -8,10 +8,27 @@ const TMDB_NETFLIX_TVSHOWS_LINK = `https://api.themoviedb.org/3/discover/tv?api_
 export default function Row({ genreId, genreName }) {
   const [tvShows, setTvShows] = useState([]);
 
+  const filterTvShows = (json, length) => {
+    const results = json.results;
+    let newResults = [];
+
+    for (let i = 0; i < results.length; i++) {
+      const result = results[i];
+      if (result.genre_ids[0] == genreId) {
+        newResults.push(result);
+      }
+      if (newResults.length == length) {
+        break;
+      }
+    }
+
+    setTvShows(newResults);
+  };
+
   const getTvShows = async () => {
     const response = await fetch(TMDB_NETFLIX_TVSHOWS_LINK + genreId);
     const json = await response.json();
-    setTvShows(json.results.slice(0, 6));
+    filterTvShows(json, 6);
   };
 
   useEffect(() => {

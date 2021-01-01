@@ -9,17 +9,14 @@ import {
   Notification,
   TMDbLogo,
 } from './BrowseStyles';
-import { TMDB_API_KEY } from '../../private-config';
+import tvGenresData from './tv-genres';
 import * as PATHS from '../../constants/paths';
 import Dropdown from './Dropdown';
 import Row from './Row';
 import Footer from '../Footer';
 
-const TMDB_TV_GENRES_LINK = `https://api.themoviedb.org/3/genre/tv/list?api_key=${TMDB_API_KEY}&language=ko`;
-
 export default function Browse() {
   const [isHeaderOnTop, setIsHeaderOnTop] = useState(false);
-  const [tvGenres, setTvGenres] = useState([]);
 
   const checkHeaderLocation = () => {
     if (window.scrollY > 0) {
@@ -34,16 +31,6 @@ export default function Browse() {
 
   useEffect(() => {
     window.addEventListener('scroll', checkHeaderLocation);
-  }, []);
-
-  const getTvGenres = async () => {
-    const response = await fetch(TMDB_TV_GENRES_LINK);
-    const json = await response.json();
-    setTvGenres(json.genres);
-  };
-
-  useEffect(() => {
-    // getTvGenres();
   }, []);
 
   return (
@@ -66,7 +53,7 @@ export default function Browse() {
           </TMDbLogo>
           에서 받아왔습니다.
         </Notification>
-        {tvGenres.map((item) => (
+        {tvGenresData.map((item) => (
           <Row key={item.id} genreId={item.id} genreName={item.name} />
         ))}
       </Main>
