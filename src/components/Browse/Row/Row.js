@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Container, Title, ContentsContainer } from './RowStyles';
 import { TMDB_API_KEY } from '../../../private-config';
 import Content from '../Content';
+import tmpData from './tmp-data.json';
 
 const TMDB_NETFLIX_TVSHOWS_LINK = `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=1&with_networks=213&with_genres=`;
 
-export default function Row({ genreId, genreName }) {
+export default function Row({ genreId, genreName, ...restProps }) {
   const [tvShows, setTvShows] = useState([]);
 
   const filterTvShows = (json, length) => {
@@ -31,8 +32,13 @@ export default function Row({ genreId, genreName }) {
     filterTvShows(json, 6);
   };
 
+  const tmpGetTvShows = () => {
+    filterTvShows(tmpData, 6);
+  };
+
   useEffect(() => {
-    getTvShows();
+    // getTvShows();
+    tmpGetTvShows();
   }, []);
 
   return (
@@ -40,7 +46,7 @@ export default function Row({ genreId, genreName }) {
       <Title>{genreName}</Title>
       <ContentsContainer>
         {tvShows.map((item) => (
-          <Content key={item.id} poster={item.poster_path} />
+          <Content key={item.id} item={item} {...restProps} />
         ))}
       </ContentsContainer>
     </Container>

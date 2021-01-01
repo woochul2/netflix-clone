@@ -12,6 +12,7 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.header`
+  z-index: 1;
   position: fixed;
   top: 0;
   left: 0;

@@ -17,6 +17,7 @@ import Footer from '../Footer';
 
 export default function Browse() {
   const [isHeaderOnTop, setIsHeaderOnTop] = useState(false);
+  const [contentTitleFontSize, setContentTitleFontSize] = useState(0);
 
   const checkHeaderLocation = () => {
     if (window.scrollY > 0) {
@@ -29,15 +30,22 @@ export default function Browse() {
     }
   };
 
+  const getContentContainerWidth = () => {
+    const width = document.querySelector('.browse-content-container')
+      .offsetWidth;
+    setContentTitleFontSize(`${width / 10}px`);
+  };
+
   useEffect(() => {
     window.addEventListener('scroll', checkHeaderLocation);
+    window.addEventListener('resize', getContentContainerWidth);
   }, []);
 
   return (
     <Container>
       <Header isHeaderOnTop={isHeaderOnTop}>
         <Nav>
-          <LogoLink to={PATHS.HOME}>NETFLIX.clone</LogoLink>
+          <LogoLink to={PATHS.BROWSE}>NETFLIX.clone</LogoLink>
           <Navtab to="#">TV Shows</Navtab>
         </Nav>
         <Dropdown />
@@ -54,7 +62,13 @@ export default function Browse() {
           에서 받아왔습니다.
         </Notification>
         {tvGenresData.map((item) => (
-          <Row key={item.id} genreId={item.id} genreName={item.name} />
+          <Row
+            key={item.id}
+            genreId={item.id}
+            genreName={item.name}
+            contentTitleFontSize={contentTitleFontSize}
+            getContentContainerWidth={getContentContainerWidth}
+          />
         ))}
       </Main>
       <Footer variant="browse" />
