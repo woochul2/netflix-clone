@@ -41,6 +41,8 @@ export const Menu = styled.div`
   position: absolute;
   top: 0.75rem;
   right: -2rem;
+  display: flex;
+  flex-direction: column;
   border: 0.07rem solid var(--lightest-black);
   padding: 0.8rem 1rem;
   background-color: hsla(0, 0%, 0%, 0.9);

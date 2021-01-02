@@ -17,7 +17,8 @@ import Footer from '../Footer';
 
 export default function Browse() {
   const [isHeaderOnTop, setIsHeaderOnTop] = useState(false);
-  const [contentTitleFontSize, setContentTitleFontSize] = useState(0);
+  const [contentTitleFontSize, setContentTitleFontSize] = useState('0px');
+  const [isMouseOnContent, setIsMouseOnContent] = useState(false);
 
   const checkHeaderLocation = () => {
     if (window.scrollY > 0) {
@@ -31,9 +32,15 @@ export default function Browse() {
   };
 
   const getContentContainerWidth = () => {
-    const width = document.querySelector('.browse-content-container')
+    const width = document.querySelector('.browse-content-img-container')
       .offsetWidth;
     setContentTitleFontSize(`${width / 10}px`);
+  };
+
+  const initContentTitleFontSize = () => {
+    if (contentTitleFontSize == '0px') {
+      getContentContainerWidth();
+    }
   };
 
   useEffect(() => {
@@ -42,17 +49,17 @@ export default function Browse() {
   }, []);
 
   return (
-    <Container>
+    <Container fontSize={contentTitleFontSize}>
       <Header isHeaderOnTop={isHeaderOnTop}>
         <Nav>
           <LogoLink to={PATHS.BROWSE}>NETFLIX.clone</LogoLink>
-          <Navtab to="#">TV Shows</Navtab>
+          <Navtab to="#">TV 프로그램</Navtab>
         </Nav>
         <Dropdown />
       </Header>
       <Main>
         <Notification>
-          모든 TV Show 데이터베이스는
+          모든 TV 프로그램 데이터베이스는
           <TMDbLogo href="https://www.themoviedb.org/">
             <img
               src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_1-8ba2ac31f354005783fab473602c34c3f4fd207150182061e425d366e4f34596.svg"
@@ -66,8 +73,9 @@ export default function Browse() {
             key={item.id}
             genreId={item.id}
             genreName={item.name}
-            contentTitleFontSize={contentTitleFontSize}
-            getContentContainerWidth={getContentContainerWidth}
+            initContentTitleFontSize={initContentTitleFontSize}
+            isMouseOnContent={isMouseOnContent}
+            setIsMouseOnContent={setIsMouseOnContent}
           />
         ))}
       </Main>

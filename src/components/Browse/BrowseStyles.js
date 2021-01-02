@@ -5,7 +5,9 @@ import * as BREAKPOINTS from '../../constants/breakpoints';
 
 const sidePadding = '3.25rem';
 
-export const Container = styled.div`
+export const Container = styled.div.attrs((props) => ({
+  style: { fontSize: props.fontSize },
+}))`
   min-width: 18.75rem;
   background-color: var(--light-black);
   color: var(--darkest-white);
@@ -68,10 +70,10 @@ export const Notification = styled.div`
   justify-content: center;
   font-weight: bold;
   font-size: 1.25rem;
-  min-width: 28.125rem;
+  min-width: 28.425rem;
+  margin-bottom: 4rem;
   color: var(--orange);
   background-color: var(--lighter-black);
-  margin-bottom: 4rem;
 
   @media (max-width: ${BREAKPOINTS.LG}) {
     font-size: 1rem;
@@ -86,4 +88,8 @@ export const Notification = styled.div`
 export const TMDbLogo = styled.a`
   width: 10em;
   margin: 0 0.2em 0 0.3em;
+
+  img {
+    display: inline;
+  }
 `;

@@ -6,20 +6,21 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.h2`
+  font-size: 1.75rem;
   margin-bottom: 0.5rem;
 
   @media (max-width: ${BREAKPOINTS.LG}) {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
 
   @media (max-width: ${BREAKPOINTS.MD}) {
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 `;
 
 export const ContentsContainer = styled.div`
   display: grid;
-  column-gap: 0.3rem;
+  gap: 0.3rem;
   grid-template-columns: repeat(6, 1fr);
 
   @media (max-width: ${BREAKPOINTS.XL}) {
