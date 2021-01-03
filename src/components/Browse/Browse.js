@@ -46,6 +46,11 @@ export default function Browse() {
   useEffect(() => {
     window.addEventListener('scroll', checkHeaderLocation);
     window.addEventListener('resize', getContentContainerWidth);
+
+    return () => {
+      window.removeEventListener('scroll', checkHeaderLocation);
+      window.removeEventListener('resize', getContentContainerWidth);
+    };
   }, []);
 
   return (

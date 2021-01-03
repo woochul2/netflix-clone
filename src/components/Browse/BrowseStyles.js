@@ -14,7 +14,7 @@ export const Container = styled.div.attrs((props) => ({
 `;
 
 export const Header = styled.header`
-  z-index: 1;
+  z-index: 2;
   position: fixed;
   top: 0;
   left: 0;
@@ -66,11 +66,9 @@ export const Main = styled.main`
 `;
 
 export const Notification = styled.div`
-  display: flex;
-  justify-content: center;
+  text-align: center;
   font-weight: bold;
   font-size: 1.25rem;
-  min-width: 28.425rem;
   margin-bottom: 4rem;
   color: var(--orange);
   background-color: var(--lighter-black);
@@ -86,10 +84,7 @@ export const Notification = styled.div`
 `;
 
 export const TMDbLogo = styled.a`
+  display: inline-block;
   width: 10em;
   margin: 0 0.2em 0 0.3em;
-
-  img {
-    display: inline;
-  }
 `;
