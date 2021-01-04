@@ -5,17 +5,17 @@ import {
   Title,
   Img,
   CloseButton,
-  BottomPanel,
-  PanelButton,
-  Text,
   ModalBackground,
   transitionDuration,
 } from './ContentStyles';
 import * as BREAKPOINTS from '../../../constants/breakpoints';
+import { changeRemToPx } from '../../../utils';
 import { IoCloseOutline } from 'react-icons/io5';
-import { BsChevronDown } from 'react-icons/bs';
+import ContentBottomPanel from '../ContentBottomPanel';
 
-const TMDB_IMAGE_LINK = `https://image.tmdb.org/t/p/original/`;
+const getImageLink = (img) => {
+  return `https://image.tmdb.org/t/p/original/${img}`;
+};
 
 export default function Content({
   item,
@@ -23,43 +23,29 @@ export default function Content({
   isMouseOnContent,
   setIsMouseOnContent,
 }) {
-  const {
-    name,
-    backdrop_path,
-    id,
-    first_air_date,
-    overview,
-    vote_average,
-  } = item;
+  const { name, backdrop_path, id } = item;
   const containerClassName = `browse-content-${id}`;
   const [isMouseOn, setIsMouseOn] = useState(false);
-  const [isMouseLeave, setIsMouseLeave] = useState(false);
-  // transLength는 모달 이벤트가 발생했을 때, 컨텐츠를 화면에서 얼마나 옮길지에 대한 정보를 가진다.
-  // 모달 이벤트가 발생했는가를 판단하기 위해서도 사용했다.
+  const [isContentOnTopZ, setIsContentOnTopZ] = useState(false);
   const [transLength, setTransLength] = useState(null);
-  const [scaleRatio, setScaleRatio] = useState(0);
+  const [scaleRatio, setScaleRatio] = useState(null);
 
   useEffect(() => {
     initContentTitleFontSize();
   }, []);
 
   useEffect(() => {
-    // isMouseLeave는 컨텐츠 위에 마우스를 올렸다가 뗐을 때,
-    // 줄어드는 동안에도 z-index를 주변의 컨텐츠보다 높게 설정하기 위해 만든 변수이다.
-    // 모달 이벤트가 발생한 뒤 컨텐츠가 줄어들 때도 z-index를 제어하기 위해 사용했다.
-    // isMouseOnContent는 컨텐츠 위에 마우스를 올렸다가 다른 컨텐츠로 즉시 마우스를 옮겼을 때,
-    // 늘어나는 컨텐츠의 z-index가 줄어드는 컨텐츠의 z-index보다 높게 하려고 만든 변수이다.
-    if (isMouseOnContent || transLength) {
-      setIsMouseLeave(false);
+    if (isMouseOnContent) {
+      setIsContentOnTopZ(false);
       return;
     }
 
-    if (isMouseLeave) {
+    if (isContentOnTopZ) {
       setTimeout(() => {
-        setIsMouseLeave(false);
+        setIsContentOnTopZ(false);
       }, transitionDuration);
     }
-  }, [isMouseLeave]);
+  }, [isContentOnTopZ]);
 
   const handleMouseEnter = () => {
     setIsMouseOn(true);
@@ -69,7 +55,9 @@ export default function Content({
   const handleMouseLeave = () => {
     setIsMouseOn(false);
     setIsMouseOnContent(false);
-    setIsMouseLeave(true);
+    if (!transLength) {
+      setIsContentOnTopZ(true);
+    }
   };
 
   const getTransLength = () => {
@@ -85,7 +73,7 @@ export default function Content({
   };
 
   useEffect(() => {
-    if (scaleRatio != 0) {
+    if (scaleRatio) {
       getTransLength();
     }
   }, [scaleRatio]);
@@ -97,19 +85,11 @@ export default function Content({
     );
   };
 
-  const changeRemToPx = (remVal) => {
-    const body = document.querySelector('body');
-    const bodyFontSize = parseFloat(
-      window.getComputedStyle(body).getPropertyValue('font-size')
-    );
-    return remVal.split('rem')[0] * bodyFontSize;
-  };
-
-  const handletoggleModal = () => {
+  const toggleModal = () => {
     if (transLength) {
       setScaleRatio(0);
       setTransLength(null);
-      setIsMouseLeave(true);
+      setIsContentOnTopZ(true);
       return;
     }
 
@@ -119,17 +99,14 @@ export default function Content({
       setScaleRatio(fullScaleRatio * 0.4);
       return;
     }
-
     if (innerWidth > changeRemToPx(BREAKPOINTS.LG)) {
       setScaleRatio(fullScaleRatio * 0.5);
       return;
     }
-
     if (innerWidth > changeRemToPx(BREAKPOINTS.MD)) {
       setScaleRatio(fullScaleRatio * 0.75);
       return;
     }
-
     setScaleRatio(fullScaleRatio);
   };
 
@@ -140,7 +117,7 @@ export default function Content({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         isMouseOn={isMouseOn}
-        isMouseLeave={isMouseLeave}
+        isContentOnTopZ={isContentOnTopZ}
         transLength={transLength}
         scaleRatio={scaleRatio}
       >
@@ -148,37 +125,27 @@ export default function Content({
           className="browse-content-img-container"
           isMouseOn={isMouseOn}
           transLength={transLength}
-          onClick={handletoggleModal}
+          onClick={toggleModal}
         >
           <Title length={name.length}>{name}</Title>
-          <Img src={TMDB_IMAGE_LINK + backdrop_path} />
+          <Img src={getImageLink(backdrop_path)} />
           {transLength && (
             <CloseButton>
               <IoCloseOutline />
             </CloseButton>
           )}
         </ImgContainer>
-        <BottomPanel isMouseOn={isMouseOn} transLength={transLength}>
-          {!transLength && (
-            <PanelButton onClick={handletoggleModal}>
-              <BsChevronDown />
-            </PanelButton>
-          )}
-          {transLength && (
-            <>
-              <Text>
-                {overview.split('. ').join('.\n').split('?').join('?\n')}
-              </Text>
-              <Text>첫 방송 날짜: {first_air_date.split('-').join('.')}</Text>
-              <Text>회원 평점: {vote_average}</Text>
-            </>
-          )}
-        </BottomPanel>
+        <ContentBottomPanel
+          id={id}
+          isMouseOn={isMouseOn}
+          transLength={transLength}
+          toggleModal={toggleModal}
+        />
       </Container>
       {transLength && (
         <ModalBackground
+          onClick={toggleModal}
           height={`${document.querySelector('body').offsetHeight}px`}
-          onClick={handletoggleModal}
         />
       )}
     </>

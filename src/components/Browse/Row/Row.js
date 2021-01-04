@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Title, ContentsContainer } from './RowStyles';
 import { TMDB_API_KEY } from '../../../private-config';
+import { getJsonFromLink } from '../../../utils';
 import Content from '../Content';
-import tmpData from './tmp-data.json';
+import tmpTvShows from './tmp-tv-shows.json';
 
-const TMDB_NETFLIX_TVSHOWS_LINK = `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=1&with_networks=213&with_genres=`;
+const getNetflixTvShowsLink = (genreId) => {
+  return `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=1&with_networks=213&with_genres=${genreId}`;
+};
 
 export default function Row({ genreId, genreName, ...restProps }) {
   const [tvShows, setTvShows] = useState([]);
@@ -27,13 +30,13 @@ export default function Row({ genreId, genreName, ...restProps }) {
   };
 
   const getTvShows = async () => {
-    const response = await fetch(TMDB_NETFLIX_TVSHOWS_LINK + genreId);
-    const json = await response.json();
+    const link = getNetflixTvShowsLink(genreId);
+    const json = await getJsonFromLink(link);
     filterTvShows(json, 6);
   };
 
   const tmpGetTvShows = () => {
-    filterTvShows(tmpData, 6);
+    filterTvShows(tmpTvShows, 6);
   };
 
   useEffect(() => {

@@ -1,0 +1,124 @@
+{
+  "backdrop_path": "/34OGjFEbHj0E3lE2w0iTUVq0CBz.jpg",
+  "created_by": [
+    {
+      "id": 2199,
+      "credit_id": "5f490b222da8460033450d70",
+      "name": "Scott Frank",
+      "gender": 2,
+      "profile_path": "/dtul4M4D5s10fAUji26HHAyWDKC.jpg"
+    },
+    {
+      "id": 1082918,
+      "credit_id": "5f490b4545819900333bdadd",
+      "name": "Allan Scott",
+      "gender": 2,
+      "profile_path": null
+    }
+  ],
+  "episode_run_time": [60],
+  "first_air_date": "2020-10-23",
+  "genres": [
+    {
+      "id": 18,
+      "name": "드라마"
+    }
+  ],
+  "homepage": "https://www.netflix.com/title/80234304",
+  "id": 87739,
+  "in_production": false,
+  "languages": ["ru", "fr", "es", "en"],
+  "last_air_date": "2020-10-23",
+  "last_episode_to_air": {
+    "air_date": "2020-10-23",
+    "episode_number": 7,
+    "id": 2474827,
+    "name": "엔드게임",
+    "overview": "오랜 친구의 뜻밖의 방문. 베스는 과거를 되돌아보는 시간을 갖는다. 지금 내게 중요한 게 뭘까. 이게 잘한 선택일까. 어쩌면 그녀는 일생일대의 시합을 놓칠 수도 있다.",
+    "production_code": "",
+    "season_number": 1,
+    "still_path": "/mKRLkntwgMThg5U8iJcpDj4ewMc.jpg",
+    "vote_average": 8.3,
+    "vote_count": 15
+  },
+  "name": "퀸스 갬빗",
+  "next_episode_to_air": null,
+  "networks": [
+    {
+      "name": "Netflix",
+      "id": 213,
+      "logo_path": "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+      "origin_country": ""
+    }
+  ],
+  "number_of_episodes": 7,
+  "number_of_seasons": 1,
+  "origin_country": ["US"],
+  "original_language": "en",
+  "original_name": "The Queen's Gambit",
+  "overview": "1950년대 말, 버려져서 켄터키의 한 고아원에 맡겨지는 어린 베스 하먼. 주 정부가 어린이들에게 진정제로 제공하는 진통제에 중독되는 과정에서, 베스는 체스에 대한 놀라운 재능을 발견한다. 자신의 문제들에 시달리면서, 중독성 있는 약물과 강한 집착에 힘입은 베스. 소녀는 남성이 지배하는 프로 체스 세계의 전통적인 경계를 정복하겠다는 의지를 불태우면서, 엄청난 기술을 가진 매력적인 외톨이로 변신한다. 그녀는 인생의 전부인 꿈을 이룰 수 있을까.",
+  "popularity": 406.889,
+  "poster_path": "/vcCx1ngs1FSbMCDgl4TwJViCKXy.jpg",
+  "production_companies": [
+    {
+      "id": 109793,
+      "logo_path": null,
+      "name": "Flitcraft, Ltd.",
+      "origin_country": "US"
+    },
+    {
+      "id": 61018,
+      "logo_path": null,
+      "name": "Wonderful Films",
+      "origin_country": "US"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "DE",
+      "name": "Germany"
+    },
+    {
+      "iso_3166_1": "CA",
+      "name": "Canada"
+    }
+  ],
+  "seasons": [
+    {
+      "air_date": "2020-10-23",
+      "episode_count": 7,
+      "id": 120811,
+      "name": "시즌 1",
+      "overview": "보육원에서 발견한 뜻밖의 재능. 소녀는 체스로 일약 스타가 된다. 하지만 승리를 향한 열망만큼 강한 중독에 빠진 천재. 그녀는 인생의 전부인 꿈을 이룰 수 있을까.",
+      "poster_path": "/zU0htwkhNvBQdVSIKB9s6hgVeFK.jpg",
+      "season_number": 1
+    }
+  ],
+  "spoken_languages": [
+    {
+      "english_name": "Russian",
+      "iso_639_1": "ru",
+      "name": "Pусский"
+    },
+    {
+      "english_name": "French",
+      "iso_639_1": "fr",
+      "name": "Français"
+    },
+    {
+      "english_name": "Spanish",
+      "iso_639_1": "es",
+      "name": "Español"
+    },
+    {
+      "english_name": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "status": "Ended",
+  "tagline": "",
+  "type": "Miniseries",
+  "vote_average": 8.7,
+  "vote_count": 1104
+}
