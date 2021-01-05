@@ -10,20 +10,43 @@ const moveAndScale = (transLength, scaleRatio) => {
 };
 
 export const Container = styled.div`
-  position: relative;
+  z-index: ${({ transLength, isMouseOn, isContentOnTopZ }) =>
+    !transLength && (isMouseOn || isContentOnTopZ) && 1};
+  ${({ transLength, contentHeight }) =>
+    transLength &&
+    `
+      z-index: 3;
+      overflow: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: ${contentHeight};
+      background-color: hsla(0, 0%, 0%, 0.7);
+    `};
+`;
+
+export const Inner = styled.div`
+  ${({ transLength, contentOffset }) =>
+    transLength &&
+    `
+      position: absolute;
+      top: ${contentOffset.top};
+      left: ${contentOffset.left};
+      width: ${contentOffset.width};
+    `};
   border-radius: ${borderRadius};
   box-shadow: ${boxShadow};
-  transition: transform ${cssTransitionDuration};
-  z-index: ${({ isMouseOn, isContentOnTopZ }) =>
-    (isMouseOn || isContentOnTopZ) && 1};
-  z-index: ${({ transLength }) => transLength && 3};
-  transform: ${({ isMouseOn }) => isMouseOn && 'scale(1.3)'};
+  transform: ${({ transLength, isMouseOn }) =>
+    !transLength && isMouseOn && 'scale(1.3)'};
   transform: ${({ transLength, scaleRatio }) =>
     transLength && moveAndScale(transLength, scaleRatio)};
+  transition: transform ${cssTransitionDuration};
 `;
 
 export const ImgContainer = styled.div`
   cursor: pointer;
+  position: relative;
   overflow: hidden;
   border-radius: ${borderRadius};
   border-bottom-left-radius: ${({ isMouseOn, transLength }) =>
@@ -85,12 +108,10 @@ export const CloseButton = styled(roundButton)`
   }
 `;
 
-export const ModalBackground = styled.div`
-  z-index: 2;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: ${({ height }) => height};
-  background-color: hsla(0, 0%, 0%, 0.5);
+export const FakeContent = styled.div`
+  ${({ contentOffset }) =>
+    `
+      width: ${contentOffset.width};
+      height: ${contentOffset.height};
+    `}
 `;

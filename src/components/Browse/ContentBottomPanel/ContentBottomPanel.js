@@ -70,7 +70,7 @@ export default function ContentBottomPanel({
 
   return (
     <Container isMouseOn={isMouseOn} transLength={transLength}>
-      {!transLength && (
+      {!transLength && isMouseOn && (
         <PanelButton onClick={toggleModal}>
           <BsChevronDown />
         </PanelButton>

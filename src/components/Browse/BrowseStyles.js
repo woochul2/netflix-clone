@@ -15,7 +15,7 @@ export const Container = styled.div.attrs((props) => ({
 
 export const Header = styled.header`
   z-index: 2;
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -62,7 +62,7 @@ export const Navtab = styled(Link)`
 `;
 
 export const Main = styled.main`
-  padding: 5rem ${sidePadding};
+  padding: 0 ${sidePadding} 5rem;
 `;
 
 export const Notification = styled.div`

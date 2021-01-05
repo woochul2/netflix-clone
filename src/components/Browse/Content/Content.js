@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
   Container,
+  Inner,
   ImgContainer,
   Title,
   Img,
   CloseButton,
-  ModalBackground,
+  FakeContent,
   transitionDuration,
 } from './ContentStyles';
 import * as BREAKPOINTS from '../../../constants/breakpoints';
@@ -17,6 +18,22 @@ const getImageLink = (img) => {
   return `https://image.tmdb.org/t/p/original/${img}`;
 };
 
+const disableBackdropKeyboardTab = () => {
+  const anchors = document.querySelectorAll('a');
+  anchors.forEach((anchor) => {
+    anchor.tabIndex = -1;
+  });
+};
+
+const enableBackdropKeyboardTab = () => {
+  const anchors = document.querySelectorAll('a');
+  anchors.forEach((anchor) => {
+    if (anchor.tabIndex == -1) {
+      anchor.tabIndex = 0;
+    }
+  });
+};
+
 export default function Content({
   item,
   initContentTitleFontSize,
@@ -24,9 +41,11 @@ export default function Content({
   setIsMouseOnContent,
 }) {
   const { name, backdrop_path, id } = item;
-  const containerClassName = `browse-content-${id}`;
+  const modalClassName = `modal-${id}`;
+  const contentClassName = `browse-content-${id}`;
   const [isMouseOn, setIsMouseOn] = useState(false);
   const [isContentOnTopZ, setIsContentOnTopZ] = useState(false);
+  const [contentOffset, setContentOffset] = useState(null);
   const [transLength, setTransLength] = useState(null);
   const [scaleRatio, setScaleRatio] = useState(null);
 
@@ -60,9 +79,38 @@ export default function Content({
     }
   };
 
+  useEffect(() => {
+    const body = document.querySelector('body');
+    const html = document.querySelector('html');
+    if (transLength) {
+      body.style.overflowY = 'hidden';
+      if (window.innerWidth > changeRemToPx(BREAKPOINTS.SM)) {
+        body.style.paddingRight = '15px';
+      }
+      html.style.backgroundColor = 'var(--black)';
+      return;
+    }
+
+    if (!transLength) {
+      body.style.overflowY = 'visible';
+      body.style.paddingRight = '0';
+      html.style.backgroundColor = '0';
+    }
+  }, [transLength]);
+
+  const getOffset = () => {
+    const container = document.querySelector(`.${contentClassName}`);
+    setContentOffset({
+      top: `${container.offsetTop}px`,
+      left: `${container.offsetLeft}px`,
+      width: `${container.offsetWidth}px`,
+      height: `${container.offsetHeight}px`,
+    });
+  };
+
   const getTransLength = () => {
     const body = document.querySelector('body');
-    const container = document.querySelector(`.${containerClassName}`);
+    const container = document.querySelector(`.${contentClassName}`);
     const xTransLength =
       body.offsetWidth / 2 - container.offsetLeft - container.offsetWidth / 2;
     const yTransLength =
@@ -74,6 +122,7 @@ export default function Content({
 
   useEffect(() => {
     if (scaleRatio) {
+      getOffset();
       getTransLength();
     }
   }, [scaleRatio]);
@@ -81,17 +130,21 @@ export default function Content({
   const getFullScaleRatio = () => {
     return (
       document.querySelector('body').offsetWidth /
-      document.querySelector(`.${containerClassName}`).offsetWidth
+      document.querySelector(`.${contentClassName}`).offsetWidth
     );
   };
 
   const toggleModal = () => {
     if (transLength) {
       setScaleRatio(0);
+      setContentOffset(null);
       setTransLength(null);
       setIsContentOnTopZ(true);
+      enableBackdropKeyboardTab();
       return;
     }
+
+    disableBackdropKeyboardTab();
 
     const fullScaleRatio = getFullScaleRatio();
     const { innerWidth } = window;
@@ -107,47 +160,58 @@ export default function Content({
       setScaleRatio(fullScaleRatio * 0.75);
       return;
     }
-    setScaleRatio(fullScaleRatio);
+    setScaleRatio(fullScaleRatio * 0.995);
+  };
+
+  const handleClickModal = (event) => {
+    const modal = document.querySelector(`.${modalClassName}`);
+    if (event.target == modal) {
+      toggleModal();
+    }
   };
 
   return (
     <>
       <Container
-        className={containerClassName}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        className={modalClassName}
         isMouseOn={isMouseOn}
         isContentOnTopZ={isContentOnTopZ}
         transLength={transLength}
-        scaleRatio={scaleRatio}
+        contentHeight={`${window.innerHeight + window.scrollY}px`}
+        onClick={handleClickModal}
       >
-        <ImgContainer
-          className="browse-content-img-container"
+        <Inner
+          className={contentClassName}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           isMouseOn={isMouseOn}
           transLength={transLength}
-          onClick={toggleModal}
+          contentOffset={contentOffset}
+          scaleRatio={scaleRatio}
         >
-          <Title length={name.length}>{name}</Title>
-          <Img src={getImageLink(backdrop_path)} />
-          {transLength && (
-            <CloseButton>
-              <IoCloseOutline />
-            </CloseButton>
-          )}
-        </ImgContainer>
-        <ContentBottomPanel
-          id={id}
-          isMouseOn={isMouseOn}
-          transLength={transLength}
-          toggleModal={toggleModal}
-        />
+          <ImgContainer
+            className="browse-content-img-container"
+            isMouseOn={isMouseOn}
+            transLength={transLength}
+            onClick={toggleModal}
+          >
+            <Title length={name.length}>{name}</Title>
+            <Img src={getImageLink(backdrop_path)} />
+            {transLength && (
+              <CloseButton>
+                <IoCloseOutline />
+              </CloseButton>
+            )}
+          </ImgContainer>
+          <ContentBottomPanel
+            id={id}
+            isMouseOn={isMouseOn}
+            transLength={transLength}
+            toggleModal={toggleModal}
+          />
+        </Inner>
       </Container>
-      {transLength && (
-        <ModalBackground
-          onClick={toggleModal}
-          height={`${document.querySelector('body').offsetHeight}px`}
-        />
-      )}
+      {transLength && <FakeContent contentOffset={contentOffset}></FakeContent>}
     </>
   );
 }
