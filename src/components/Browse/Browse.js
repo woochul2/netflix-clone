@@ -44,6 +44,7 @@ export default function Browse() {
   };
 
   useEffect(() => {
+    checkHeaderLocation();
     window.addEventListener('scroll', checkHeaderLocation);
     window.addEventListener('resize', getContentContainerWidth);
 
@@ -57,7 +58,7 @@ export default function Browse() {
     <Container fontSize={contentTitleFontSize}>
       <Header isHeaderOnTop={isHeaderOnTop}>
         <Nav>
-          <LogoLink to={PATHS.BROWSE}>NETFLIX.clone</LogoLink>
+          <LogoLink href={PATHS.BROWSE}>NETFLIX.clone</LogoLink>
           <Navtab to="#">TV 프로그램</Navtab>
         </Nav>
         <Dropdown />

@@ -54,11 +54,11 @@ export const BasicButtonLink = styled(Link)`
   text-decoration: none;
 `;
 
-export const BasicLogoLink = styled(Link)`
-  user-select: none;
-  margin: 0;
-  text-decoration: none;
-  font-size: 3rem;
-  font-weight: bold;
-  color: var(--red);
-`;
+export const logoStyles = {
+  'user-select': 'none',
+  margin: '0',
+  'text-decoration': 'none',
+  'font-size': '3rem',
+  'font-weight': 'bold',
+  color: 'var(--red)',
+};

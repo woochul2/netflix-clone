@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { BasicLogoLink } from '../common-styles';
+import { logoStyles } from '../common-styles';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 
 const sidePadding = '3.25rem';
@@ -36,7 +36,9 @@ export const Nav = styled.nav`
   min-width: 18.75rem;
 `;
 
-export const LogoLink = styled(BasicLogoLink)`
+export const LogoLink = styled.a`
+  ${logoStyles}
+
   font-size: 2rem;
 
   @media (max-width: ${BREAKPOINTS.MD}) {

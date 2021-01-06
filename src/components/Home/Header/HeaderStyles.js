@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { divider } from '../HomeStyles';
-import { BasicButtonLink, BasicLogoLink } from '../../common-styles';
+import { BasicButtonLink, logoStyles } from '../../common-styles';
 import * as BREAKPOINTS from '../../../constants/breakpoints';
 
 export const Container = styled.header`
@@ -28,7 +28,9 @@ export const Top = styled.div`
   padding-top: 1.25rem;
 `;
 
-export const LogoLink = styled(BasicLogoLink)`
+export const LogoLink = styled.a`
+  ${logoStyles}
+
   @media (max-width: ${BREAKPOINTS.XL}) {
     font-size: 2.5rem;
   }

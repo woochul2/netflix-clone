@@ -1,10 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import {
-  BasicLogoLink,
-  BasicInputContainer,
-  BasicButton,
-} from '../common-styles';
+import { logoStyles, BasicInputContainer, BasicButton } from '../common-styles';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 
 export const Container = styled.div`
@@ -23,7 +19,9 @@ export const Top = styled.div`
   border-bottom: 0.06rem solid var(--darkest-white);
 `;
 
-export const LogoLink = styled(BasicLogoLink)`
+export const LogoLink = styled(Link)`
+  ${logoStyles}
+
   @media (max-width: ${BREAKPOINTS.SM}) {
     font-size: 1.2rem;
   }

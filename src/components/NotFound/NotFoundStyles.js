@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { BasicLogoLink } from '../common-styles';
+import { logoStyles } from '../common-styles';
 
 export const Container = styled.div`
   display: flex;
@@ -21,7 +21,9 @@ export const Header = styled.header`
   padding: 0.875rem 2rem;
 `;
 
-export const LogoLink = styled(BasicLogoLink)`
+export const LogoLink = styled(Link)`
+  ${logoStyles}
+
   font-size: 2rem;
 `;
 
