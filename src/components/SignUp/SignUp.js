@@ -14,6 +14,7 @@ import {
 import { firebase } from '../../firebase';
 import * as PATHS from '../../constants/paths';
 import Input from '../Input';
+import ReactLoading from 'react-loading';
 import Footer from '../Footer';
 
 export default function SignUp(props) {
@@ -23,6 +24,7 @@ export default function SignUp(props) {
   const [password, setPassword] = useState('');
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setEmail(currEmail);
@@ -40,12 +42,14 @@ export default function SignUp(props) {
 
   const handleSignUp = (event) => {
     event.preventDefault();
+    setLoading(true);
 
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => history.push(PATHS.BROWSE))
       .catch((error) => {
+        setLoading(false);
         if (error.code == 'auth/email-already-in-use') {
           setEmailErrorMessage('이미 사용 중인 이메일 주소입니다.');
         } else if (error.code == 'auth/invalid-email') {
@@ -82,7 +86,17 @@ export default function SignUp(props) {
           hasError={passwordErrorMessage}
         />
         <Error>{passwordErrorMessage}</Error>
-        <Button>가입</Button>
+        <Button>
+          {loading ? (
+            <ReactLoading
+              type={'spokes'}
+              width={'1.125em'}
+              height={'1.125em'}
+            />
+          ) : (
+            '가입'
+          )}
+        </Button>
       </Form>
       <Footer variant="signup" background="var(--dark-white)" />
     </Container>

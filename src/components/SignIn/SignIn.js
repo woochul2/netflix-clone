@@ -16,6 +16,7 @@ import {
 import { firebase } from '../../firebase';
 import * as PATHS from '../../constants/paths';
 import Input from '../Input';
+import ReactLoading from 'react-loading';
 import Footer from '../Footer';
 
 const PASSWORD = 'password';
@@ -27,6 +28,7 @@ export default function SignIn() {
   const [password, setPassword] = useState('');
   const [passwordType, setPasswordType] = useState(PASSWORD);
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -50,6 +52,7 @@ export default function SignIn() {
 
   const handleSignIn = (event) => {
     event.preventDefault();
+    setLoading(true);
 
     firebase
       .auth()
@@ -58,6 +61,7 @@ export default function SignIn() {
         history.push(ROUTES.BROWSE);
       })
       .catch((error) => {
+        setLoading(false);
         if (error.code == 'auth/invalid-email') {
           setErrorMessage('올바른 이메일 주소를 입력해 주세요.');
         } else if (error.code == 'auth/user-disabled') {
@@ -97,7 +101,17 @@ export default function SignIn() {
             {passwordType == PASSWORD ? '표시' : '숨기기'}
           </PasswordToggleButton>
         </InputBox>
-        <SubmitButton type="submit">로그인</SubmitButton>
+        <SubmitButton type="submit">
+          {loading ? (
+            <ReactLoading
+              type={'spokes'}
+              width={'1.125em'}
+              height={'1.125em'}
+            />
+          ) : (
+            '로그인'
+          )}
+        </SubmitButton>
         <SignUpText>
           Netflix.clone 회원이 아닌가요?{' '}
           <SignUpLink to={PATHS.HOME}>지금 가입하세요</SignUpLink>.

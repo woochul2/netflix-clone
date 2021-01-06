@@ -32,6 +32,8 @@ export const BasicInputContainer = styled.div`
 const basicButtonStyles = {
   'user-select': 'none',
   cursor: 'pointer',
+  display: 'flex',
+  'justify-content': 'center',
   color: 'var(--white)',
   'background-color': 'var(--red)',
 
