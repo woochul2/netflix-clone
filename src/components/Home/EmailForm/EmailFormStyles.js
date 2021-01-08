@@ -66,6 +66,7 @@ export const InputContainer = styled(BasicInputContainer)`
   @media (max-width: ${BREAKPOINTS.MD}) {
     min-width: 18.75rem;
     height: 3rem;
+    font-size: 0.875rem;
   }
 
   input {
@@ -87,18 +88,11 @@ export const InputContainer = styled(BasicInputContainer)`
       height: 100%;
     }
   }
-
-  label {
-    @media (max-width: ${BREAKPOINTS.MD}) {
-      font-size: 0.875rem;
-    }
-  }
 `;
 
 export const Error = styled.p`
   color: var(--orange);
   font-weight: bold;
-  margin-bottom: 1rem;
   padding-top: 0.4rem;
 `;
 
@@ -121,6 +115,7 @@ export const Button = styled(BasicButton)`
   @media (max-width: ${BREAKPOINTS.LG}) {
     border-radius: 0.125rem;
     font-size: 1rem;
+    margin-top: 0.875rem;
     padding: 0.75rem 1rem;
   }
 `;

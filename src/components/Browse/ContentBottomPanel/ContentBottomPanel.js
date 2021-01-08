@@ -8,18 +8,17 @@ import {
   Text,
   GrayText,
 } from './ContentBottomPanelStyles';
-import { TMDB_API_KEY } from '../../../private-config';
 import { getJsonFromLink } from '../../../utils';
 import { BsChevronDown } from 'react-icons/bs';
 import tmpTvDetail from './tmp-tv-detail.json';
 import tmpTvVideos from './tmp-tv-videos.json';
 
 const getTvDetailLink = (id) => {
-  return `https://api.themoviedb.org/3/tv/${id}?api_key=${TMDB_API_KEY}&language=ko`;
+  return `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
 };
 
 const getTvVideosLink = (id) => {
-  return `https://api.themoviedb.org/3/tv/${id}/videos?api_key=${TMDB_API_KEY}&language=ko`;
+  return `https://api.themoviedb.org/3/tv/${id}/videos?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
 };
 
 const getYoutubeLink = (key) => {
@@ -63,8 +62,8 @@ export default function ContentBottomPanel({
 
   useEffect(() => {
     if (transLength) {
-      // getData();
-      getTmpData();
+      getData();
+      // getTmpData();
     }
   }, [transLength]);
 

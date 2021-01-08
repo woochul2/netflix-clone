@@ -59,7 +59,7 @@ export default function Browse() {
       <Header isHeaderOnTop={isHeaderOnTop}>
         <Nav>
           <LogoLink href={PATHS.BROWSE}>NETFLIX.clone</LogoLink>
-          <Navtab to="#">TV 프로그램</Navtab>
+          <Navtab href="#">TV 프로그램</Navtab>
         </Nav>
         <Dropdown />
       </Header>

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Title, ContentsContainer } from './RowStyles';
-import { TMDB_API_KEY } from '../../../private-config';
 import { getJsonFromLink } from '../../../utils';
 import Content from '../Content';
 import tmpTvShows from './tmp-tv-shows.json';
 
 const getNetflixTvShowsLink = (genreId) => {
-  return `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=1&with_networks=213&with_genres=${genreId}`;
+  return `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=1&with_networks=213&with_genres=${genreId}`;
 };
 
 export default function Row({ genreId, genreName, ...restProps }) {
@@ -40,8 +39,8 @@ export default function Row({ genreId, genreName, ...restProps }) {
   };
 
   useEffect(() => {
-    // getTvShows();
-    tmpGetTvShows();
+    getTvShows();
+    // tmpGetTvShows();
   }, []);
 
   return (

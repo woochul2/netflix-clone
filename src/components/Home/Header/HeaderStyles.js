@@ -49,6 +49,7 @@ export const ButtonLink = styled(BasicButtonLink)`
   padding: 0.5rem 1rem;
 
   @media (max-width: ${BREAKPOINTS.SM}) {
+    font-size: 0.875rem;
     padding: 0.375rem;
   }
 `;

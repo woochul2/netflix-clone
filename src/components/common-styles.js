@@ -17,12 +17,12 @@ export const BasicInputContainer = styled.div`
     cursor: text;
     user-select: none;
     position: absolute;
-    top: ${({ isFocused, value }) => (isFocused || value ? '20%' : '50%')};
+    top: ${({ isFocused, value }) => (isFocused || value ? '25%' : '50%')};
     left: 0.625rem;
     transform: translateY(-50%);
     transition: all 0.1s ease;
     font-size: ${({ isFocused, value }) =>
-      isFocused || value ? '0.8rem' : '1rem'};
+      isFocused || value ? '0.8em' : '1em'};
     font-weight: ${({ isFocused, value }) =>
       isFocused || value ? 'bold' : '400'};
     color: var(--gray);

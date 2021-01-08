@@ -1,7 +1,13 @@
 import styled from 'styled-components';
+import * as BREAKPOINTS from '../../../constants/breakpoints';
 
 export const Container = styled.div`
   position: relative;
+  font-size: 1rem;
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    font-size: 0.875rem;
+  }
 `;
 
 export const Icon = styled.div`
@@ -10,14 +16,14 @@ export const Icon = styled.div`
   align-items: center;
 
   .person {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.5em;
+    height: 1.5em;
     margin-right: 0.3rem;
   }
 
   .caret-down {
-    width: 0.875rem;
-    height: 0.875rem;
+    width: 0.875em;
+    height: 0.875em;
   }
 `;
 
@@ -44,7 +50,7 @@ export const Menu = styled.div`
   display: flex;
   flex-direction: column;
   border: 0.07rem solid var(--lightest-black);
-  padding: 0.8rem 1rem;
+  padding: 0.8em 1em;
   background-color: hsla(0, 0%, 0%, 0.9);
 `;
 
@@ -53,7 +59,7 @@ export const MenuItem = styled.button`
   border: 0;
   padding: 0;
   font-weight: bold;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   background: none;
   color: var(--white);
 

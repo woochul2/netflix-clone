@@ -15,7 +15,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 import ContentBottomPanel from '../ContentBottomPanel';
 
 const getImageLink = (img) => {
-  return `https://image.tmdb.org/t/p/original/${img}`;
+  return `https://image.tmdb.org/t/p/original${img}`;
 };
 
 const disableBackdropKeyboardTab = () => {

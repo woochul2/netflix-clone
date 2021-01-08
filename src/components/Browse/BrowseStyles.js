@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { logoStyles } from '../common-styles';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 
 const sidePadding = '3.25rem';
+const smallSidePadding = '2rem';
 
 export const Container = styled.div.attrs((props) => ({
   style: { fontSize: props.fontSize },
@@ -28,25 +28,27 @@ export const Header = styled.header`
       ? 'background: var(--light-black)'
       : 'background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0))'};
   transition: background-color 0.4s;
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    padding: 0.875rem ${smallSidePadding};
+  }
 `;
 
 export const Nav = styled.nav`
   display: flex;
   align-items: center;
-  min-width: 18.75rem;
 `;
 
 export const LogoLink = styled.a`
   ${logoStyles}
-
   font-size: 2rem;
 
-  @media (max-width: ${BREAKPOINTS.MD}) {
-    font-size: 1rem;
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    font-size: 1.25rem;
   }
 `;
 
-export const Navtab = styled(Link)`
+export const Navtab = styled.a`
   margin-left: 2rem;
   text-decoration: none;
   font-weight: bold;
@@ -65,6 +67,10 @@ export const Navtab = styled(Link)`
 
 export const Main = styled.main`
   padding: 0 ${sidePadding} 5rem;
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    padding: 0 ${smallSidePadding};
+  }
 `;
 
 export const Notification = styled.div`

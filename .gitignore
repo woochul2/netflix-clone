@@ -1,3 +1,5 @@
 node_modules
 .eslintcache
-src/private-config.js
+.env
+build
+.firebase
