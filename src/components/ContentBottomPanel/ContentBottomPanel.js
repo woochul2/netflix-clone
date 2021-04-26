@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 import { getJsonFromLink } from '../../utils';
-import {
-  Container,
-  GrayText,
-  LinkContainer,
-  Overview,
-  PageLink,
-  PanelButton,
-  Text,
-} from './ContentBottomPanelStyles';
+import * as Styled from './styles/ContentBottomPanel';
 import tmpTvDetail from './tmp-tv-detail.json';
 import tmpTvVideos from './tmp-tv-videos.json';
 
@@ -68,38 +60,38 @@ export default function ContentBottomPanel({
   }, [transLength]);
 
   return (
-    <Container isMouseOn={isMouseOn} transLength={transLength}>
+    <Styled.Container isMouseOn={isMouseOn} transLength={transLength}>
       {!transLength && isMouseOn && (
-        <PanelButton onClick={toggleModal}>
+        <Styled.PanelButton onClick={toggleModal}>
           <BsChevronDown />
-        </PanelButton>
+        </Styled.PanelButton>
       )}
       {transLength && tvDetail && (
         <>
-          <LinkContainer>
-            <PageLink href={tvDetail.homepage} target="_blank">
+          <Styled.LinkContainer>
+            <Styled.PageLink href={tvDetail.homepage} target="_blank">
               공식 홈페이지
-            </PageLink>
+            </Styled.PageLink>
             {tvVideos &&
               tvVideos.results.map(
                 (result) =>
                   result.type == 'Trailer' &&
                   result.site == 'YouTube' && (
-                    <PageLink
+                    <Styled.PageLink
                       key={result.id}
                       href={getYoutubeLink(result.key)}
                       target="_blank"
                     >
                       {result.name.split('|')[1]}
-                    </PageLink>
+                    </Styled.PageLink>
                   )
               )}
-          </LinkContainer>
-          <Overview>
+          </Styled.LinkContainer>
+          <Styled.Overview>
             {tvDetail.overview.split('. ').join('.\n').split('?').join('?\n')}
-          </Overview>
-          <Text>
-            <GrayText>장르: </GrayText>
+          </Styled.Overview>
+          <Styled.Text>
+            <Styled.GrayText>장르: </Styled.GrayText>
             {tvDetail.genres.map((genre, index) => (
               <span key={genre.id}>
                 {index == tvDetail.genres.length - 1 ? (
@@ -109,22 +101,22 @@ export default function ContentBottomPanel({
                 )}
               </span>
             ))}
-          </Text>
-          <Text>
-            <GrayText>첫 방송 날짜: </GrayText>
+          </Styled.Text>
+          <Styled.Text>
+            <Styled.GrayText>첫 방송 날짜: </Styled.GrayText>
             {tvDetail.first_air_date.split('-').join('.')}
-          </Text>
-          <Text>
-            <GrayText>시즌 수: </GrayText>
+          </Styled.Text>
+          <Styled.Text>
+            <Styled.GrayText>시즌 수: </Styled.GrayText>
             {tvDetail.number_of_seasons}개
-          </Text>
-          <Text>
-            <GrayText>회원 평점: </GrayText>
+          </Styled.Text>
+          <Styled.Text>
+            <Styled.GrayText>회원 평점: </Styled.GrayText>
             {tvDetail.vote_average}
-          </Text>
+          </Styled.Text>
           {tvDetail.created_by.length != 0 && (
-            <Text>
-              <GrayText>제작: </GrayText>
+            <Styled.Text>
+              <Styled.GrayText>제작: </Styled.GrayText>
               {tvDetail.created_by.map((person, index) => (
                 <span key={person.id}>
                   {index == tvDetail.created_by.length - 1 ? (
@@ -134,10 +126,10 @@ export default function ContentBottomPanel({
                   )}
                 </span>
               ))}
-            </Text>
+            </Styled.Text>
           )}
         </>
       )}
-    </Container>
+    </Styled.Container>
   );
 }

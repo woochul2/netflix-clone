@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getJsonFromLink } from '../../utils';
 import Content from '../Content';
-import { Container, ContentsContainer, Title } from './RowStyles';
+import * as Styled from './styles/Row';
 import tmpTvShows from './tmp-tv-shows.json';
 
 const getNetflixTvShowsLink = (genreId) => {
@@ -44,13 +44,13 @@ export default function Row({ genreId, genreName, ...restProps }) {
   }, []);
 
   return (
-    <Container>
-      <Title>{genreName}</Title>
-      <ContentsContainer>
+    <Styled.Container>
+      <Styled.Title>{genreName}</Styled.Title>
+      <Styled.ContentsContainer>
         {tvShows.map((item) => (
           <Content key={item.id} item={item} {...restProps} />
         ))}
-      </ContentsContainer>
-    </Container>
+      </Styled.ContentsContainer>
+    </Styled.Container>
   );
 }

@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {
   borderRadius,
   boxShadow,
   cssTransitionDuration,
   roundButton,
-} from '../Content/ContentStyles';
+} from '../../Content/styles/Content';
 
 export const Container = styled.div`
   z-index: -1;

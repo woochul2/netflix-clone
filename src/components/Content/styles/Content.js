@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 export const borderRadius = '0.2rem';
 export const boxShadow = '0 0 0.2rem 0.07rem var(--black)';

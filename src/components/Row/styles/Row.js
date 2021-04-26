@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import * as BREAKPOINTS from '../../constants/breakpoints';
+import styled from 'styled-components/macro';
+import * as BREAKPOINTS from '../../../constants/breakpoints';
 
 export const Container = styled.div`
   margin-bottom: 3rem;

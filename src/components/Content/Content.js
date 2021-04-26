@@ -3,16 +3,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 import { changeRemToPx } from '../../utils';
 import ContentBottomPanel from '../ContentBottomPanel';
-import {
-  CloseButton,
-  Container,
-  FakeContent,
-  Img,
-  ImgContainer,
-  Inner,
-  Title,
-  transitionDuration,
-} from './ContentStyles';
+import * as Styled from './styles/Content';
 
 const getImageLink = (img) => {
   return `https://image.tmdb.org/t/p/original${img}`;
@@ -62,7 +53,7 @@ export default function Content({
     if (isContentOnTopZ) {
       setTimeout(() => {
         setIsContentOnTopZ(false);
-      }, transitionDuration);
+      }, Styled.transitionDuration);
     }
   }, [isContentOnTopZ]);
 
@@ -172,7 +163,7 @@ export default function Content({
 
   return (
     <>
-      <Container
+      <Styled.Container
         className={modalClassName}
         isMouseOn={isMouseOn}
         isContentOnTopZ={isContentOnTopZ}
@@ -180,7 +171,7 @@ export default function Content({
         contentHeight={`${window.innerHeight + window.scrollY}px`}
         onClick={handleClickModal}
       >
-        <Inner
+        <Styled.Inner
           className={contentClassName}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -189,29 +180,31 @@ export default function Content({
           contentOffset={contentOffset}
           scaleRatio={scaleRatio}
         >
-          <ImgContainer
+          <Styled.ImgContainer
             className="browse-content-img-container"
             isMouseOn={isMouseOn}
             transLength={transLength}
             onClick={toggleModal}
           >
-            <Title length={name.length}>{name}</Title>
-            <Img src={getImageLink(backdrop_path)} />
+            <Styled.Title length={name.length}>{name}</Styled.Title>
+            <Styled.Img src={getImageLink(backdrop_path)} />
             {transLength && (
-              <CloseButton>
+              <Styled.CloseButton>
                 <IoCloseOutline />
-              </CloseButton>
+              </Styled.CloseButton>
             )}
-          </ImgContainer>
+          </Styled.ImgContainer>
           <ContentBottomPanel
             id={id}
             isMouseOn={isMouseOn}
             transLength={transLength}
             toggleModal={toggleModal}
           />
-        </Inner>
-      </Container>
-      {transLength && <FakeContent contentOffset={contentOffset}></FakeContent>}
+        </Styled.Inner>
+      </Styled.Container>
+      {transLength && (
+        <Styled.FakeContent contentOffset={contentOffset}></Styled.FakeContent>
+      )}
     </>
   );
 }

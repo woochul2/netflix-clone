@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-import { logoStyles } from '../../common-styles';
-import * as BREAKPOINTS from '../../constants/breakpoints';
+import styled from 'styled-components/macro';
+import * as BREAKPOINTS from '../../../constants/breakpoints';
 
 const sidePadding = '3.25rem';
 const smallSidePadding = '2rem';
@@ -40,7 +39,12 @@ export const Nav = styled.nav`
 `;
 
 export const LogoLink = styled.a`
-  ${logoStyles}
+  user-select: none;
+  margin: 0;
+  text-decoration: none;
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--red);
   font-size: 2rem;
 
   @media (max-width: ${BREAKPOINTS.SM}) {

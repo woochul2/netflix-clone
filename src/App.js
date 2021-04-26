@@ -1,6 +1,6 @@
 import React from 'react';
-import Browse from './pages/Browse';
+import Home from './pages/Home';
 
 export default function App() {
-  return <Browse />;
+  return <Home />;
 }
