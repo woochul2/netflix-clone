@@ -10,10 +10,7 @@ import {
   TMDbLogo,
 } from './BrowseStyles';
 import tvGenresData from './tv-genres';
-import * as PATHS from '../../constants/paths';
-import Dropdown from './Dropdown';
 import Row from './Row';
-import Footer from '../Footer';
 
 export default function Browse() {
   const [isHeaderOnTop, setIsHeaderOnTop] = useState(false);
@@ -58,10 +55,9 @@ export default function Browse() {
     <Container fontSize={contentTitleFontSize}>
       <Header isHeaderOnTop={isHeaderOnTop}>
         <Nav>
-          <LogoLink href={PATHS.BROWSE}>NETFLIX.clone</LogoLink>
+          <LogoLink href="#">NETFLIX.clone</LogoLink>
           <Navtab href="#">TV 프로그램</Navtab>
         </Nav>
-        <Dropdown />
       </Header>
       <Main>
         <Notification>
@@ -85,7 +81,6 @@ export default function Browse() {
           />
         ))}
       </Main>
-      <Footer variant="browse" />
     </Container>
   );
 }

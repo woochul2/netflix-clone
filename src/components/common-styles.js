@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 export const BasicInputContainer = styled.div`
   position: relative;
@@ -51,7 +50,7 @@ export const BasicButton = styled.button`
   }
 `;
 
-export const BasicButtonLink = styled(Link)`
+export const BasicButtonLink = styled.a`
   ${basicButtonStyles}
   text-decoration: none;
 `;
