@@ -78,8 +78,8 @@ export const roundButton = styled.button`
   position: relative;
   border: 0;
   border-radius: 100%;
-  background-color: var(--light-black);
-  color: var(--darkest-white);
+  background-color: var(--gray-900);
+  color: var(--gray-100);
 
   &:focus:not(:focus-visible) {
     outline: 0;

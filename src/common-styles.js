@@ -6,8 +6,8 @@ export const BasicInputContainer = styled.div`
   width: 100%;
 
   input {
-    outline: none;
-    border: none;
+    outline: 0;
+    border: 0;
     width: 100%;
     padding: 0.625rem 0.625rem 0;
   }
@@ -24,7 +24,7 @@ export const BasicInputContainer = styled.div`
       isFocused || value ? '0.8em' : '1em'};
     font-weight: ${({ isFocused, value }) =>
       isFocused || value ? 'bold' : '400'};
-    color: var(--gray);
+    color: var(--gray-400);
   }
 `;
 

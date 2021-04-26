@@ -1,18 +1,11 @@
 :root {
   --black: hsl(0, 0%, 0%);
-  --light-black: hsl(0, 0%, 8%);
-  --lighter-black: hsl(0, 0%, 13%);
-  --lightest-black: hsl(0, 0%, 20%);
-  --dim-gray: hsl(0, 0%, 27%);
-  --gray: hsl(0, 0%, 45%);
-  --light-gray: hsl(0, 0%, 55%);
-  --darkest-white: hsl(0, 0%, 90%);
-  --dark-white: hsl(0, 0%, 95%);
+  --gray-900: hsl(0, 0%, 8%);
+  --gray-800: hsl(0, 0%, 13%);
+  --gray-700: hsl(0, 0%, 20%);
+  --gray-400: hsl(0, 0%, 45%);
+  --gray-100: hsl(0, 0%, 90%);
   --white: hsl(0, 0%, 100%);
-
-  --deep-red: hsl(357, 62%, 46%);
-  --dark-red: hsl(357, 92%, 40%);
   --red: hsl(357, 92%, 46%);
   --orange: hsl(32, 98%, 46%);
-  --blue: hsl(211, 100%, 46%);
 }

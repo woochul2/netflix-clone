@@ -18,7 +18,7 @@ export const Container = styled.div`
   border-bottom-right-radius: ${borderRadius};
   box-shadow: ${boxShadow};
   padding-bottom: ${({ transLength }) => transLength && '0.5em'};
-  background-color: var(--light-black);
+  background-color: var(--gray-900);
   opacity: ${({ isMouseOn }) => (isMouseOn ? 1 : 0)};
   opacity: ${({ transLength }) => transLength && 1};
   transition: all ${cssTransitionDuration};
@@ -27,12 +27,12 @@ export const Container = styled.div`
 export const PanelButton = styled(roundButton)`
   width: 1.25em;
   height: 1.25em;
-  border: 0.09em solid var(--gray);
+  border: 0.09em solid var(--gray-400);
   margin: 0.3em;
 
   &:hover {
-    border-color: var(--darkest-white);
-    background-color: var(--lightest-black);
+    border-color: var(--gray-100);
+    background-color: var(--gray-700);
   }
 
   svg {
@@ -69,5 +69,5 @@ export const Text = styled.p`
 `;
 
 export const GrayText = styled.span`
-  color: var(--gray);
+  color: var(--gray-400);
 `;

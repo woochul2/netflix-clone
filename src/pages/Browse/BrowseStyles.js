@@ -9,8 +9,8 @@ export const Container = styled.div.attrs((props) => ({
   style: { fontSize: props.fontSize },
 }))`
   min-width: 18.75rem;
-  background-color: var(--light-black);
-  color: var(--darkest-white);
+  background-color: var(--gray-900);
+  color: var(--gray-100);
 `;
 
 export const Header = styled.header`
@@ -25,7 +25,7 @@ export const Header = styled.header`
   padding: 0.875rem ${sidePadding};
   ${({ isHeaderOnTop }) =>
     isHeaderOnTop
-      ? 'background: var(--light-black)'
+      ? 'background: var(--gray-900)'
       : 'background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0))'};
   transition: background-color 0.4s;
 
@@ -53,7 +53,7 @@ export const Navtab = styled.a`
   text-decoration: none;
   font-weight: bold;
   font-size: 0.875rem;
-  color: var(--darkest-white);
+  color: var(--gray-100);
 
   @media (max-width: ${BREAKPOINTS.LG}) {
     font-size: 0.8rem;
@@ -79,7 +79,7 @@ export const Notification = styled.div`
   font-size: 1.25rem;
   margin-bottom: 4rem;
   color: var(--orange);
-  background-color: var(--lighter-black);
+  background-color: var(--gray-800);
 
   @media (max-width: ${BREAKPOINTS.LG}) {
     font-size: 1rem;
