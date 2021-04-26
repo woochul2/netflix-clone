@@ -100,9 +100,9 @@ export default function ContentBottomPanel({
           </Overview>
           <Text>
             <GrayText>장르: </GrayText>
-            {tvDetail.genres.map((genre, idx) => (
+            {tvDetail.genres.map((genre, index) => (
               <span key={genre.id}>
-                {idx == tvDetail.genres.length - 1 ? (
+                {index == tvDetail.genres.length - 1 ? (
                   <>{genre.name}</>
                 ) : (
                   <>{genre.name}, </>
@@ -125,9 +125,9 @@ export default function ContentBottomPanel({
           {tvDetail.created_by.length != 0 && (
             <Text>
               <GrayText>제작: </GrayText>
-              {tvDetail.created_by.map((person, idx) => (
+              {tvDetail.created_by.map((person, index) => (
                 <span key={person.id}>
-                  {idx == tvDetail.created_by.length - 1 ? (
+                  {index == tvDetail.created_by.length - 1 ? (
                     <>{person.name}</>
                   ) : (
                     <>{person.name}, </>
