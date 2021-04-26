@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Title, ContentsContainer } from './RowStyles';
-import { getJsonFromLink } from '../../../utils';
+import React, { useEffect, useState } from 'react';
+import { getJsonFromLink } from '../../utils';
 import Content from '../Content';
+import { Container, ContentsContainer, Title } from './RowStyles';
 import tmpTvShows from './tmp-tv-shows.json';
 
 const getNetflixTvShowsLink = (genreId) => {

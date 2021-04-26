@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import Row from '../../components/Row';
 import {
   Container,
   Header,
-  Nav,
   LogoLink,
-  Navtab,
   Main,
+  Nav,
+  Navtab,
   Notification,
   TMDbLogo,
 } from './BrowseStyles';
 import tvGenresData from './tv-genres';
-import Row from './Row';
 
 export default function Browse() {
   const [isHeaderOnTop, setIsHeaderOnTop] = useState(false);

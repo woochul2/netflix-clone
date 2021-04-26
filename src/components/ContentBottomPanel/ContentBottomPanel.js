@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { BsChevronDown } from 'react-icons/bs';
+import { getJsonFromLink } from '../../utils';
 import {
   Container,
-  PanelButton,
-  LinkContainer,
-  PageLink,
-  Overview,
-  Text,
   GrayText,
+  LinkContainer,
+  Overview,
+  PageLink,
+  PanelButton,
+  Text,
 } from './ContentBottomPanelStyles';
-import { getJsonFromLink } from '../../../utils';
-import { BsChevronDown } from 'react-icons/bs';
 import tmpTvDetail from './tmp-tv-detail.json';
 import tmpTvVideos from './tmp-tv-videos.json';
 

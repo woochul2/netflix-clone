@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { logoStyles } from '../common-styles';
+import { logoStyles } from '../../common-styles';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 
 const sidePadding = '3.25rem';

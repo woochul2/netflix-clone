@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { IoCloseOutline } from 'react-icons/io5';
+import * as BREAKPOINTS from '../../constants/breakpoints';
+import { changeRemToPx } from '../../utils';
+import ContentBottomPanel from '../ContentBottomPanel';
 import {
-  Container,
-  Inner,
-  ImgContainer,
-  Title,
-  Img,
   CloseButton,
+  Container,
   FakeContent,
+  Img,
+  ImgContainer,
+  Inner,
+  Title,
   transitionDuration,
 } from './ContentStyles';
-import * as BREAKPOINTS from '../../../constants/breakpoints';
-import { changeRemToPx } from '../../../utils';
-import { IoCloseOutline } from 'react-icons/io5';
-import ContentBottomPanel from '../ContentBottomPanel';
 
 const getImageLink = (img) => {
   return `https://image.tmdb.org/t/p/original${img}`;
