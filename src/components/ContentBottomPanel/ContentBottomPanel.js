@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
-import { getJsonFromLink } from '../../utils';
+import { getJsonFromLink } from '../../utils/getJsonFromLink';
 import * as Styled from './styles/ContentBottomPanel';
 import tmpTvDetail from './tmp-tv-detail.json';
 import tmpTvVideos from './tmp-tv-videos.json';

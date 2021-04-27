@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getJsonFromLink } from '../../utils';
+import { getJsonFromLink } from '../../utils/getJsonFromLink';
 import Content from '../Content';
 import * as Styled from './styles/Row';
 import tmpTvShows from './tmp-tv-shows.json';

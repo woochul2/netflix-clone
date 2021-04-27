@@ -1,8 +1,8 @@
 /**
  * @param {string} link
  */
-export default (link) => {
-  return new Promise((resolve, reject) => {
+export const getJsonFromLink = (link) => {
+  return new Promise((resolve, _) => {
     fetch(link).then((response) => {
       resolve(response.json());
     });

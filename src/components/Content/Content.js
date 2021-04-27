@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 import * as BREAKPOINTS from '../../constants/breakpoints';
-import { changeRemToPx } from '../../utils';
+import { changeRemToPx } from '../../utils/changeRemToPx';
 import ContentBottomPanel from '../ContentBottomPanel';
 import * as Styled from './styles/Content';
 

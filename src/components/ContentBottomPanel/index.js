@@ -1,1 +1,3 @@
-export { default } from './ContentBottomPanel';
+import ContentBottomPanel from './ContentBottomPanel';
+
+export default ContentBottomPanel;
