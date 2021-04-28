@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 import { changeRemToPx } from '../../utils/changeRemToPx';
 import ContentBottomPanel from '../ContentBottomPanel';
 import * as Styled from './styles/Content';
 
-const getImageLink = (img) => {
+const getImageLink = (img: string): string => {
   return `https://image.tmdb.org/t/p/original${img}`;
 };
 
@@ -25,20 +25,32 @@ const enableBackdropKeyboardTab = () => {
   });
 };
 
+interface Props {
+  item: TvShows.Result;
+  initContentTitleFontSize: () => void;
+  isMouseOnContent: boolean;
+  setIsMouseOnContent: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export default function Content({
   item,
   initContentTitleFontSize,
   isMouseOnContent,
   setIsMouseOnContent,
-}) {
+}: Props) {
   const { name, backdrop_path, id } = item;
   const modalClassName = `modal-${id}`;
   const contentClassName = `browse-content-${id}`;
   const [isMouseOn, setIsMouseOn] = useState(false);
   const [isContentOnTopZ, setIsContentOnTopZ] = useState(false);
-  const [contentOffset, setContentOffset] = useState(null);
-  const [transLength, setTransLength] = useState(null);
-  const [scaleRatio, setScaleRatio] = useState(null);
+  const [contentOffset, setContentOffset] = useState<{
+    top: string;
+    left: string;
+    width: string;
+    height: string;
+  } | null>(null);
+  const [transLength, setTransLength] = useState<{ x: string; y: string } | null>(null);
+  const [scaleRatio, setScaleRatio] = useState<number | null>(null);
 
   useEffect(() => {
     initContentTitleFontSize();
@@ -65,14 +77,16 @@ export default function Content({
   const handleMouseLeave = () => {
     setIsMouseOn(false);
     setIsMouseOnContent(false);
+
     if (!transLength) {
       setIsContentOnTopZ(true);
     }
   };
 
   useEffect(() => {
-    const body = document.querySelector('body');
-    const html = document.querySelector('html');
+    const body = document.querySelector('body') as HTMLBodyElement;
+    const html = document.querySelector('html') as HTMLHtmlElement;
+
     if (transLength) {
       body.style.overflowY = 'hidden';
       if (window.innerWidth > changeRemToPx(BREAKPOINTS.SM)) {
@@ -90,7 +104,7 @@ export default function Content({
   }, [transLength]);
 
   const getOffset = () => {
-    const container = document.querySelector(`.${contentClassName}`);
+    const container = document.querySelector(`.${contentClassName}`) as HTMLElement;
     setContentOffset({
       top: `${container.offsetTop}px`,
       left: `${container.offsetLeft}px`,
@@ -100,14 +114,11 @@ export default function Content({
   };
 
   const getTransLength = () => {
-    const body = document.querySelector('body');
-    const container = document.querySelector(`.${contentClassName}`);
-    const xTransLength =
-      body.offsetWidth / 2 - container.offsetLeft - container.offsetWidth / 2;
+    const body = document.querySelector('body') as HTMLBodyElement;
+    const container = document.querySelector(`.${contentClassName}`) as HTMLElement;
+    const xTransLength = body.offsetWidth / 2 - container.offsetLeft - container.offsetWidth / 2;
     const yTransLength =
-      window.scrollY -
-      container.offsetTop +
-      (container.offsetHeight * scaleRatio) / 2;
+      window.scrollY - container.offsetTop + (container.offsetHeight * (scaleRatio as number)) / 2;
     setTransLength({ x: `${xTransLength}px`, y: `${yTransLength}px` });
   };
 
@@ -118,10 +129,10 @@ export default function Content({
     }
   }, [scaleRatio]);
 
-  const getFullScaleRatio = () => {
+  const getFullScaleRatio = (): number => {
     return (
-      document.querySelector('body').offsetWidth /
-      document.querySelector(`.${contentClassName}`).offsetWidth
+      (document.querySelector('body') as HTMLBodyElement).offsetWidth /
+      (document.querySelector(`.${contentClassName}`) as HTMLElement).offsetWidth
     );
   };
 
@@ -154,7 +165,7 @@ export default function Content({
     setScaleRatio(fullScaleRatio * 0.995);
   };
 
-  const handleClickModal = (event) => {
+  const handleClickModal = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const modal = document.querySelector(`.${modalClassName}`);
     if (event.target === modal) {
       toggleModal();
@@ -202,9 +213,7 @@ export default function Content({
           />
         </Styled.Inner>
       </Styled.Container>
-      {transLength && (
-        <Styled.FakeContent contentOffset={contentOffset}></Styled.FakeContent>
-      )}
+      {transLength && <Styled.FakeContent contentOffset={contentOffset}></Styled.FakeContent>}
     </>
   );
 }

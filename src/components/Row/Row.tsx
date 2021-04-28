@@ -4,7 +4,7 @@ import Content from '../Content';
 import mockTvShows from './mock-tv-shows.json';
 import * as Styled from './styles/Row';
 
-const getNetflixTvShowsLink = (genreId: number) => {
+const getNetflixTvShowsLink = (genreId: number): string => {
   return `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=1&with_networks=213&with_genres=${genreId}`;
 };
 
