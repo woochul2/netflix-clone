@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Row from '../../components/Row';
 import * as Styled from './styles/Home';
 import tvGenres from './tv-genres.json';

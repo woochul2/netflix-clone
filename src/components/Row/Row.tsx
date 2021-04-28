@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Content from '../Content';
 import mockTvShows from './mock-tv-shows.json';
 import * as Styled from './styles/Row';

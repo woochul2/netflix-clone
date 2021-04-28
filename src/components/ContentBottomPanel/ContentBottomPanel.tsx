@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { BsChevronDown } from 'react-icons/bs';
+import React, { useEffect, useState } from 'react';
+import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import mockTvDetail from './mock-tv-detail.json';
 import mockTvVideos from './mock-tv-videos.json';
 import * as Styled from './styles/ContentBottomPanel';
@@ -68,7 +68,7 @@ export default function ContentBottomPanel({ id, isMouseOn, transLength, toggleM
     <Styled.Container isMouseOn={isMouseOn} transLength={transLength}>
       {!transLength && isMouseOn && (
         <Styled.PanelButton onClick={toggleModal}>
-          <BsChevronDown />
+          <ChevronDownIcon />
         </Styled.PanelButton>
       )}
       {transLength && tvDetail && (

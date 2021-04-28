@@ -130,6 +130,7 @@ export const CloseButton = styled(roundButton)`
   transform: scale(0.3);
 
   svg {
+    width: 0.8em;
     padding: 0.05em;
   }
 `;

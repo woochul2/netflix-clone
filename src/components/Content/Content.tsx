@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { IoCloseOutline } from 'react-icons/io5';
+import React, { useEffect, useState } from 'react';
 import * as BREAKPOINTS from '../../constants/breakpoints';
+import CloseIcon from '../../icons/CloseIcon';
 import { changeRemToPx } from '../../utils/changeRemToPx';
 import ContentBottomPanel from '../ContentBottomPanel';
 import * as Styled from './styles/Content';
@@ -201,7 +201,8 @@ export default function Content({
             <Styled.Img src={getImageLink(backdrop_path)} />
             {transLength && (
               <Styled.CloseButton>
-                <IoCloseOutline />
+                {/* <IoCloseOutline /> */}
+                <CloseIcon />
               </Styled.CloseButton>
             )}
           </Styled.ImgContainer>
