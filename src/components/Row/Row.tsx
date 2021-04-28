@@ -1,17 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getJsonFromLink } from '../../utils/getJsonFromLink';
 import Content from '../Content';
+import mockTvShows from './mock-tv-shows.json';
 import * as Styled from './styles/Row';
-import tmpTvShows from './tmp-tv-shows.json';
 
-const getNetflixTvShowsLink = (genreId) => {
+const getNetflixTvShowsLink = (genreId: number) => {
   return `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=1&with_networks=213&with_genres=${genreId}`;
 };
 
-export default function Row({ genreId, genreName, ...restProps }) {
-  const [tvShows, setTvShows] = useState([]);
+interface Props {
+  genreId: number;
+  genreName: string;
+  initContentTitleFontSize: () => void;
+  isMouseOnContent: boolean;
+  setIsMouseOnContent: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  const filterTvShows = (json, length) => {
+export default function Row({ genreId, genreName, ...restProps }: Props) {
+  const [tvShows, setTvShows] = useState<TvShows.Result[]>([]);
+
+  const filterTvShows = (json: TvShows.RootObject, length: number) => {
     const results = json.results;
     let newResults = [];
 
@@ -30,17 +38,17 @@ export default function Row({ genreId, genreName, ...restProps }) {
 
   const getTvShows = async () => {
     const link = getNetflixTvShowsLink(genreId);
-    const json = await getJsonFromLink(link);
+    const json = await getJsonFromLink<TvShows.RootObject>(link);
     filterTvShows(json, 6);
   };
 
-  const tmpGetTvShows = () => {
-    filterTvShows(tmpTvShows, 6);
+  const getMockTvShows = () => {
+    filterTvShows(mockTvShows, 6);
   };
 
   useEffect(() => {
     // getTvShows();
-    tmpGetTvShows();
+    getMockTvShows();
   }, []);
 
   return (
