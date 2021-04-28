@@ -1,5 +1,5 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { getJsonFromLink } from '../../utils/getJsonFromLink';
 import Content from '../Content';
 import mockTvShows from './mock-tv-shows.json';
 import * as Styled from './styles/Row';
@@ -38,8 +38,8 @@ export default function Row({ genreId, genreName, ...restProps }: Props) {
 
   const getTvShows = async () => {
     const link = getNetflixTvShowsLink(genreId);
-    const json = await getJsonFromLink<TvShows.RootObject>(link);
-    filterTvShows(json, 6);
+    const response = await axios.get<TvShows.RootObject>(link);
+    filterTvShows(response.data, 6);
   };
 
   const getMockTvShows = () => {

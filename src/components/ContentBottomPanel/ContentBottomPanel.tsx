@@ -1,6 +1,6 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
-import { getJsonFromLink } from '../../utils/getJsonFromLink';
 import mockTvDetail from './mock-tv-detail.json';
 import mockTvVideos from './mock-tv-videos.json';
 import * as Styled from './styles/ContentBottomPanel';
@@ -33,14 +33,14 @@ export default function ContentBottomPanel({ id, isMouseOn, transLength, toggleM
 
   const getTvDetail = async () => {
     const link = getTvDetailLink(id);
-    const json = await getJsonFromLink<TvDetail.RootObject>(link);
-    setTvDetail(json);
+    const response = await axios.get<TvDetail.RootObject>(link);
+    setTvDetail(response.data);
   };
 
   const getTvVideos = async () => {
     const link = getTvVideosLink(id);
-    const json = await getJsonFromLink<TvVideos.RootObject>(link);
-    setTvVideos(json);
+    const response = await axios.get<TvVideos.RootObject>(link);
+    setTvVideos(response.data);
   };
 
   const getData = () => {
