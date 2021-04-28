@@ -54,8 +54,8 @@ export default function ContentBottomPanel({
 
   useEffect(() => {
     if (transLength) {
-      getData();
-      // getTmpData();
+      // getData();
+      getTmpData();
     }
   }, [transLength]);
 
@@ -75,8 +75,8 @@ export default function ContentBottomPanel({
             {tvVideos &&
               tvVideos.results.map(
                 (result) =>
-                  result.type == 'Trailer' &&
-                  result.site == 'YouTube' && (
+                  result.type === 'Trailer' &&
+                  result.site === 'YouTube' && (
                     <Styled.PageLink
                       key={result.id}
                       href={getYoutubeLink(result.key)}
@@ -94,7 +94,7 @@ export default function ContentBottomPanel({
             <Styled.GrayText>장르: </Styled.GrayText>
             {tvDetail.genres.map((genre, index) => (
               <span key={genre.id}>
-                {index == tvDetail.genres.length - 1 ? (
+                {index === tvDetail.genres.length - 1 ? (
                   <>{genre.name}</>
                 ) : (
                   <>{genre.name}, </>
@@ -114,12 +114,12 @@ export default function ContentBottomPanel({
             <Styled.GrayText>회원 평점: </Styled.GrayText>
             {tvDetail.vote_average}
           </Styled.Text>
-          {tvDetail.created_by.length != 0 && (
+          {tvDetail.created_by.length !== 0 && (
             <Styled.Text>
               <Styled.GrayText>제작: </Styled.GrayText>
               {tvDetail.created_by.map((person, index) => (
                 <span key={person.id}>
-                  {index == tvDetail.created_by.length - 1 ? (
+                  {index === tvDetail.created_by.length - 1 ? (
                     <>{person.name}</>
                   ) : (
                     <>{person.name}, </>

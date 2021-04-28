@@ -19,7 +19,7 @@ const disableBackdropKeyboardTab = () => {
 const enableBackdropKeyboardTab = () => {
   const anchors = document.querySelectorAll('a');
   anchors.forEach((anchor) => {
-    if (anchor.tabIndex == -1) {
+    if (anchor.tabIndex === -1) {
       anchor.tabIndex = 0;
     }
   });
@@ -156,7 +156,7 @@ export default function Content({
 
   const handleClickModal = (event) => {
     const modal = document.querySelector(`.${modalClassName}`);
-    if (event.target == modal) {
+    if (event.target === modal) {
       toggleModal();
     }
   };
@@ -181,7 +181,7 @@ export default function Content({
           scaleRatio={scaleRatio}
         >
           <Styled.ImgContainer
-            className="browse-content-img-container"
+            className="content-img-container"
             isMouseOn={isMouseOn}
             transLength={transLength}
             onClick={toggleModal}

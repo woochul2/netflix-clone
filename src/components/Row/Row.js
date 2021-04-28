@@ -17,10 +17,10 @@ export default function Row({ genreId, genreName, ...restProps }) {
 
     for (let i = 0; i < results.length; i++) {
       const result = results[i];
-      if (result.genre_ids[0] == genreId) {
+      if (result.genre_ids[0] === genreId) {
         newResults.push(result);
       }
-      if (newResults.length == length) {
+      if (newResults.length === length) {
         break;
       }
     }
@@ -39,8 +39,8 @@ export default function Row({ genreId, genreName, ...restProps }) {
   };
 
   useEffect(() => {
-    getTvShows();
-    // tmpGetTvShows();
+    // getTvShows();
+    tmpGetTvShows();
   }, []);
 
   return (

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Row from '../../components/Row';
 import * as Styled from './styles/Home';
-import tvGenresData from './tv-genres';
+import tvGenres from './tv-genres.json';
 
 export default function Home() {
   const [isHeaderOnTop, setIsHeaderOnTop] = useState(false);
@@ -13,20 +13,20 @@ export default function Home() {
       setIsHeaderOnTop(true);
       return;
     }
-    if (window.scrollY == 0) {
+
+    if (window.scrollY === 0) {
       setIsHeaderOnTop(false);
       return;
     }
   };
 
   const getContentContainerWidth = () => {
-    const width = document.querySelector('.browse-content-img-container')
-      .offsetWidth;
-    setContentTitleFontSize(`${width / 10}px`);
+    const contentImgContainer = document.querySelector('.content-img-container') as HTMLElement;
+    setContentTitleFontSize(`${contentImgContainer.offsetWidth / 10}px`);
   };
 
   const initContentTitleFontSize = () => {
-    if (contentTitleFontSize == '0px') {
+    if (contentTitleFontSize === '0px') {
       getContentContainerWidth();
     }
   };
@@ -45,10 +45,7 @@ export default function Home() {
   return (
     <Styled.Container fontSize={contentTitleFontSize}>
       <Styled.Header isHeaderOnTop={isHeaderOnTop}>
-        <Styled.Nav>
-          <Styled.LogoLink href="#">NETFLIX.clone</Styled.LogoLink>
-          <Styled.Navtab href="#">TV 프로그램</Styled.Navtab>
-        </Styled.Nav>
+        <Styled.LogoLink href="#">NETFLIX.clone</Styled.LogoLink>
       </Styled.Header>
       <Styled.Main>
         <Styled.Notification>
@@ -61,11 +58,11 @@ export default function Home() {
           </Styled.TMDbLogo>
           에서 받아왔습니다.
         </Styled.Notification>
-        {tvGenresData.map((item) => (
+        {tvGenres.map((tvGenre) => (
           <Row
-            key={item.id}
-            genreId={item.id}
-            genreName={item.name}
+            key={tvGenre.id}
+            genreId={tvGenre.id}
+            genreName={tvGenre.name}
             initContentTitleFontSize={initContentTitleFontSize}
             isMouseOnContent={isMouseOnContent}
             setIsMouseOnContent={setIsMouseOnContent}

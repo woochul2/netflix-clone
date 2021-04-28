@@ -1,18 +1,18 @@
-import styled from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 import * as BREAKPOINTS from '../../../constants/breakpoints';
 
 const sidePadding = '3.25rem';
 const smallSidePadding = '2rem';
 
-export const Container = styled.div.attrs((props) => ({
+export const Container = styled.div.attrs((props: { fontSize: string }) => ({
   style: { fontSize: props.fontSize },
-}))`
+}))<{ fontSize: string }>`
   min-width: 18.75rem;
   background-color: var(--gray-900);
   color: var(--gray-100);
 `;
 
-export const Header = styled.header`
+export const Header = styled.header<{ isHeaderOnTop: boolean }>`
   z-index: 2;
   position: sticky;
   top: 0;
@@ -24,18 +24,20 @@ export const Header = styled.header`
   padding: 0.875rem ${sidePadding};
   ${({ isHeaderOnTop }) =>
     isHeaderOnTop
-      ? 'background: var(--gray-900)'
-      : 'background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0))'};
+      ? css`
+          background: var(--gray-900);
+        `
+      : css`
+          background-image: linear-gradient(
+            hsla(0, 0%, 0%, 0.7) 10%,
+            hsla(0, 0%, 0%, 0)
+          );
+        `};
   transition: background-color 0.4s;
 
   @media (max-width: ${BREAKPOINTS.SM}) {
     padding: 0.875rem ${smallSidePadding};
   }
-`;
-
-export const Nav = styled.nav`
-  display: flex;
-  align-items: center;
 `;
 
 export const LogoLink = styled.a`
@@ -49,23 +51,6 @@ export const LogoLink = styled.a`
 
   @media (max-width: ${BREAKPOINTS.SM}) {
     font-size: 1.25rem;
-  }
-`;
-
-export const Navtab = styled.a`
-  margin-left: 2rem;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 0.875rem;
-  color: var(--gray-100);
-
-  @media (max-width: ${BREAKPOINTS.LG}) {
-    font-size: 0.8rem;
-  }
-
-  @media (max-width: ${BREAKPOINTS.MD}) {
-    margin-left: 1rem;
-    font-size: 0.75rem;
   }
 `;
 
