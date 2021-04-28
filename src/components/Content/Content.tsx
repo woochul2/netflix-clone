@@ -5,7 +5,7 @@ import { changeRemToPx } from '../../utils/changeRemToPx';
 import ContentBottomPanel from '../ContentBottomPanel';
 import * as Styled from './styles/Content';
 
-const getImageLink = (img: string): string => {
+const getImageLink = (img: string | null): string => {
   return `https://image.tmdb.org/t/p/original${img}`;
 };
 

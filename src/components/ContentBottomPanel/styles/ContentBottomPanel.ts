@@ -6,7 +6,13 @@ import {
   roundButton,
 } from '../../Content/styles/Content';
 
-export const Container = styled.div`
+export const Container = styled.div<{
+  isMouseOn: boolean;
+  transLength: {
+    x: string;
+    y: string;
+  } | null;
+}>`
   z-index: -1;
   position: absolute;
   top: 100%;

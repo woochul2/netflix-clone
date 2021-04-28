@@ -1,40 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 import { getJsonFromLink } from '../../utils/getJsonFromLink';
+import mockTvDetail from './mock-tv-detail.json';
+import mockTvVideos from './mock-tv-videos.json';
 import * as Styled from './styles/ContentBottomPanel';
-import tmpTvDetail from './tmp-tv-detail.json';
-import tmpTvVideos from './tmp-tv-videos.json';
 
-const getTvDetailLink = (id) => {
+const getTvDetailLink = (id: number): string => {
   return `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
 };
 
-const getTvVideosLink = (id) => {
+const getTvVideosLink = (id: number): string => {
   return `https://api.themoviedb.org/3/tv/${id}/videos?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
 };
 
-const getYoutubeLink = (key) => {
+const getYoutubeLink = (key: string): string => {
   return `https://www.youtube.com/watch?v=${key}`;
 };
 
-export default function ContentBottomPanel({
-  id,
-  isMouseOn,
-  transLength,
-  toggleModal,
-}) {
-  const [tvDetail, setTvDetail] = useState(null);
-  const [tvVideos, setTvVideos] = useState(null);
+interface Props {
+  id: number;
+  isMouseOn: boolean;
+  transLength: {
+    x: string;
+    y: string;
+  } | null;
+  toggleModal: () => void;
+}
+
+export default function ContentBottomPanel({ id, isMouseOn, transLength, toggleModal }: Props) {
+  const [tvDetail, setTvDetail] = useState<TvDetail.RootObject>();
+  const [tvVideos, setTvVideos] = useState<TvVideos.RootObject>();
 
   const getTvDetail = async () => {
     const link = getTvDetailLink(id);
-    const json = await getJsonFromLink(link);
+    const json = await getJsonFromLink<TvDetail.RootObject>(link);
     setTvDetail(json);
   };
 
   const getTvVideos = async () => {
     const link = getTvVideosLink(id);
-    const json = await getJsonFromLink(link);
+    const json = await getJsonFromLink<TvVideos.RootObject>(link);
     setTvVideos(json);
   };
 
@@ -47,15 +52,15 @@ export default function ContentBottomPanel({
     }
   };
 
-  const getTmpData = () => {
-    setTvDetail(tmpTvDetail);
-    setTvVideos(tmpTvVideos);
+  const getMockData = () => {
+    setTvDetail(mockTvDetail);
+    setTvVideos(mockTvVideos);
   };
 
   useEffect(() => {
     if (transLength) {
       // getData();
-      getTmpData();
+      getMockData();
     }
   }, [transLength]);
 
@@ -94,11 +99,7 @@ export default function ContentBottomPanel({
             <Styled.GrayText>장르: </Styled.GrayText>
             {tvDetail.genres.map((genre, index) => (
               <span key={genre.id}>
-                {index === tvDetail.genres.length - 1 ? (
-                  <>{genre.name}</>
-                ) : (
-                  <>{genre.name}, </>
-                )}
+                {index === tvDetail.genres.length - 1 ? <>{genre.name}</> : <>{genre.name}, </>}
               </span>
             ))}
           </Styled.Text>
