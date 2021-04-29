@@ -40,7 +40,7 @@ export default function Content({
 }: Props) {
   const { name, backdrop_path, id } = item;
   const modalClassName = `modal-${id}`;
-  const contentClassName = `browse-content-${id}`;
+  const contentClassName = `content-${id}`;
   const [isMouseOn, setIsMouseOn] = useState(false);
   const [isContentOnTopZ, setIsContentOnTopZ] = useState(false);
   const [contentOffset, setContentOffset] = useState<{
@@ -201,7 +201,6 @@ export default function Content({
             <Styled.Img src={getImageLink(backdrop_path)} />
             {transLength && (
               <Styled.CloseButton>
-                {/* <IoCloseOutline /> */}
                 <CloseIcon />
               </Styled.CloseButton>
             )}

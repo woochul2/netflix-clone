@@ -5,10 +5,7 @@ export const boxShadow = '0 0 0.2rem 0.07rem var(--black)';
 export const transitionDuration = 300;
 export const cssTransitionDuration = `${transitionDuration / 1000}s`;
 
-const moveAndScale = (
-  transLength: { x: string; y: string } | null,
-  scaleRatio: number | null
-): string | undefined => {
+const moveAndScale = (transLength: { x: string; y: string } | null, scaleRatio: number | null): string | undefined => {
   if (!transLength) return;
   return `translate(${transLength.x}, ${transLength.y}) scale(${scaleRatio})`;
 };
@@ -19,8 +16,7 @@ export const Container = styled.div<{
   isContentOnTopZ: boolean;
   contentHeight: string;
 }>`
-  z-index: ${({ transLength, isMouseOn, isContentOnTopZ }) =>
-    !transLength && (isMouseOn || isContentOnTopZ) && 1};
+  z-index: ${({ transLength, isMouseOn, isContentOnTopZ }) => !transLength && (isMouseOn || isContentOnTopZ) && 1};
   ${({ transLength, contentHeight }) =>
     transLength &&
     css`
@@ -58,8 +54,7 @@ export const Inner = styled.div<{
   border-radius: ${borderRadius};
   box-shadow: ${boxShadow};
   transform: ${({ transLength, isMouseOn }) => !transLength && isMouseOn && 'scale(1.3)'};
-  transform: ${({ transLength, scaleRatio }) =>
-    transLength && moveAndScale(transLength, scaleRatio)};
+  transform: ${({ transLength, scaleRatio }) => transLength && moveAndScale(transLength, scaleRatio)};
   transition: transform ${cssTransitionDuration};
 `;
 
@@ -83,7 +78,7 @@ export const Title = styled.h3<{
   right: 0.5rem;
   text-align: right;
   font-family: 'Nanum Brush Script', cursive;
-  font-size: 1em;
+  font-size: var(--content-title-font-size);
   mix-blend-mode: luminosity;
   ${({ length }) =>
     length < 7

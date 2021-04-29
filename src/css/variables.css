@@ -9,3 +9,7 @@
   --red: hsl(357, 92%, 46%);
   --orange: hsl(32, 98%, 46%);
 }
+
+:root {
+  --content-title-font-size: 0px;
+}

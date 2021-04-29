@@ -4,9 +4,7 @@ import * as BREAKPOINTS from '../../../constants/breakpoints';
 const sidePadding = '3.25rem';
 const smallSidePadding = '2rem';
 
-export const Container = styled.div.attrs((props: { fontSize: string }) => ({
-  style: { fontSize: props.fontSize },
-}))<{ fontSize: string }>`
+export const Container = styled.div`
   min-width: 18.75rem;
   background-color: var(--gray-900);
   color: var(--gray-100);
@@ -28,10 +26,7 @@ export const Header = styled.header<{ isHeaderOnTop: boolean }>`
           background: var(--gray-900);
         `
       : css`
-          background-image: linear-gradient(
-            hsla(0, 0%, 0%, 0.7) 10%,
-            hsla(0, 0%, 0%, 0)
-          );
+          background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0));
         `};
   transition: background-color 0.4s;
 

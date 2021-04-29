@@ -5,7 +5,6 @@ import tvGenres from './tv-genres.json';
 
 export default function Home() {
   const [isHeaderOnTop, setIsHeaderOnTop] = useState(false);
-  const [contentTitleFontSize, setContentTitleFontSize] = useState('0px');
   const [isMouseOnContent, setIsMouseOnContent] = useState(false);
 
   const checkHeaderLocation = () => {
@@ -20,30 +19,36 @@ export default function Home() {
     }
   };
 
-  const getContentContainerWidth = () => {
+  const setContentTitleFontSize = () => {
     const contentImgContainer = document.querySelector('.content-img-container') as HTMLElement;
-    setContentTitleFontSize(`${contentImgContainer.offsetWidth / 10}px`);
+    // 컨텐츠 제목 크기는 이미지 너비의 1/10로 했을 때가 가장 적절함
+    const fontSize = `${contentImgContainer.offsetWidth / 10}px`;
+    document.documentElement.style.setProperty('--content-title-font-size', fontSize);
   };
 
   const initContentTitleFontSize = () => {
+    const contentTitleFontSize = getComputedStyle(document.documentElement)
+      .getPropertyValue('--content-title-font-size')
+      .trim();
+
     if (contentTitleFontSize === '0px') {
-      getContentContainerWidth();
+      setContentTitleFontSize();
     }
   };
 
   useEffect(() => {
     checkHeaderLocation();
     window.addEventListener('scroll', checkHeaderLocation);
-    window.addEventListener('resize', getContentContainerWidth);
+    window.addEventListener('resize', setContentTitleFontSize);
 
     return () => {
       window.removeEventListener('scroll', checkHeaderLocation);
-      window.removeEventListener('resize', getContentContainerWidth);
+      window.removeEventListener('resize', setContentTitleFontSize);
     };
   }, []);
 
   return (
-    <Styled.Container fontSize={contentTitleFontSize}>
+    <Styled.Container>
       <Styled.Header isHeaderOnTop={isHeaderOnTop}>
         <Styled.LogoLink href="#">NETFLIX.clone</Styled.LogoLink>
       </Styled.Header>
