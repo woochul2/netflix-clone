@@ -29,6 +29,7 @@ export const Container = styled.div<{
       height: ${contentHeight};
       background-color: hsla(0, 0%, 0%, 0.7);
     `};
+  font-size: var(--content-font-size);
 `;
 
 export const Inner = styled.div<{
@@ -78,7 +79,7 @@ export const Title = styled.h3<{
   right: 0.5rem;
   text-align: right;
   font-family: 'Nanum Brush Script', cursive;
-  font-size: var(--content-title-font-size);
+  font-size: 1em;
   mix-blend-mode: luminosity;
   ${({ length }) =>
     length < 7

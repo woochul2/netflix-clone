@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import * as BREAKPOINTS from '../../../constants/breakpoints';
 
 const sidePadding = '3.25rem';
@@ -10,7 +10,8 @@ export const Container = styled.div`
   color: var(--gray-100);
 `;
 
-export const Header = styled.header<{ isHeaderOnTop: boolean }>`
+export const Header = styled.header`
+  // 컨텐츠 위에 마우스 올려서 이미지가 확대됐을 때의 z-index가 1이므로 2로 더 높게 설정
   z-index: 2;
   position: sticky;
   top: 0;
@@ -20,15 +21,12 @@ export const Header = styled.header<{ isHeaderOnTop: boolean }>`
   align-items: center;
   justify-content: space-between;
   padding: 0.875rem ${sidePadding};
-  ${({ isHeaderOnTop }) =>
-    isHeaderOnTop
-      ? css`
-          background: var(--gray-900);
-        `
-      : css`
-          background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0));
-        `};
+  background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0));
   transition: background-color 0.4s;
+
+  &.scroll-down {
+    background: var(--gray-900);
+  }
 
   @media (max-width: ${BREAKPOINTS.SM}) {
     padding: 0.875rem ${smallSidePadding};

@@ -4,31 +4,23 @@ import * as Styled from './styles/Home';
 import tvGenres from './tv-genres.json';
 
 export default function Home() {
-  const [isHeaderOnTop, setIsHeaderOnTop] = useState(false);
   const [isMouseOnContent, setIsMouseOnContent] = useState(false);
 
   const checkHeaderLocation = () => {
-    if (window.scrollY > 0) {
-      setIsHeaderOnTop(true);
-      return;
-    }
-
-    if (window.scrollY === 0) {
-      setIsHeaderOnTop(false);
-      return;
-    }
+    const header = document.querySelector('.home-header') as HTMLElement;
+    window.scrollY > 0 ? header.classList.add('scroll-down') : header.classList.remove('scroll-down');
   };
 
   const setContentTitleFontSize = () => {
     const contentImgContainer = document.querySelector('.content-img-container') as HTMLElement;
-    // 컨텐츠 제목 크기는 이미지 너비의 1/10로 했을 때가 가장 적절함
+    // 컨텐츠 제목 크기가 이미지 너비의 1/10로 했을 때가 가장 적절함
     const fontSize = `${contentImgContainer.offsetWidth / 10}px`;
-    document.documentElement.style.setProperty('--content-title-font-size', fontSize);
+    document.documentElement.style.setProperty('--content-font-size', fontSize);
   };
 
   const initContentTitleFontSize = () => {
     const contentTitleFontSize = getComputedStyle(document.documentElement)
-      .getPropertyValue('--content-title-font-size')
+      .getPropertyValue('--content-font-size')
       .trim();
 
     if (contentTitleFontSize === '0px') {
@@ -37,7 +29,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    checkHeaderLocation();
     window.addEventListener('scroll', checkHeaderLocation);
     window.addEventListener('resize', setContentTitleFontSize);
 
@@ -49,7 +40,7 @@ export default function Home() {
 
   return (
     <Styled.Container>
-      <Styled.Header isHeaderOnTop={isHeaderOnTop}>
+      <Styled.Header className="home-header">
         <Styled.LogoLink href="#">NETFLIX.clone</Styled.LogoLink>
       </Styled.Header>
       <Styled.Main>
