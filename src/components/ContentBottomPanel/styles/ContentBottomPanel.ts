@@ -1,10 +1,5 @@
 import styled from 'styled-components/macro';
-import {
-  borderRadius,
-  boxShadow,
-  cssTransitionDuration,
-  roundButton,
-} from '../../Content/styles/Content';
+import { borderRadius, boxShadow, cssTransitionDuration, roundButton } from '../../Content/styles/Content';
 
 export const Container = styled.div<{
   isMouseOn: boolean;
@@ -13,7 +8,6 @@ export const Container = styled.div<{
     y: string;
   } | null;
 }>`
-  z-index: -1;
   position: absolute;
   top: 100%;
   display: flex;

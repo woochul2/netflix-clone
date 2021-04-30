@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 import CloseIcon from '../../icons/CloseIcon';
 import { changeRemToPx } from '../../utils/changeRemToPx';
+import { setContentFontSize } from '../../utils/setContentFontSize';
 import ContentBottomPanel from '../ContentBottomPanel';
 import * as Styled from './styles/Content';
 
@@ -27,17 +28,9 @@ const enableBackdropKeyboardTab = () => {
 
 interface Props {
   item: TvShows.Result;
-  initContentTitleFontSize: () => void;
-  isMouseOnContent: boolean;
-  setIsMouseOnContent: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Content({
-  item,
-  initContentTitleFontSize,
-  isMouseOnContent,
-  setIsMouseOnContent,
-}: Props) {
+export default function Content({ item }: Props) {
   const { name, backdrop_path, id } = item;
   const modalClassName = `modal-${id}`;
   const contentClassName = `content-${id}`;
@@ -52,16 +45,21 @@ export default function Content({
   const [transLength, setTransLength] = useState<{ x: string; y: string } | null>(null);
   const [scaleRatio, setScaleRatio] = useState<number | null>(null);
 
+  const initContentFontSize = () => {
+    const contentTitleFontSize = getComputedStyle(document.documentElement)
+      .getPropertyValue('--content-font-size')
+      .trim();
+
+    if (contentTitleFontSize === '0px') {
+      setContentFontSize();
+    }
+  };
+
   useEffect(() => {
-    initContentTitleFontSize();
+    initContentFontSize();
   }, []);
 
   useEffect(() => {
-    if (isMouseOnContent) {
-      setIsContentOnTopZ(false);
-      return;
-    }
-
     if (isContentOnTopZ) {
       setTimeout(() => {
         setIsContentOnTopZ(false);
@@ -71,12 +69,10 @@ export default function Content({
 
   const handleMouseEnter = () => {
     setIsMouseOn(true);
-    setIsMouseOnContent(true);
   };
 
   const handleMouseLeave = () => {
     setIsMouseOn(false);
-    setIsMouseOnContent(false);
 
     if (!transLength) {
       setIsContentOnTopZ(true);
@@ -117,8 +113,7 @@ export default function Content({
     const body = document.querySelector('body') as HTMLBodyElement;
     const container = document.querySelector(`.${contentClassName}`) as HTMLElement;
     const xTransLength = body.offsetWidth / 2 - container.offsetLeft - container.offsetWidth / 2;
-    const yTransLength =
-      window.scrollY - container.offsetTop + (container.offsetHeight * (scaleRatio as number)) / 2;
+    const yTransLength = window.scrollY - container.offsetTop + (container.offsetHeight * (scaleRatio as number)) / 2;
     setTransLength({ x: `${xTransLength}px`, y: `${yTransLength}px` });
   };
 
@@ -166,7 +161,7 @@ export default function Content({
   };
 
   const handleClickModal = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const modal = document.querySelector(`.${modalClassName}`);
+    const modal = document.querySelector(`.${modalClassName}`) as HTMLElement;
     if (event.target === modal) {
       toggleModal();
     }
@@ -205,12 +200,7 @@ export default function Content({
               </Styled.CloseButton>
             )}
           </Styled.ImgContainer>
-          <ContentBottomPanel
-            id={id}
-            isMouseOn={isMouseOn}
-            transLength={transLength}
-            toggleModal={toggleModal}
-          />
+          <ContentBottomPanel id={id} isMouseOn={isMouseOn} transLength={transLength} toggleModal={toggleModal} />
         </Styled.Inner>
       </Styled.Container>
       {transLength && <Styled.FakeContent contentOffset={contentOffset}></Styled.FakeContent>}

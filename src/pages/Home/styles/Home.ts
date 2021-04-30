@@ -11,8 +11,8 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.header`
-  // 컨텐츠 위에 마우스 올려서 이미지가 확대됐을 때의 z-index가 1이므로 2로 더 높게 설정
-  z-index: 2;
+  // 모달을 제외하고 가장 위에 위치하도록 z-index 설정
+  z-index: 3;
   position: sticky;
   top: 0;
   left: 0;

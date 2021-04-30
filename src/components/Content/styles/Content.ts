@@ -16,11 +16,13 @@ export const Container = styled.div<{
   isContentOnTopZ: boolean;
   contentHeight: string;
 }>`
+  // 이미지가 확대됐다가 줄어들 때도 옆의 다른 컨텐츠 이미지들 위에 보이도록 z-index 설정
   z-index: ${({ transLength, isMouseOn, isContentOnTopZ }) => !transLength && (isMouseOn || isContentOnTopZ) && 1};
   ${({ transLength, contentHeight }) =>
     transLength &&
     css`
-      z-index: 3;
+      // 모달이 가장 위에 위치하도록 z-index 설정
+      z-index: 999;
       overflow: auto;
       position: absolute;
       top: 0;
@@ -30,6 +32,15 @@ export const Container = styled.div<{
       background-color: hsla(0, 0%, 0%, 0.7);
     `};
   font-size: var(--content-font-size);
+
+  &:hover {
+    // 이미지 위에 마우스 올리면 헤더보다는 낮게, 줄어드는 이미지보다는 위에 보이도록 z-index 설정
+    ${({ transLength }) =>
+      !transLength &&
+      css`
+        z-index: 2;
+      `}
+  }
 `;
 
 export const Inner = styled.div<{

@@ -11,12 +11,9 @@ const getNetflixTvShowsLink = (genreId: number): string => {
 interface Props {
   genreId: number;
   genreName: string;
-  initContentTitleFontSize: () => void;
-  isMouseOnContent: boolean;
-  setIsMouseOnContent: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Row({ genreId, genreName, ...restProps }: Props) {
+export default function Row({ genreId, genreName }: Props) {
   const [tvShows, setTvShows] = useState<TvShows.Result[]>([]);
 
   const filterTvShows = (json: TvShows.RootObject, length: number) => {
@@ -56,7 +53,7 @@ export default function Row({ genreId, genreName, ...restProps }: Props) {
       <Styled.Title>{genreName}</Styled.Title>
       <Styled.ContentsContainer>
         {tvShows.map((item) => (
-          <Content key={item.id} item={item} {...restProps} />
+          <Content key={item.id} item={item} />
         ))}
       </Styled.ContentsContainer>
     </Styled.Container>
