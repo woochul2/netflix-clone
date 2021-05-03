@@ -11,5 +11,6 @@
 }
 
 :root {
-  --content-font-size: 0px;
+  --content-width: 0px;
+  --slider-control-button-display: initial;
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 import CloseIcon from '../../icons/CloseIcon';
 import { changeRemToPx } from '../../utils/changeRemToPx';
-import { setContentFontSize } from '../../utils/setContentFontSize';
 import ContentBottomPanel from '../ContentBottomPanel';
 import * as Styled from './styles/Content';
 
@@ -20,9 +19,7 @@ const disableBackdropKeyboardTab = () => {
 const enableBackdropKeyboardTab = () => {
   const anchors = document.querySelectorAll('a');
   anchors.forEach((anchor) => {
-    if (anchor.tabIndex === -1) {
-      anchor.tabIndex = 0;
-    }
+    if (anchor.tabIndex === -1) anchor.tabIndex = 0;
   });
 };
 
@@ -39,25 +36,12 @@ export default function Content({ item }: Props) {
   const [contentOffset, setContentOffset] = useState<{
     top: string;
     left: string;
-    width: string;
-    height: string;
   } | null>(null);
   const [transLength, setTransLength] = useState<{ x: string; y: string } | null>(null);
   const [scaleRatio, setScaleRatio] = useState<number | null>(null);
-
-  const initContentFontSize = () => {
-    const contentTitleFontSize = getComputedStyle(document.documentElement)
-      .getPropertyValue('--content-font-size')
-      .trim();
-
-    if (contentTitleFontSize === '0px') {
-      setContentFontSize();
-    }
-  };
-
-  useEffect(() => {
-    initContentFontSize();
-  }, []);
+  const [modalPosition, setModalPosition] = useState({ top: '', left: '' });
+  const home = document.querySelector<HTMLElement>('.home') as HTMLElement;
+  // if (!home) return;
 
   useEffect(() => {
     if (isContentOnTopZ) {
@@ -74,74 +58,103 @@ export default function Content({ item }: Props) {
   const handleMouseLeave = () => {
     setIsMouseOn(false);
 
-    if (!transLength) {
-      setIsContentOnTopZ(true);
-    }
+    if (!transLength) setIsContentOnTopZ(true);
   };
 
   useEffect(() => {
-    const body = document.querySelector('body') as HTMLBodyElement;
-    const html = document.querySelector('html') as HTMLHtmlElement;
+    const home = document.querySelector<HTMLElement>('.home');
+    if (!home) return;
 
     if (transLength) {
-      body.style.overflowY = 'hidden';
-      if (window.innerWidth > changeRemToPx(BREAKPOINTS.SM)) {
-        body.style.paddingRight = '15px';
-      }
-      html.style.backgroundColor = 'var(--black)';
+      home.style.overflowY = 'hidden';
       return;
     }
 
     if (!transLength) {
-      body.style.overflowY = 'visible';
-      body.style.paddingRight = '0';
-      html.style.backgroundColor = '0';
+      home.style.overflowY = 'visible';
+      home.style.paddingRight = '0';
     }
   }, [transLength]);
 
-  const getOffset = () => {
-    const container = document.querySelector(`.${contentClassName}`) as HTMLElement;
-    setContentOffset({
-      top: `${container.offsetTop}px`,
-      left: `${container.offsetLeft}px`,
-      width: `${container.offsetWidth}px`,
-      height: `${container.offsetHeight}px`,
-    });
-  };
-
-  const getTransLength = () => {
-    const body = document.querySelector('body') as HTMLBodyElement;
-    const container = document.querySelector(`.${contentClassName}`) as HTMLElement;
-    const xTransLength = body.offsetWidth / 2 - container.offsetLeft - container.offsetWidth / 2;
-    const yTransLength = window.scrollY - container.offsetTop + (container.offsetHeight * (scaleRatio as number)) / 2;
-    setTransLength({ x: `${xTransLength}px`, y: `${yTransLength}px` });
-  };
-
   useEffect(() => {
+    const genreId = item.genre_ids[0];
+    const rowContentsContainer = document.querySelector<HTMLElement>(
+      `.row-contents-container.row-contents-container-${genreId}`
+    );
+    if (!rowContentsContainer) return;
+    const rowSlider = document.querySelector<HTMLElement>(`.row-slider.row-slider-${genreId}`);
+    if (!rowSlider) return;
+
+    const getOffset = () => {
+      const container = document.querySelector(`.${contentClassName}`) as HTMLElement;
+      setContentOffset({
+        top: `${container.offsetTop + rowContentsContainer.offsetTop}px`,
+        left: `${
+          container.offsetLeft +
+          rowContentsContainer.offsetLeft +
+          parseFloat(getComputedStyle(rowSlider).transform.split(', ')[4])
+        }px`,
+      });
+    };
+
+    const getTransLength = () => {
+      const home = document.querySelector<HTMLElement>('.home');
+      if (!home) return;
+      const container = document.querySelector(`.${contentClassName}`) as HTMLElement;
+      const xTransLength = home.clientWidth / 2 - container.offsetLeft - container.clientWidth / 2;
+      const yTransLength = home.scrollTop - container.offsetTop + (container.clientHeight * (scaleRatio as number)) / 2;
+      setTransLength({
+        x: `${
+          xTransLength -
+          (rowContentsContainer.offsetLeft + parseFloat(getComputedStyle(rowSlider).transform.split(', ')[4]))
+        }px`,
+        y: `${yTransLength - rowContentsContainer.offsetTop}px`,
+      });
+    };
+
     if (scaleRatio) {
       getOffset();
       getTransLength();
     }
-  }, [scaleRatio]);
+  }, [scaleRatio, contentClassName, item.genre_ids]);
 
   const getFullScaleRatio = (): number => {
-    return (
-      (document.querySelector('body') as HTMLBodyElement).offsetWidth /
-      (document.querySelector(`.${contentClassName}`) as HTMLElement).offsetWidth
-    );
+    const home = document.querySelector<HTMLElement>('.home') as HTMLElement;
+    return home.clientWidth / (document.querySelector(`.${contentClassName}`) as HTMLElement).clientWidth;
   };
 
   const toggleModal = () => {
+    const genreId = item.genre_ids[0];
+    const rowContentsContainer = document.querySelector<HTMLElement>(
+      `.row-contents-container.row-contents-container-${genreId}`
+    );
+    if (!rowContentsContainer) return;
+    const rowSlider = document.querySelector<HTMLElement>(`.row-slider.row-slider-${genreId}`);
+    if (!rowSlider) return;
+
     if (transLength) {
       setScaleRatio(0);
       setContentOffset(null);
       setTransLength(null);
       setIsContentOnTopZ(true);
       enableBackdropKeyboardTab();
+      setTimeout(() => {
+        rowContentsContainer.style.zIndex = 'auto';
+      }, Styled.transitionDuration);
+      document.documentElement.style.setProperty('--slider-control-button-display', 'initial');
+      setModalPosition({ top: '', left: '' });
       return;
     }
 
     disableBackdropKeyboardTab();
+    rowContentsContainer.style.zIndex = '990';
+    document.documentElement.style.setProperty('--slider-control-button-display', 'none');
+    setModalPosition({
+      top: `${-rowContentsContainer.offsetTop}px`,
+      left: `${-(
+        rowContentsContainer.offsetLeft + parseFloat(getComputedStyle(rowSlider).transform.split(', ')[4])
+      )}px`,
+    });
 
     const fullScaleRatio = getFullScaleRatio();
     const { innerWidth } = window;
@@ -162,9 +175,7 @@ export default function Content({ item }: Props) {
 
   const handleClickModal = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const modal = document.querySelector(`.${modalClassName}`) as HTMLElement;
-    if (event.target === modal) {
-      toggleModal();
-    }
+    if (event.target === modal) toggleModal();
   };
 
   return (
@@ -174,11 +185,12 @@ export default function Content({ item }: Props) {
         isMouseOn={isMouseOn}
         isContentOnTopZ={isContentOnTopZ}
         transLength={transLength}
-        contentHeight={`${window.innerHeight + window.scrollY}px`}
+        contentHeight={`${home.clientHeight + home.scrollTop}px`}
+        modalPosition={modalPosition}
         onClick={handleClickModal}
       >
         <Styled.Inner
-          className={contentClassName}
+          className={`${contentClassName} content`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           isMouseOn={isMouseOn}
@@ -203,7 +215,7 @@ export default function Content({ item }: Props) {
           <ContentBottomPanel id={id} isMouseOn={isMouseOn} transLength={transLength} toggleModal={toggleModal} />
         </Styled.Inner>
       </Styled.Container>
-      {transLength && <Styled.FakeContent contentOffset={contentOffset}></Styled.FakeContent>}
+      {transLength && <Styled.FakeContent></Styled.FakeContent>}
     </>
   );
 }

@@ -1,60 +1,98 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import ChevronDownIcon from '../../icons/ChevronDownIcon';
+import { changeRemToPx } from '../../utils/changeRemToPx';
+import { getMockTvShows } from '../../utils/getMockData';
 import Content from '../Content';
-import mockTvShows from './mock-tv-shows.json';
 import * as Styled from './styles/Row';
 
-const getNetflixTvShowsLink = (genreId: number): string => {
-  return `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=1&with_networks=213&with_genres=${genreId}`;
+const getTvShowsLinks = (genreId: number, pageCount: number): string[] => {
+  let links = [];
+  for (let i = 1; i <= pageCount; i++) {
+    links.push(
+      `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=${i}&with_networks=213&with_genres=${genreId}`
+    );
+  }
+  return links;
 };
 
 interface Props {
   genreId: number;
   genreName: string;
+  sliderContentCount: number;
+  setContentStyles: () => void;
 }
 
-export default function Row({ genreId, genreName }: Props) {
+export default function Row({ genreId, genreName, sliderContentCount, setContentStyles }: Props) {
   const [tvShows, setTvShows] = useState<TvShows.Result[]>([]);
+  const [sliderStartIndex, setSliderStartIndex] = useState(0);
+  const [sliderPositionX, setSliderPositionX] = useState('0');
 
-  const filterTvShows = (json: TvShows.RootObject, length: number) => {
-    const results = json.results;
-    let newResults = [];
+  const initTvShows = async () => {
+    let filteredTvShows: TvShows.Result[] = [];
+    const links = getTvShowsLinks(genreId, 2);
 
-    for (let i = 0; i < results.length; i++) {
-      const result = results[i];
-      if (result.genre_ids[0] === genreId) {
-        newResults.push(result);
-      }
-      if (newResults.length === length) {
-        break;
-      }
+    for (let i = 0; i < links.length; i++) {
+      const link = links[i];
+      const response = await axios.get<TvShows.RootObject>(link);
+      const results = response.data.results.filter((result) => result.genre_ids[0] === genreId);
+      filteredTvShows = filteredTvShows.concat(results);
     }
 
-    setTvShows(newResults);
-  };
-
-  const getTvShows = async () => {
-    const link = getNetflixTvShowsLink(genreId);
-    const response = await axios.get<TvShows.RootObject>(link);
-    filterTvShows(response.data, 6);
-  };
-
-  const getMockTvShows = () => {
-    filterTvShows(mockTvShows, 6);
+    setTvShows(filteredTvShows);
   };
 
   useEffect(() => {
-    // getTvShows();
-    getMockTvShows();
-  }, []);
+    const initContentWidth = () => {
+      const contentWidth = getComputedStyle(document.documentElement).getPropertyValue('--content-width').trim();
+      if (contentWidth === '0px') setContentStyles();
+    };
+
+    setTvShows(getMockTvShows(genreId));
+    // initTvShows();
+    initContentWidth();
+  }, [genreId, setContentStyles]);
+
+  const handleClickPrevButton = () => {
+    if (sliderStartIndex - sliderContentCount < 0) {
+      setSliderStartIndex(0);
+      return;
+    }
+    setSliderStartIndex(sliderStartIndex - sliderContentCount);
+  };
+
+  const handleClickNextButton = () => setSliderStartIndex(sliderStartIndex + sliderContentCount);
+
+  useEffect(() => {
+    const rowSlider = document.querySelector<HTMLElement>(`.row-slider.row-slider-${genreId}`);
+    if (!rowSlider) return;
+    const contentWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--content-width'));
+    const rowSliderWidth = rowSlider.clientWidth;
+    if (rowSliderWidth === 0) return;
+    setSliderPositionX(
+      `${-((sliderStartIndex * (contentWidth + changeRemToPx(Styled.sliderGap))) / rowSliderWidth) * 100}%`
+    );
+  }, [sliderStartIndex]);
 
   return (
     <Styled.Container>
       <Styled.Title>{genreName}</Styled.Title>
-      <Styled.ContentsContainer>
-        {tvShows.map((item) => (
-          <Content key={item.id} item={item} />
-        ))}
+      <Styled.ContentsContainer className={`row-contents-container row-contents-container-${genreId}`}>
+        <Styled.Slider className={`row-slider row-slider-${genreId}`} sliderPositionX={sliderPositionX}>
+          {tvShows.map((tvShow) => (
+            <Content key={tvShow.id} item={tvShow} />
+          ))}
+        </Styled.Slider>
+        {sliderStartIndex > 0 && (
+          <Styled.PrevButton onClick={handleClickPrevButton}>
+            <ChevronDownIcon />
+          </Styled.PrevButton>
+        )}
+        {sliderStartIndex + sliderContentCount < tvShows.length && (
+          <Styled.NextButton onClick={handleClickNextButton}>
+            <ChevronDownIcon />
+          </Styled.NextButton>
+        )}
       </Styled.ContentsContainer>
     </Styled.Container>
   );

@@ -1,13 +1,12 @@
 import styled from 'styled-components/macro';
 import * as BREAKPOINTS from '../../../constants/breakpoints';
 
-const sidePadding = {
-  default: '3.25rem',
-  SM: '2rem;',
-};
+export const homeSidePadding = '3.25rem';
 
 export const Container = styled.div`
   min-width: 18.75rem;
+  max-height: 100vh;
+  overflow-x: hidden;
   background-color: var(--gray-900);
   color: var(--gray-100);
 `;
@@ -17,17 +16,12 @@ export const Header = styled.header`
   z-index: 3;
   position: sticky;
   top: 0;
-  left: 0;
-  padding: 0.875rem ${sidePadding.default};
+  padding: 0.875rem ${homeSidePadding};
   background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0));
   transition: background-color 0.4s;
 
   &.scroll-down {
     background-color: var(--gray-900);
-  }
-
-  @media (max-width: ${BREAKPOINTS.SM}) {
-    padding: 0.875rem ${sidePadding.SM};
   }
 `;
 
@@ -48,11 +42,7 @@ export const LogoLink = styled.a`
 `;
 
 export const Main = styled.main`
-  padding: 0 ${sidePadding.default} 5rem;
-
-  @media (max-width: ${BREAKPOINTS.SM}) {
-    padding: 0 ${sidePadding.SM};
-  }
+  padding: 0 ${homeSidePadding} 5rem;
 `;
 
 export const Notification = styled.div`
@@ -75,6 +65,6 @@ export const Notification = styled.div`
 
 export const TMDbLogo = styled.a`
   display: inline-block;
-  width: 12.5rem;
-  margin: 0 0.25rem 0 0.375rem;
+  width: 10em;
+  margin: 0 0.2em 0 0.3em;
 `;

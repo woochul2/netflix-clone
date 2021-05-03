@@ -15,26 +15,27 @@ export const Container = styled.div<{
   isMouseOn: boolean;
   isContentOnTopZ: boolean;
   contentHeight: string;
+  modalPosition: { top: string; left: string };
 }>`
   // 이미지가 확대됐다가 줄어들 때도 옆의 다른 컨텐츠 이미지들 위에 보이도록 z-index 설정
   z-index: ${({ transLength, isMouseOn, isContentOnTopZ }) => !transLength && (isMouseOn || isContentOnTopZ) && 1};
-  ${({ transLength, contentHeight }) =>
+  ${({ transLength, contentHeight, modalPosition }) =>
     transLength &&
     css`
       // 모달이 가장 위에 위치하도록 z-index 설정
       z-index: 999;
       overflow: auto;
       position: absolute;
-      top: 0;
-      left: 0;
+      top: ${modalPosition.top};
+      left: ${modalPosition.left};
       width: 100vw;
       height: ${contentHeight};
       background-color: hsla(0, 0%, 0%, 0.7);
     `};
-  font-size: var(--content-font-size);
+  font-size: calc(var(--content-width) / 10);
 
   &:hover {
-    // 이미지 위에 마우스 올리면 헤더보다는 낮게, 줄어드는 이미지보다는 위에 보이도록 z-index 설정
+    // 헤더보다는 낮게, 줄어드는 이미지보다는 위에 보이도록 z-index 설정
     ${({ transLength }) =>
       !transLength &&
       css`
@@ -48,8 +49,6 @@ export const Inner = styled.div<{
   contentOffset: {
     top: string;
     left: string;
-    width: string;
-    height: string;
   } | null;
   scaleRatio: number | null;
   isMouseOn: boolean;
@@ -61,11 +60,11 @@ export const Inner = styled.div<{
       position: absolute;
       top: ${contentOffset.top};
       left: ${contentOffset.left};
-      width: ${contentOffset.width};
     `};
+  width: var(--content-width);
   border-radius: ${borderRadius};
   box-shadow: ${boxShadow};
-  transform: ${({ transLength, isMouseOn }) => !transLength && isMouseOn && 'scale(1.3)'};
+  transform: ${({ transLength, isMouseOn }) => !transLength && isMouseOn && 'scale(1.2)'};
   transform: ${({ transLength, scaleRatio }) => transLength && moveAndScale(transLength, scaleRatio)};
   transition: transform ${cssTransitionDuration};
 `;
@@ -123,8 +122,6 @@ export const roundButton = styled.button`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
   }
 `;
 
@@ -142,18 +139,6 @@ export const CloseButton = styled(roundButton)`
   }
 `;
 
-export const FakeContent = styled.div<{
-  contentOffset: {
-    top: string;
-    left: string;
-    width: string;
-    height: string;
-  } | null;
-}>`
-  ${({ contentOffset }) =>
-    contentOffset &&
-    `
-      width: ${contentOffset.width};
-      height: ${contentOffset.height};
-    `}
+export const FakeContent = styled.div`
+  width: var(--content-width);
 `;

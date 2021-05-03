@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
-import mockTvDetail from './mock-tv-detail.json';
-import mockTvVideos from './mock-tv-videos.json';
+import { getMockTvDetail, getMockTvVideos } from '../../utils/getMockData';
 import * as Styled from './styles/ContentBottomPanel';
 
 const getTvDetailLink = (id: number): string => {
@@ -44,23 +43,19 @@ export default function ContentBottomPanel({ id, isMouseOn, transLength, toggleM
   };
 
   const getData = () => {
-    if (!tvDetail) {
-      getTvDetail();
-    }
-    if (!tvVideos) {
-      getTvVideos();
-    }
+    if (!tvDetail) getTvDetail();
+    if (!tvVideos) getTvVideos();
   };
 
   const getMockData = () => {
-    setTvDetail(mockTvDetail);
-    setTvVideos(mockTvVideos);
+    setTvDetail(getMockTvDetail());
+    setTvVideos(getMockTvVideos());
   };
 
   useEffect(() => {
     if (transLength) {
-      // getData();
       getMockData();
+      // getData();
     }
   }, [transLength]);
 
@@ -82,19 +77,13 @@ export default function ContentBottomPanel({ id, isMouseOn, transLength, toggleM
                 (result) =>
                   result.type === 'Trailer' &&
                   result.site === 'YouTube' && (
-                    <Styled.PageLink
-                      key={result.id}
-                      href={getYoutubeLink(result.key)}
-                      target="_blank"
-                    >
+                    <Styled.PageLink key={result.id} href={getYoutubeLink(result.key)} target="_blank">
                       {result.name.split('|')[1]}
                     </Styled.PageLink>
                   )
               )}
           </Styled.LinkContainer>
-          <Styled.Overview>
-            {tvDetail.overview.split('. ').join('.\n').split('?').join('?\n')}
-          </Styled.Overview>
+          <Styled.Overview>{tvDetail.overview.split('. ').join('.\n').split('?').join('?\n')}</Styled.Overview>
           <Styled.Text>
             <Styled.GrayText>장르: </Styled.GrayText>
             {tvDetail.genres.map((genre, index) => (
@@ -120,11 +109,7 @@ export default function ContentBottomPanel({ id, isMouseOn, transLength, toggleM
               <Styled.GrayText>제작: </Styled.GrayText>
               {tvDetail.created_by.map((person, index) => (
                 <span key={person.id}>
-                  {index === tvDetail.created_by.length - 1 ? (
-                    <>{person.name}</>
-                  ) : (
-                    <>{person.name}, </>
-                  )}
+                  {index === tvDetail.created_by.length - 1 ? <>{person.name}</> : <>{person.name}, </>}
                 </span>
               ))}
             </Styled.Text>
