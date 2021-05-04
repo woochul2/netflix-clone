@@ -2,7 +2,7 @@ import styled from 'styled-components/macro';
 import * as BREAKPOINTS from '../../../constants/breakpoints';
 import { homeSidePadding } from '../../../pages/Home/styles/Home';
 
-export const sliderGap = '0.25rem';
+const sliderGap = '0.25rem';
 
 export const Container = styled.div`
   margin-bottom: 3rem;
@@ -24,6 +24,8 @@ export const Title = styled.h2`
 export const ContentsContainer = styled.div`
   position: relative;
   display: flex;
+  /* gap이 스타일에 아무 영향을 주진 않지만, javascript로 gap 값 받아올 때 이미 ContentsContainer를
+   * querySelector로 불러온 상황이면, 굳이 Slider를 불러오지 않아도 되게 하려고 값 지정했음 */
   gap: ${sliderGap};
 `;
 
@@ -56,10 +58,11 @@ const SliderControlButton = styled.button`
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 0.125rem var(--gray-100);
+    box-shadow: 0 0 0 0.125rem var(--white);
   }
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     opacity: 0.9;
 
     svg {

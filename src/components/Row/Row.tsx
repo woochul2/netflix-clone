@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
-import { changeRemToPx } from '../../utils/changeRemToPx';
 import { getMockTvShows } from '../../utils/getMockData';
 import Content from '../Content';
 import * as Styled from './styles/Row';
@@ -26,23 +25,23 @@ interface Props {
 export default function Row({ genreId, genreName, sliderContentCount, setContentStyles }: Props) {
   const [tvShows, setTvShows] = useState<TvShows.Result[]>([]);
   const [sliderStartIndex, setSliderStartIndex] = useState(0);
-  const [sliderPositionX, setSliderPositionX] = useState('0');
-
-  const initTvShows = async () => {
-    let filteredTvShows: TvShows.Result[] = [];
-    const links = getTvShowsLinks(genreId, 2);
-
-    for (let i = 0; i < links.length; i++) {
-      const link = links[i];
-      const response = await axios.get<TvShows.RootObject>(link);
-      const results = response.data.results.filter((result) => result.genre_ids[0] === genreId);
-      filteredTvShows = filteredTvShows.concat(results);
-    }
-
-    setTvShows(filteredTvShows);
-  };
+  const [sliderPositionX, setSliderPositionX] = useState('0%');
 
   useEffect(() => {
+    const initTvShows = async () => {
+      let filteredTvShows: TvShows.Result[] = [];
+      const links = getTvShowsLinks(genreId, 2);
+
+      for (let i = 0; i < links.length; i++) {
+        const link = links[i];
+        const response = await axios.get<TvShows.RootObject>(link);
+        const results = response.data.results.filter((result) => result.genre_ids[0] === genreId);
+        filteredTvShows = filteredTvShows.concat(results);
+      }
+
+      setTvShows(filteredTvShows);
+    };
+
     const initContentWidth = () => {
       const contentWidth = getComputedStyle(document.documentElement).getPropertyValue('--content-width').trim();
       if (contentWidth === '0px') setContentStyles();
@@ -54,11 +53,9 @@ export default function Row({ genreId, genreName, sliderContentCount, setContent
   }, [genreId, setContentStyles]);
 
   const handleClickPrevButton = () => {
-    if (sliderStartIndex - sliderContentCount < 0) {
-      setSliderStartIndex(0);
-      return;
-    }
-    setSliderStartIndex(sliderStartIndex - sliderContentCount);
+    let newIndex = sliderStartIndex - sliderContentCount;
+    if (newIndex < 0) newIndex = 0;
+    setSliderStartIndex(newIndex);
   };
 
   const handleClickNextButton = () => setSliderStartIndex(sliderStartIndex + sliderContentCount);
@@ -68,11 +65,25 @@ export default function Row({ genreId, genreName, sliderContentCount, setContent
     if (!rowSlider) return;
     const contentWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--content-width'));
     const rowSliderWidth = rowSlider.clientWidth;
+    const gap = parseFloat(getComputedStyle(rowSlider).gap);
     if (rowSliderWidth === 0) return;
-    setSliderPositionX(
-      `${-((sliderStartIndex * (contentWidth + changeRemToPx(Styled.sliderGap))) / rowSliderWidth) * 100}%`
-    );
-  }, [sliderStartIndex]);
+    setSliderPositionX(`${-((sliderStartIndex * (contentWidth + gap)) / rowSliderWidth) * 100}%`);
+  }, [sliderStartIndex, genreId]);
+
+  const SliderControlButton = (
+    <>
+      {sliderStartIndex > 0 && (
+        <Styled.PrevButton onClick={handleClickPrevButton}>
+          <ChevronDownIcon />
+        </Styled.PrevButton>
+      )}
+      {sliderStartIndex + sliderContentCount < tvShows.length && (
+        <Styled.NextButton onClick={handleClickNextButton}>
+          <ChevronDownIcon />
+        </Styled.NextButton>
+      )}
+    </>
+  );
 
   return (
     <Styled.Container>
@@ -83,16 +94,7 @@ export default function Row({ genreId, genreName, sliderContentCount, setContent
             <Content key={tvShow.id} item={tvShow} />
           ))}
         </Styled.Slider>
-        {sliderStartIndex > 0 && (
-          <Styled.PrevButton onClick={handleClickPrevButton}>
-            <ChevronDownIcon />
-          </Styled.PrevButton>
-        )}
-        {sliderStartIndex + sliderContentCount < tvShows.length && (
-          <Styled.NextButton onClick={handleClickNextButton}>
-            <ChevronDownIcon />
-          </Styled.NextButton>
-        )}
+        {SliderControlButton}
       </Styled.ContentsContainer>
     </Styled.Container>
   );

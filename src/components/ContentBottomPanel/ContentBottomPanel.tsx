@@ -30,34 +30,34 @@ export default function ContentBottomPanel({ id, isMouseOn, transLength, toggleM
   const [tvDetail, setTvDetail] = useState<TvDetail.RootObject>();
   const [tvVideos, setTvVideos] = useState<TvVideos.RootObject>();
 
-  const getTvDetail = async () => {
-    const link = getTvDetailLink(id);
-    const response = await axios.get<TvDetail.RootObject>(link);
-    setTvDetail(response.data);
-  };
-
-  const getTvVideos = async () => {
-    const link = getTvVideosLink(id);
-    const response = await axios.get<TvVideos.RootObject>(link);
-    setTvVideos(response.data);
-  };
-
-  const getData = () => {
-    if (!tvDetail) getTvDetail();
-    if (!tvVideos) getTvVideos();
-  };
-
   const getMockData = () => {
     setTvDetail(getMockTvDetail());
     setTvVideos(getMockTvVideos());
   };
 
   useEffect(() => {
+    const getTvDetail = async () => {
+      const link = getTvDetailLink(id);
+      const response = await axios.get<TvDetail.RootObject>(link);
+      setTvDetail(response.data);
+    };
+
+    const getTvVideos = async () => {
+      const link = getTvVideosLink(id);
+      const response = await axios.get<TvVideos.RootObject>(link);
+      setTvVideos(response.data);
+    };
+
+    const getData = () => {
+      if (!tvDetail) getTvDetail();
+      if (!tvVideos) getTvVideos();
+    };
+
     if (transLength) {
       getMockData();
       // getData();
     }
-  }, [transLength]);
+  }, [id, tvDetail, tvVideos, transLength]);
 
   return (
     <Styled.Container isMouseOn={isMouseOn} transLength={transLength}>
