@@ -25,7 +25,6 @@ interface Props {
 export default function Row({ genreId, genreName, sliderContentCount, setContentStyles }: Props) {
   const [tvShows, setTvShows] = useState<TvShows.Result[]>([]);
   const [sliderStartIndex, setSliderStartIndex] = useState(0);
-  const [sliderPositionX, setSliderPositionX] = useState('0%');
 
   useEffect(() => {
     const initTvShows = async () => {
@@ -42,14 +41,14 @@ export default function Row({ genreId, genreName, sliderContentCount, setContent
       setTvShows(filteredTvShows);
     };
 
-    const initContentWidth = () => {
+    const initContentStyles = () => {
       const contentWidth = getComputedStyle(document.documentElement).getPropertyValue('--content-width').trim();
       if (contentWidth === '0px') setContentStyles();
     };
 
     setTvShows(getMockTvShows(genreId));
     // initTvShows();
-    initContentWidth();
+    initContentStyles();
   }, [genreId, setContentStyles]);
 
   const handleClickPrevButton = () => {
@@ -61,37 +60,54 @@ export default function Row({ genreId, genreName, sliderContentCount, setContent
   const handleClickNextButton = () => setSliderStartIndex(sliderStartIndex + sliderContentCount);
 
   useEffect(() => {
-    const rowSlider = document.querySelector<HTMLElement>(`.row-slider.row-slider-${genreId}`);
-    if (!rowSlider) return;
-    const contentWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--content-width'));
-    const rowSliderWidth = rowSlider.clientWidth;
-    const gap = parseFloat(getComputedStyle(rowSlider).gap);
-    if (rowSliderWidth === 0) return;
-    setSliderPositionX(`${-((sliderStartIndex * (contentWidth + gap)) / rowSliderWidth) * 100}%`);
-  }, [sliderStartIndex, genreId]);
+    const translateSlider = () => {
+      const slider = document.querySelector<HTMLElement>(`.slider-${genreId}`);
+      if (!slider) return;
+      if (slider.clientWidth === 0) return;
+
+      if (sliderStartIndex === 0) {
+        slider.style.transform = '';
+        return;
+      }
+
+      const contentWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--content-width'));
+      const gap = parseFloat(getComputedStyle(slider).gap);
+      slider.style.transform = `translateX(${
+        -((sliderStartIndex * (contentWidth + gap)) / slider.clientWidth) * 100
+      }%)`;
+    };
+
+    translateSlider();
+  }, [genreId, sliderStartIndex]);
 
   const SliderControlButton = (
     <>
       {sliderStartIndex > 0 && (
-        <Styled.PrevButton onClick={handleClickPrevButton}>
+        <Styled.PrevButton className="slider-control-button" onClick={handleClickPrevButton}>
           <ChevronDownIcon />
         </Styled.PrevButton>
       )}
       {sliderStartIndex + sliderContentCount < tvShows.length && (
-        <Styled.NextButton onClick={handleClickNextButton}>
+        <Styled.NextButton className="slider-control-button" onClick={handleClickNextButton}>
           <ChevronDownIcon />
         </Styled.NextButton>
       )}
     </>
   );
 
+  const getTransformOrigin = (index: number): 'center' | 'left' | 'right' => {
+    if (index % sliderContentCount === sliderStartIndex % sliderContentCount) return 'left';
+    if (index % sliderContentCount === (sliderStartIndex + sliderContentCount - 1) % sliderContentCount) return 'right';
+    return 'center';
+  };
+
   return (
     <Styled.Container>
       <Styled.Title>{genreName}</Styled.Title>
       <Styled.ContentsContainer className={`row-contents-container row-contents-container-${genreId}`}>
-        <Styled.Slider className={`row-slider row-slider-${genreId}`} sliderPositionX={sliderPositionX}>
-          {tvShows.map((tvShow) => (
-            <Content key={tvShow.id} item={tvShow} />
+        <Styled.Slider className={`slider slider-${genreId}`}>
+          {tvShows.map((tvShow, index) => (
+            <Content key={tvShow.id} item={tvShow} transformOrigin={getTransformOrigin(index)} />
           ))}
         </Styled.Slider>
         {SliderControlButton}

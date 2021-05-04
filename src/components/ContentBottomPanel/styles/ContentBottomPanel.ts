@@ -1,27 +1,22 @@
 import styled from 'styled-components/macro';
-import { borderRadius, boxShadow, cssTransitionDuration, roundButton } from '../../Content/styles/Content';
+import { borderRadius, boxShadow, roundButton, transitionDuration } from '../../Content/styles/Content';
 
-export const Container = styled.div<{
-  isMouseOn: boolean;
-  transLength: {
-    x: string;
-    y: string;
-  } | null;
-}>`
+export const Container = styled.div`
+  // 그림자가 이미지 덮어쓰지 않게 하기 위해 z-index 설정
+  z-index: -1;
+  visibility: hidden;
+  opacity: 0;
   position: absolute;
   top: 100%;
   display: flex;
   flex-direction: column;
-  align-items: ${({ transLength }) => !transLength && 'center'};
-  width: 100%;
+  align-items: center;
+  width: var(--content-width);
   border-bottom-left-radius: ${borderRadius};
   border-bottom-right-radius: ${borderRadius};
   box-shadow: ${boxShadow};
-  padding-bottom: ${({ transLength }) => transLength && '0.5em'};
   background-color: var(--gray-900);
-  opacity: ${({ isMouseOn }) => (isMouseOn ? 1 : 0)};
-  opacity: ${({ transLength }) => transLength && 1};
-  transition: all ${cssTransitionDuration};
+  transition: all ${`${transitionDuration}ms`};
 `;
 
 export const PanelButton = styled(roundButton)`

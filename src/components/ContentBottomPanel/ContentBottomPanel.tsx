@@ -18,19 +18,15 @@ const getYoutubeLink = (key: string): string => {
 
 interface Props {
   id: number;
-  isMouseOn: boolean;
-  transLength: {
-    x: string;
-    y: string;
-  } | null;
+  isClicked: boolean;
   toggleModal: () => void;
 }
 
-export default function ContentBottomPanel({ id, isMouseOn, transLength, toggleModal }: Props) {
+export default function ContentBottomPanel({ id, isClicked, toggleModal }: Props) {
   const [tvDetail, setTvDetail] = useState<TvDetail.RootObject>();
   const [tvVideos, setTvVideos] = useState<TvVideos.RootObject>();
 
-  const getMockData = () => {
+  const setMockData = () => {
     setTvDetail(getMockTvDetail());
     setTvVideos(getMockTvVideos());
   };
@@ -53,20 +49,20 @@ export default function ContentBottomPanel({ id, isMouseOn, transLength, toggleM
       if (!tvVideos) getTvVideos();
     };
 
-    if (transLength) {
-      getMockData();
+    if (isClicked) {
+      setMockData();
       // getData();
     }
-  }, [id, tvDetail, tvVideos, transLength]);
+  }, [id, tvDetail, tvVideos, isClicked]);
 
   return (
-    <Styled.Container isMouseOn={isMouseOn} transLength={transLength}>
-      {!transLength && isMouseOn && (
+    <Styled.Container className="content-bottom-panel">
+      {!isClicked && (
         <Styled.PanelButton onClick={toggleModal}>
           <ChevronDownIcon />
         </Styled.PanelButton>
       )}
-      {transLength && tvDetail && (
+      {isClicked && tvDetail && (
         <>
           <Styled.LinkContainer>
             <Styled.PageLink href={tvDetail.homepage} target="_blank">

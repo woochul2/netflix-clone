@@ -3,82 +3,85 @@ import styled, { css } from 'styled-components/macro';
 export const borderRadius = '0.2rem';
 export const boxShadow = '0 0 0.2rem 0.07rem var(--black)';
 export const transitionDuration = 300;
-export const cssTransitionDuration = `${transitionDuration / 1000}s`;
-
-const moveAndScale = (transLength: { x: string; y: string } | null, scaleRatio: number | null): string | undefined => {
-  if (!transLength) return;
-  return `translate(${transLength.x}, ${transLength.y}) scale(${scaleRatio})`;
-};
 
 export const Container = styled.div<{
-  transLength: { x: string; y: string } | null;
-  isMouseOn: boolean;
-  isContentOnTopZ: boolean;
   contentHeight: string;
-  modalPosition: { top: string; left: string };
 }>`
-  // 이미지가 확대됐다가 줄어들 때도 옆의 다른 컨텐츠 이미지들 위에 보이도록 z-index 설정
-  z-index: ${({ transLength, isMouseOn, isContentOnTopZ }) => !transLength && (isMouseOn || isContentOnTopZ) && 1};
-  ${({ transLength, contentHeight, modalPosition }) =>
-    transLength &&
-    css`
-      // 모달이 가장 위에 위치하도록 z-index 설정
-      z-index: 999;
-      overflow: auto;
-      position: absolute;
-      top: ${modalPosition.top};
-      left: ${modalPosition.left};
-      width: 100vw;
-      height: ${contentHeight};
-      background-color: hsla(0, 0%, 0%, 0.7);
-    `};
   font-size: calc(var(--content-width) / 10);
 
-  &:hover {
+  &:hover:not(.clicked) {
     // 헤더보다는 낮게, 줄어드는 이미지보다는 위에 보이도록 z-index 설정
-    ${({ transLength }) =>
-      !transLength &&
-      css`
-        z-index: 2;
-      `}
+    z-index: 2;
+  }
+
+  &.clicked {
+    // 모달이 가장 위에 위치하도록 z-index 설정
+    z-index: 999;
+    overflow: auto;
+    position: absolute;
+    width: 100vw;
+    height: ${({ contentHeight }) => contentHeight};
+    background-color: hsla(0, 0%, 0%, 0.7);
   }
 `;
 
 export const Inner = styled.div<{
-  transLength: { x: string; y: string } | null;
-  contentOffset: {
-    top: string;
-    left: string;
-  } | null;
-  scaleRatio: number | null;
-  isMouseOn: boolean;
+  transformOrigin: 'center' | 'left' | 'right';
 }>`
-  ${({ transLength, contentOffset }) =>
-    transLength &&
-    contentOffset &&
-    css`
-      position: absolute;
-      top: ${contentOffset.top};
-      left: ${contentOffset.left};
-    `};
   width: var(--content-width);
   border-radius: ${borderRadius};
   box-shadow: ${boxShadow};
-  transform: ${({ transLength, isMouseOn }) => !transLength && isMouseOn && 'scale(1.2)'};
-  transform: ${({ transLength, scaleRatio }) => transLength && moveAndScale(transLength, scaleRatio)};
-  transition: transform ${cssTransitionDuration};
+  transform-origin: ${({ transformOrigin }) => transformOrigin};
+  transition: transform ${`${transitionDuration}ms`};
+
+  &.shrinking {
+    transform-origin: center;
+  }
+
+  &.clicked {
+    position: absolute;
+    transform-origin: center;
+
+    .content-bottom-panel {
+      visibility: 'visible';
+      opacity: 1;
+      align-items: flex-start;
+      padding-bottom: 0.5em;
+    }
+
+    .content-img-container {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .content-bottom-panel {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  &:hover:not(.clicked) {
+    transform: scale(1.2);
+  }
+
+  &:hover {
+    .content-img-container {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .content-bottom-panel {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
 `;
 
-export const ImgContainer = styled.div<{
-  transLength: { x: string; y: string } | null;
-  isMouseOn: boolean;
-}>`
+export const ImgContainer = styled.div`
   cursor: pointer;
   position: relative;
   overflow: hidden;
   border-radius: ${borderRadius};
-  border-bottom-left-radius: ${({ isMouseOn, transLength }) => (isMouseOn || transLength) && '0'};
-  border-bottom-right-radius: ${({ isMouseOn, transLength }) => (isMouseOn || transLength) && '0'};
 `;
 
 export const Title = styled.h3<{

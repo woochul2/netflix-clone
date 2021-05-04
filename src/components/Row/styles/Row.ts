@@ -27,22 +27,27 @@ export const ContentsContainer = styled.div`
   /* gap이 스타일에 아무 영향을 주진 않지만, javascript로 gap 값 받아올 때 이미 ContentsContainer를
    * querySelector로 불러온 상황이면, 굳이 Slider를 불러오지 않아도 되게 하려고 값 지정했음 */
   gap: ${sliderGap};
+
+  &:hover {
+    // 컨텐츠 위에 마우스 올려서 확대되면, 다른 Row보다 위에 보이도록 하기 위해 z-index 설정
+    z-index: 1;
+  }
 `;
 
-export const Slider = styled.div<{ sliderPositionX: string }>`
+export const Slider = styled.div`
   display: flex;
   gap: ${sliderGap};
-  transform: ${({ sliderPositionX }) => `translateX(${sliderPositionX})`};
+  transform: translateX(0);
   transition: transform 0.4s;
 `;
 
 const SliderControlButton = styled.button`
   cursor: pointer;
-  display: var(--slider-control-button-display);
   opacity: 0.7;
   position: absolute;
   top: 0;
-  width: calc(${homeSidePadding} - ${sliderGap});
+  /* 버튼이 밑에 겹쳐진 컨텐츠를 완전히 가리지 못하는 미세한 틈이 있어서 1px 더해줌 */
+  width: calc(${homeSidePadding} - ${sliderGap} + 1px);
   height: 100%;
   outline: 0;
   border: 0;
