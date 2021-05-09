@@ -1,46 +1,31 @@
-import styled, { css } from 'styled-components/macro';
+import styled from 'styled-components/macro';
 
-export const borderRadius = '0.2rem';
-export const boxShadow = '0 0 0.2rem 0.07rem var(--black)';
-export const transitionDuration = 300;
+export const contentBorderRadius = '0.25rem';
+export const contentBoxShadow = '0 0 0.25rem 0.065rem var(--black)';
+export const contentTransitionDuration = 200;
 
-export const Container = styled.div<{
-  contentHeight: string;
-}>`
+export const Container = styled.div`
+  // 가장 위에 위치하도록 z-index 설정
+  z-index: 3;
+  position: absolute;
   font-size: calc(var(--content-width) / 10);
 
-  &:hover:not(.clicked) {
-    // 헤더보다는 낮게, 줄어드는 이미지보다는 위에 보이도록 z-index 설정
-    z-index: 2;
-  }
-
   &.clicked {
-    // 모달이 가장 위에 위치하도록 z-index 설정
-    z-index: 999;
-    overflow: auto;
-    position: absolute;
     width: 100vw;
-    height: ${({ contentHeight }) => contentHeight};
+    height: 100vh;
+    overflow: auto;
     background-color: hsla(0, 0%, 0%, 0.7);
   }
 `;
 
-export const Inner = styled.div<{
-  transformOrigin: 'center' | 'left' | 'right';
-}>`
+export const Inside = styled.div`
   width: var(--content-width);
-  border-radius: ${borderRadius};
-  box-shadow: ${boxShadow};
-  transform-origin: ${({ transformOrigin }) => transformOrigin};
-  transition: transform ${`${transitionDuration}ms`};
-
-  &.shrinking {
-    transform-origin: center;
-  }
+  border-radius: ${contentBorderRadius};
+  box-shadow: ${contentBoxShadow};
+  transition: transform ${`${contentTransitionDuration}ms`};
 
   &.clicked {
     position: absolute;
-    transform-origin: center;
 
     .content-bottom-panel {
       visibility: 'visible';
@@ -60,8 +45,8 @@ export const Inner = styled.div<{
     }
   }
 
-  &:hover:not(.clicked) {
-    transform: scale(1.2);
+  &:hover:not(.clicked):not(.shrinking) {
+    transform: scale(1.5);
   }
 
   &:hover {
@@ -81,12 +66,14 @@ export const ImgContainer = styled.div`
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  border-radius: ${borderRadius};
+  border-radius: ${contentBorderRadius};
 `;
 
-export const Title = styled.h3<{
-  length: number;
-}>`
+export const Img = styled.img`
+  width: 100%;
+`;
+
+export const Title = styled.h3`
   position: absolute;
   bottom: 0.38rem;
   right: 0.5rem;
@@ -94,18 +81,11 @@ export const Title = styled.h3<{
   font-family: 'Nanum Brush Script', cursive;
   font-size: 1em;
   mix-blend-mode: luminosity;
-  ${({ length }) =>
-    length < 7
-      ? css`
-          background: radial-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0) 70%);
-        `
-      : css`
-          background: radial-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0) 100%);
-        `};
-`;
+  background: radial-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0) 100%);
 
-export const Img = styled.img`
-  width: 100%;
+  &.short {
+    background: radial-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0) 70%);
+  }
 `;
 
 export const roundButton = styled.button`
@@ -140,8 +120,4 @@ export const CloseButton = styled(roundButton)`
     width: 0.8em;
     padding: 0.05em;
   }
-`;
-
-export const FakeContent = styled.div`
-  width: var(--content-width);
 `;

@@ -4,18 +4,6 @@ import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { getMockTvDetail, getMockTvVideos } from '../../utils/getMockData';
 import * as Styled from './styles/ContentBottomPanel';
 
-const getTvDetailLink = (id: number): string => {
-  return `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
-};
-
-const getTvVideosLink = (id: number): string => {
-  return `https://api.themoviedb.org/3/tv/${id}/videos?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
-};
-
-const getYoutubeLink = (key: string): string => {
-  return `https://www.youtube.com/watch?v=${key}`;
-};
-
 interface Props {
   id: number;
   isClicked: boolean;
@@ -26,10 +14,15 @@ export default function ContentBottomPanel({ id, isClicked, toggleModal }: Props
   const [tvDetail, setTvDetail] = useState<TvDetail.RootObject>();
   const [tvVideos, setTvVideos] = useState<TvVideos.RootObject>();
 
-  const setMockData = () => {
-    setTvDetail(getMockTvDetail());
-    setTvVideos(getMockTvVideos());
+  const getTvDetailLink = (id: number): string => {
+    return `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
   };
+
+  const getTvVideosLink = (id: number): string => {
+    return `https://api.themoviedb.org/3/tv/${id}/videos?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
+  };
+
+  const getYoutubeLink = (key: string): string => `https://www.youtube.com/watch?v=${key}`;
 
   useEffect(() => {
     const getTvDetail = async () => {
@@ -50,7 +43,8 @@ export default function ContentBottomPanel({ id, isClicked, toggleModal }: Props
     };
 
     if (isClicked) {
-      setMockData();
+      setTvDetail(getMockTvDetail());
+      setTvVideos(getMockTvVideos());
       // getData();
     }
   }, [id, tvDetail, tvVideos, isClicked]);
@@ -58,14 +52,14 @@ export default function ContentBottomPanel({ id, isClicked, toggleModal }: Props
   return (
     <Styled.Container className="content-bottom-panel">
       {!isClicked && (
-        <Styled.PanelButton onClick={toggleModal}>
+        <Styled.PanelButton aria-label="상세 정보 보기" onClick={toggleModal}>
           <ChevronDownIcon />
         </Styled.PanelButton>
       )}
       {isClicked && tvDetail && (
         <>
           <Styled.LinkContainer>
-            <Styled.PageLink href={tvDetail.homepage} target="_blank">
+            <Styled.PageLink href={tvDetail.homepage} target="_blank" aria-label="공식 홈페이지">
               공식 홈페이지
             </Styled.PageLink>
             {tvVideos &&
@@ -73,7 +67,12 @@ export default function ContentBottomPanel({ id, isClicked, toggleModal }: Props
                 (result) =>
                   result.type === 'Trailer' &&
                   result.site === 'YouTube' && (
-                    <Styled.PageLink key={result.id} href={getYoutubeLink(result.key)} target="_blank">
+                    <Styled.PageLink
+                      key={result.id}
+                      href={getYoutubeLink(result.key)}
+                      target="_blank"
+                      aria-label={`${result.name.split('|')[1]}`}
+                    >
                       {result.name.split('|')[1]}
                     </Styled.PageLink>
                   )

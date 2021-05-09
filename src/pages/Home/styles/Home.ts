@@ -4,6 +4,7 @@ import * as BREAKPOINTS from '../../../constants/breakpoints';
 export const homeSidePadding = '3.25rem';
 
 export const Container = styled.div`
+  position: relative;
   min-width: 18.75rem;
   max-height: 100vh;
   overflow-x: hidden;
@@ -12,8 +13,8 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.header`
-  // 모달을 제외한 나머지 중에서 가장 위에 위치하도록 z-index 설정
-  z-index: 3;
+  // 모달을 제외한 나머지 중에서 가장 위에 보이도록 z-index 설정
+  z-index: 2;
   position: sticky;
   top: 0;
   padding: 0.875rem ${homeSidePadding};

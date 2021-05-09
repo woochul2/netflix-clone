@@ -5,7 +5,7 @@ import { homeSidePadding } from '../../../pages/Home/styles/Home';
 const sliderGap = '0.25rem';
 
 export const Container = styled.div`
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 `;
 
 export const Title = styled.h2`
@@ -21,17 +21,12 @@ export const Title = styled.h2`
   }
 `;
 
-export const ContentsContainer = styled.div`
+export const ContentsWrapper = styled.div`
   position: relative;
   display: flex;
-  /* gap이 스타일에 아무 영향을 주진 않지만, javascript로 gap 값 받아올 때 이미 ContentsContainer를
+  /* gap이 스타일에 아무 영향을 주진 않지만, javascript로 gap 값 받아올 때 이미 ContentsWrapper를
    * querySelector로 불러온 상황이면, 굳이 Slider를 불러오지 않아도 되게 하려고 값 지정했음 */
   gap: ${sliderGap};
-
-  &:hover {
-    // 컨텐츠 위에 마우스 올려서 확대되면, 다른 Row보다 위에 보이도록 하기 위해 z-index 설정
-    z-index: 1;
-  }
 `;
 
 export const Slider = styled.div`
@@ -42,6 +37,8 @@ export const Slider = styled.div`
 `;
 
 const SliderControlButton = styled.button`
+  // 컨텐츠 썸네일보다 위에 보이도록 z-index 설정
+  z-index: 1;
   cursor: pointer;
   opacity: 0.7;
   position: absolute;
