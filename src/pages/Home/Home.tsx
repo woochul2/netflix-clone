@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Content from '../../components/Content';
 import { contentTransitionDuration } from '../../components/Content/styles/Content';
 import Row from '../../components/Row';
@@ -9,27 +9,21 @@ import * as Styled from './styles/Home';
 import tvGenres from './tv-genres.json';
 
 export default function Home() {
+  const home = useRef<HTMLDivElement>(null);
+  const contentsWrappers = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const sliders = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const contentThumbnails = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const content = useRef<HTMLDivElement>(null);
+
+  const [isScrollDown, setIsScrollDown] = useState(false);
   const [sliderContentCount, setSliderContentCount] = useState(6);
   const [hoveredContent, setHoveredContent] = useState<HoveredContent | null>(null);
+  const [hasClickedContent, setHasClickedContent] = useState(false);
   let isMouseOnContent = false;
 
-  const changeHeaderBackground = () => {
-    const home = document.querySelector<HTMLElement>('.home');
-    if (!home) return;
-    const header = document.querySelector<HTMLElement>('.home-header');
-    if (!header) return;
-    home.scrollTop > 0 ? header.classList.add('scroll-down') : header.classList.remove('scroll-down');
+  const handleScrollHome = (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    (event.target as HTMLDivElement).scrollTop > 0 ? setIsScrollDown(true) : setIsScrollDown(false);
   };
-
-  useEffect(() => {
-    const home = document.querySelector<HTMLElement>('.home');
-    if (!home) return;
-    home.addEventListener('scroll', changeHeaderBackground);
-
-    return () => {
-      home.removeEventListener('scroll', changeHeaderBackground);
-    };
-  }, []);
 
   const setContentStyles = () => {
     let newSliderContentCount = 6;
@@ -40,10 +34,11 @@ export default function Home() {
     else newSliderContentCount = 2;
     setSliderContentCount(newSliderContentCount);
 
-    const rowContentsWrapper = document.querySelector<HTMLElement>('.row-contents-wrapper');
-    if (!rowContentsWrapper) return;
-    const gap = parseFloat(getComputedStyle(rowContentsWrapper).gap);
-    const contentWidth = (rowContentsWrapper.clientWidth - gap * (newSliderContentCount - 1)) / newSliderContentCount;
+    const firstKey = Object.keys(contentsWrappers.current)[0];
+    const contentsWrapper = contentsWrappers.current[firstKey];
+    if (!contentsWrapper) return;
+    const gap = parseFloat(getComputedStyle(contentsWrapper).gap);
+    const contentWidth = (contentsWrapper.clientWidth - gap * (newSliderContentCount - 1)) / newSliderContentCount;
     document.documentElement.style.setProperty('--content-width', `${contentWidth}px`);
   };
 
@@ -70,10 +65,9 @@ export default function Home() {
       if (isMouseOnContent) return;
       if (!hoveredContent) return;
 
-      const content = document.querySelector<HTMLElement>(`.content-${hoveredContent.id}.clicked`);
-      if (content) return;
+      if (content.current?.classList.contains('clicked')) return;
 
-      const contentThumbnail = document.querySelector<HTMLElement>(`.content-thumbnail-${hoveredContent.id}`);
+      const contentThumbnail = contentThumbnails.current[`${hoveredContent.id}`];
       if (!contentThumbnail) return;
       contentThumbnail.style.boxShadow = '';
 
@@ -82,16 +76,20 @@ export default function Home() {
   };
 
   return (
-    <Styled.Container className="home">
-      <Styled.Header className="home-header">
-        <Styled.LogoLink href="#" aria-label="Netflix Clone">
+    <Styled.Container onScroll={handleScrollHome} ref={home}>
+      <Styled.Header className={isScrollDown ? 'scroll-down' : ''}>
+        <Styled.LogoLink href="#" aria-label="Netflix Clone" tabIndex={hasClickedContent ? -1 : undefined}>
           NETFLIX.clone
         </Styled.LogoLink>
       </Styled.Header>
       <Styled.Main>
         <Styled.Notification>
           모든 TV 프로그램 데이터베이스는
-          <Styled.TMDbLogo href="https://www.themoviedb.org/" aria-label="The Movie DB">
+          <Styled.TMDbLogo
+            href="https://www.themoviedb.org/"
+            aria-label="The Movie DB"
+            tabIndex={hasClickedContent ? -1 : undefined}
+          >
             <img
               src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_1-8ba2ac31f354005783fab473602c34c3f4fd207150182061e425d366e4f34596.svg"
               alt="The Movie DB 로고"
@@ -102,21 +100,32 @@ export default function Home() {
         {tvGenres.map((tvGenre) => (
           <Row
             key={tvGenre.id}
+            contentsWrappers={contentsWrappers}
+            sliders={sliders}
+            contentThumbnails={contentThumbnails}
             genreId={tvGenre.id}
             genreName={tvGenre.name}
             initContentStyles={initContentStyles}
             sliderContentCount={sliderContentCount}
             hoveredContent={hoveredContent}
             setHoveredContent={setHoveredContent}
+            hasClickedContent={hasClickedContent}
           />
         ))}
         {hoveredContent && (
           <Content
             key={hoveredContent.id}
+            home={home}
+            contentsWrappers={contentsWrappers}
+            sliders={sliders}
+            contentThumbnails={contentThumbnails}
+            content={content}
             item={hoveredContent}
             onMouseEnter={handleMouseEnterContent}
             onMouseLeave={handleMouseLeaveContent}
             hoveredContent={hoveredContent}
+            hasClickedContent={hasClickedContent}
+            setHasClickedContent={setHasClickedContent}
           />
         )}
       </Styled.Main>

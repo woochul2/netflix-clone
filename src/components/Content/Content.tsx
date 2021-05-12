@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 import CloseIcon from '../../icons/CloseIcon';
 import { homeSidePadding } from '../../pages/Home/styles/Home';
@@ -9,29 +9,47 @@ import * as Styled from './styles/Content';
 
 interface Props {
   item: HoveredContent;
+  home: React.RefObject<HTMLDivElement>;
+  contentsWrappers: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
+  sliders: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
+  contentThumbnails: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
+  content: React.RefObject<HTMLDivElement>;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
   hoveredContent: HoveredContent | null;
+  hasClickedContent: boolean;
+  setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Content({ item, onMouseEnter, onMouseLeave, hoveredContent }: Props) {
+export default function Content({
+  item,
+  home,
+  contentsWrappers,
+  sliders,
+  contentThumbnails,
+  content,
+  onMouseEnter,
+  onMouseLeave,
+  hoveredContent,
+  hasClickedContent,
+  setHasClickedContent,
+}: Props) {
+  const contentInside = useRef<HTMLDivElement>(null);
   const { backdrop_path, genre_ids, id, name } = item;
-  const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
-    const contentInside = document.querySelector<HTMLElement>(`.content-inside-${id}`);
-    if (!contentInside) return;
-    contentInside.style.transformOrigin = item.transform_origin;
+    if (!contentInside.current) return;
+    contentInside.current.style.transformOrigin = item.transform_origin;
   }, [id, item]);
 
   const setContentShrinking = () => {
-    if (isClicked) return;
+    if (hasClickedContent) return;
 
-    const content = document.querySelector<HTMLElement>(`.content-${id}`);
-    if (!content) return;
-    content.classList.add('shrinking');
+    if (!content.current) return;
+    content.current.classList.add('shrinking');
     setTimeout(() => {
-      content.classList.remove('shrinking');
+      if (!content.current) return;
+      content.current.classList.remove('shrinking');
     }, Styled.contentTransitionDuration);
   };
 
@@ -40,34 +58,10 @@ export default function Content({ item, onMouseEnter, onMouseLeave, hoveredConte
     setContentShrinking();
   };
 
-  const disableAnchorsKeyboardTab = () => {
-    const anchors = document.querySelectorAll('a');
-    anchors.forEach((anchor) => (anchor.tabIndex = -1));
-  };
-
-  const enableAnchorsKeyboardTab = () => {
-    const anchors = document.querySelectorAll('a');
-    Array.from(anchors)
-      .filter((anchor) => anchor.tabIndex === -1)
-      .forEach((anchor) => anchor.removeAttribute('tabindex'));
-  };
-
-  const hideSliderControlButtons = () => {
-    const sliderControlButtons = document.querySelectorAll<HTMLElement>('.slider-control-button');
-    sliderControlButtons.forEach((button) => (button.style.display = 'none'));
-  };
-
-  const showSliderControlButtons = () => {
-    const sliderControlButtons = document.querySelectorAll<HTMLElement>('.slider-control-button');
-    sliderControlButtons.forEach((button) => (button.style.display = ''));
-  };
-
   const getScaleRatio = (): number => {
-    const home = document.querySelector<HTMLElement>('.home');
-    if (!home) return 0;
-    const contentInside = document.querySelector<HTMLElement>(`.content-inside-${id}`);
-    if (!contentInside) return 0;
-    const fullScaleRatio = home.clientWidth / contentInside.clientWidth;
+    if (!home.current) return 0;
+    if (!contentInside.current) return 0;
+    const fullScaleRatio = home.current.clientWidth / contentInside.current.clientWidth;
     if (window.innerWidth > changeRemToPx(BREAKPOINTS.XL)) return fullScaleRatio * 0.4;
     if (window.innerWidth > changeRemToPx(BREAKPOINTS.LG)) return fullScaleRatio * 0.55;
     if (window.innerWidth > changeRemToPx(BREAKPOINTS.MD)) return fullScaleRatio * 0.75;
@@ -77,33 +71,27 @@ export default function Content({ item, onMouseEnter, onMouseLeave, hoveredConte
   const openModal = () => {
     const genreId = genre_ids[0];
 
-    const home = document.querySelector<HTMLElement>('.home');
-    if (!home) return;
-    const rowContentsWrapper = document.querySelector<HTMLElement>(`.row-contents-wrapper-${genreId}`);
-    if (!rowContentsWrapper) return;
-    const slider = document.querySelector<HTMLElement>(`.slider-${genreId}`);
+    if (!home.current) return;
+    const contentsWrapper = contentsWrappers.current[`${genreId}`];
+    if (!contentsWrapper) return;
+    const slider = sliders.current[`${genreId}`];
     if (!slider) return;
-    const content = document.querySelector<HTMLElement>(`.content-${id}`);
-    if (!content) return;
-    const contentThumbnail = document.querySelector<HTMLElement>(`.content-thumbnail-${id}`);
+    if (!content.current) return;
+    const contentThumbnail = contentThumbnails.current[`${id}`];
     if (!contentThumbnail) return;
-    const contentInside = document.querySelector<HTMLElement>(`.content-inside-${id}`);
-    if (!contentInside) return;
+    if (!contentInside.current) return;
 
-    disableAnchorsKeyboardTab();
-    hideSliderControlButtons();
+    home.current.style.overflowY = 'hidden';
+    if (window.innerWidth > changeRemToPx(BREAKPOINTS.SM)) home.current.style.paddingRight = '17px';
 
-    home.style.overflowY = 'hidden';
-    if (window.innerWidth > changeRemToPx(BREAKPOINTS.SM)) home.style.paddingRight = '17px';
+    content.current.style.top = `0px`;
+    content.current.style.left = `0px`;
+    content.current.style.height = `${home.current.clientHeight + home.current.scrollTop}px`;
 
-    content.style.top = `0px`;
-    content.style.left = `0px`;
-    content.style.height = `${home.clientHeight + home.scrollTop}px`;
-
-    contentInside.style.top = `${contentInside.offsetTop + rowContentsWrapper.offsetTop}px`;
-    contentInside.style.left = `${
+    contentInside.current.style.top = `${contentInside.current.offsetTop + contentsWrapper.offsetTop}px`;
+    contentInside.current.style.left = `${
       contentThumbnail.offsetLeft +
-      rowContentsWrapper.offsetLeft +
+      contentsWrapper.offsetLeft +
       parseFloat(getComputedStyle(slider).transform.split(', ')[4])
     }px`;
 
@@ -111,95 +99,90 @@ export default function Content({ item, onMouseEnter, onMouseLeave, hoveredConte
 
     let xTransLength =
       -contentThumbnail.offsetLeft +
-      home.clientWidth / 2 -
-      contentInside.clientWidth / 2 -
-      (rowContentsWrapper.offsetLeft + parseFloat(getComputedStyle(slider).transform.split(', ')[4]));
+      home.current.clientWidth / 2 -
+      contentInside.current.clientWidth / 2 -
+      (contentsWrapper.offsetLeft + parseFloat(getComputedStyle(slider).transform.split(', ')[4]));
     const rightPadding = changeRemToPx(homeSidePadding);
-    const leftPadding = home.clientWidth - contentInside.clientWidth * scaleRatio - rightPadding;
+    const leftPadding = home.current.clientWidth - contentInside.current.clientWidth * scaleRatio - rightPadding;
     if (item.transform_origin === 'right') xTransLength = -(leftPadding - rightPadding) / 2;
     if (item.transform_origin === 'left') xTransLength = -(rightPadding - leftPadding) / 2;
 
-    const yTransLength = home.scrollTop + (contentInside.clientHeight * scaleRatio) / 2 - rowContentsWrapper.offsetTop;
+    const yTransLength =
+      home.current.scrollTop + (contentInside.current.clientHeight * scaleRatio) / 2 - contentsWrapper.offsetTop;
 
-    contentInside.classList.add('clicked');
-    contentInside.style.transform = `translate(${xTransLength}px, ${yTransLength}px) scale(${scaleRatio})`;
+    contentInside.current.classList.add('clicked');
+    contentInside.current.style.transform = `translate(${xTransLength}px, ${yTransLength}px) scale(${scaleRatio})`;
 
-    content.classList.add('clicked');
+    content.current.classList.add('clicked');
 
-    setIsClicked(true);
+    setHasClickedContent(true);
   };
 
   const closeModal = () => {
     const genreId = genre_ids[0];
 
-    const home = document.querySelector<HTMLElement>('.home');
-    if (!home) return;
-    const rowContentsWrapper = document.querySelector<HTMLElement>(`.row-contents-wrapper-${genreId}`);
-    if (!rowContentsWrapper) return;
-    const slider = document.querySelector<HTMLElement>(`.slider-${genreId}`);
+    if (!home.current) return;
+    const contentsWrapper = contentsWrappers.current[`${genreId}`];
+    if (!contentsWrapper) return;
+    const slider = sliders.current[`${genreId}`];
     if (!slider) return;
-    const contentThumbnail = document.querySelector<HTMLElement>(`.content-thumbnail-${id}`);
+    const contentThumbnail = contentThumbnails.current[`${id}`];
     if (!contentThumbnail) return;
-    const content = document.querySelector<HTMLElement>(`.content-${id}`);
-    if (!content) return;
-    const contentInside = document.querySelector<HTMLElement>(`.content-inside-${id}`);
-    if (!contentInside) return;
+    if (!content.current) return;
+    if (!contentInside.current) return;
 
-    enableAnchorsKeyboardTab();
-    showSliderControlButtons();
+    home.current.style.overflowY = '';
+    home.current.style.paddingRight = '';
 
-    home.style.overflowY = '';
-    home.style.paddingRight = '';
-
-    content.classList.remove('clicked');
-    content.style.top = `${rowContentsWrapper.offsetTop}px`;
-    content.style.left = `${
-      rowContentsWrapper.offsetLeft +
+    content.current.classList.remove('clicked');
+    content.current.style.top = `${contentsWrapper.offsetTop}px`;
+    content.current.style.left = `${
+      contentsWrapper.offsetLeft +
       contentThumbnail.offsetLeft +
       parseFloat(getComputedStyle(slider).transform.split(', ')[4])
     }px`;
-    content.style.height = '';
+    content.current.style.height = '';
 
-    contentInside.classList.remove('clicked');
-    contentInside.classList.add('shrinking');
-    contentInside.style.top = '';
-    contentInside.style.left = '';
-    contentInside.style.transform = '';
+    contentInside.current.classList.remove('clicked');
+    contentInside.current.classList.add('shrinking');
+    contentInside.current.style.top = '';
+    contentInside.current.style.left = '';
+    contentInside.current.style.transform = '';
 
     setTimeout(() => {
-      contentInside.classList.remove('shrinking');
+      if (!contentInside.current) return;
+      contentInside.current.classList.remove('shrinking');
     }, Styled.contentTransitionDuration);
 
-    setIsClicked(false);
+    setHasClickedContent(false);
   };
 
   const toggleModal = () => {
-    isClicked ? closeModal() : openModal();
+    hasClickedContent ? closeModal() : openModal();
   };
 
   const getImageLink = (img: string | null): string => `https://image.tmdb.org/t/p/original${img}`;
 
   const handleClickContent = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const content = document.querySelector<HTMLElement>(`.content-${id}`);
-    if (!content) return;
-    if (event.target === content) closeModal();
+    if (!content.current) return;
+    if (event.target === content.current) closeModal();
   };
 
   const setContentPosition = () => {
     if (!hoveredContent) return;
 
     const genreId = hoveredContent.genre_ids[0];
-    const rowContentsWrapper = document.querySelector<HTMLElement>(`.row-contents-wrapper-${genreId}`);
-    if (!rowContentsWrapper) return;
-    const slider = document.querySelector<HTMLElement>(`.slider-${genreId}`);
+    const contentsWrapper = contentsWrappers.current[`${genreId}`];
+    if (!contentsWrapper) return;
+    const slider = sliders.current[`${genreId}`];
     if (!slider) return;
-    const contentThumbnail = document.querySelector<HTMLElement>(`.content-thumbnail-${hoveredContent.id}`);
+    const contentThumbnail = contentThumbnails.current[`${hoveredContent.id}`];
     if (!contentThumbnail) return;
 
     return {
-      top: `${rowContentsWrapper.offsetTop}px`,
+      top: `${contentsWrapper.offsetTop}px`,
       left: `${
-        rowContentsWrapper.offsetLeft +
+        contentsWrapper.offsetLeft +
         contentThumbnail.offsetLeft +
         parseFloat(getComputedStyle(slider).transform.split(', ')[4])
       }px`,
@@ -208,23 +191,23 @@ export default function Content({ item, onMouseEnter, onMouseLeave, hoveredConte
 
   return (
     <Styled.Container
-      className={`content content-${id}`}
       onClick={handleClickContent}
       onMouseEnter={onMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={setContentPosition()}
+      ref={content}
     >
-      <Styled.Inside className={`content-inside-${id}`}>
+      <Styled.Inside ref={contentInside}>
         <Styled.ImgContainer className="content-img-container" onClick={toggleModal}>
           <Styled.Img src={getImageLink(backdrop_path)} alt={`${name} 썸네일`} />
-          <Styled.Title className={`content-title-${id} ${name.length < 7 && 'short'}`}>{name}</Styled.Title>
-          {isClicked && (
+          <Styled.Title className={`${name.length < 7 && 'short'}`}>{name}</Styled.Title>
+          {hasClickedContent && (
             <Styled.CloseButton aria-label="닫기">
               <CloseIcon />
             </Styled.CloseButton>
           )}
         </Styled.ImgContainer>
-        <ContentBottomPanel id={id} isClicked={isClicked} toggleModal={toggleModal} />
+        <ContentBottomPanel id={id} hasClickedContent={hasClickedContent} toggleModal={toggleModal} />
       </Styled.Inside>
     </Styled.Container>
   );

@@ -25,7 +25,7 @@ export const ContentsWrapper = styled.div`
   position: relative;
   display: flex;
   /* gap이 스타일에 아무 영향을 주진 않지만, javascript로 gap 값 받아올 때 이미 ContentsWrapper를
-   * querySelector로 불러온 상황이면, 굳이 Slider를 불러오지 않아도 되게 하려고 값 지정했음 */
+   * 불러온 상황이면, 굳이 Slider를 불러오지 않아도 되게 하려고 값 지정했음 */
   gap: ${sliderGap};
 `;
 

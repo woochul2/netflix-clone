@@ -6,11 +6,11 @@ import * as Styled from './styles/ContentBottomPanel';
 
 interface Props {
   id: number;
-  isClicked: boolean;
+  hasClickedContent: boolean;
   toggleModal: () => void;
 }
 
-export default function ContentBottomPanel({ id, isClicked, toggleModal }: Props) {
+export default function ContentBottomPanel({ id, hasClickedContent, toggleModal }: Props) {
   const [tvDetail, setTvDetail] = useState<TvDetail.RootObject>();
   const [tvVideos, setTvVideos] = useState<TvVideos.RootObject>();
 
@@ -42,21 +42,21 @@ export default function ContentBottomPanel({ id, isClicked, toggleModal }: Props
       if (!tvVideos) getTvVideos();
     };
 
-    if (isClicked) {
+    if (hasClickedContent) {
       setTvDetail(getMockTvDetail());
       setTvVideos(getMockTvVideos());
       // getData();
     }
-  }, [id, tvDetail, tvVideos, isClicked]);
+  }, [id, tvDetail, tvVideos, hasClickedContent]);
 
   return (
     <Styled.Container className="content-bottom-panel">
-      {!isClicked && (
+      {!hasClickedContent && (
         <Styled.PanelButton aria-label="상세 정보 보기" onClick={toggleModal}>
           <ChevronDownIcon />
         </Styled.PanelButton>
       )}
-      {isClicked && tvDetail && (
+      {hasClickedContent && tvDetail && (
         <>
           <Styled.LinkContainer>
             <Styled.PageLink href={tvDetail.homepage} target="_blank" aria-label="공식 홈페이지">

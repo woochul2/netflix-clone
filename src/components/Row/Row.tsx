@@ -10,21 +10,29 @@ import * as Styled from './styles/Row';
 let isMouseOnThumbnail = false;
 
 interface Props {
+  contentsWrappers: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
+  sliders: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
+  contentThumbnails: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   genreId: number;
   genreName: string;
   initContentStyles: () => void;
   sliderContentCount: number;
   hoveredContent: HoveredContent | null;
   setHoveredContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
+  hasClickedContent: boolean;
 }
 
 export default function Row({
+  contentsWrappers,
+  sliders,
+  contentThumbnails,
   genreId,
   genreName,
   initContentStyles,
   sliderContentCount,
   hoveredContent,
   setHoveredContent,
+  hasClickedContent,
 }: Props) {
   const [tvShows, setTvShows] = useState<TvShows.Result[]>([]);
   const [sliderStartIndex, setSliderStartIndex] = useState(0);
@@ -60,7 +68,7 @@ export default function Row({
   }, [genreId, initContentStyles]);
 
   const translateSlider = (newIndex: number) => {
-    const slider = document.querySelector<HTMLElement>(`.slider-${genreId}`);
+    const slider = sliders.current[`${genreId}`];
     if (!slider) return;
 
     if (newIndex === 0) {
@@ -85,7 +93,7 @@ export default function Row({
     setTimeout(() => {
       if (!isMouseOnThumbnail) return;
       const tvShow = tvShows[index];
-      const contentThumbnail = document.querySelector<HTMLElement>(`.content-thumbnail-${tvShow.id}`);
+      const contentThumbnail = contentThumbnails.current[`${tvShow.id}`];
       if (!contentThumbnail) return;
       contentThumbnail.style.boxShadow = 'none';
       setHoveredContent({ ...tvShow, transform_origin: transformOrigin });
@@ -124,20 +132,21 @@ export default function Row({
   return (
     <Styled.Container>
       <Styled.Title>{genreName}</Styled.Title>
-      <Styled.ContentsWrapper className={`row-contents-wrapper row-contents-wrapper-${genreId}`}>
+      <Styled.ContentsWrapper ref={(element) => (contentsWrappers.current[`${genreId}`] = element)}>
         {sliderStartIndex > 0 && (
           <Styled.PrevButton
-            className="slider-control-button"
             aria-label="이전 컨텐츠 보기"
             onClick={handleClickPrevButton}
+            style={{ display: hasClickedContent ? 'none' : '' }}
           >
             <ChevronDownIcon />
           </Styled.PrevButton>
         )}
-        <Styled.Slider className={`slider slider-${genreId}`}>
+        <Styled.Slider ref={(element) => (sliders.current[`${genreId}`] = element)}>
           {tvShows.map((tvShow, index) => (
             <ContentThumbnail
               key={tvShow.id}
+              contentThumbnails={contentThumbnails}
               item={tvShow}
               tabIndex={getTabIndex(index)}
               isHovered={checkIsContentHovered(tvShow.id)}
@@ -148,9 +157,9 @@ export default function Row({
         </Styled.Slider>
         {sliderStartIndex + sliderContentCount < tvShows.length && (
           <Styled.NextButton
-            className="slider-control-button"
             aria-label="컨텐츠 더 보기"
             onClick={handleClickNextButton}
+            style={{ display: hasClickedContent ? 'none' : '' }}
           >
             <ChevronDownIcon />
           </Styled.NextButton>

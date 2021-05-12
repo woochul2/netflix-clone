@@ -28,7 +28,7 @@ export const Inside = styled.div`
     position: absolute;
 
     .content-bottom-panel {
-      visibility: 'visible';
+      visibility: visible;
       opacity: 1;
       align-items: flex-start;
       padding-bottom: 0.5em;
@@ -37,11 +37,6 @@ export const Inside = styled.div`
     .content-img-container {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-    }
-
-    .content-bottom-panel {
-      visibility: visible;
-      opacity: 1;
     }
   }
 
