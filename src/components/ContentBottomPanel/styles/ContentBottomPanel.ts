@@ -1,10 +1,5 @@
 import styled from 'styled-components/macro';
-import {
-  contentBorderRadius,
-  contentBoxShadow,
-  contentTransitionDuration,
-  roundButton,
-} from '../../Content/styles/Content';
+import { contentBorderRadius, contentBoxShadow, roundButton } from '../../Content/styles/Content';
 
 export const Container = styled.div`
   // 그림자가 이미지 덮어쓰지 않게 하기 위해 z-index 설정
@@ -21,10 +16,16 @@ export const Container = styled.div`
   border-bottom-right-radius: ${contentBorderRadius};
   box-shadow: ${contentBoxShadow};
   background-color: var(--gray-900);
-  transition: all ${`${contentTransitionDuration}ms`};
+
+  &.clicked {
+    visibility: visible;
+    opacity: 1;
+    align-items: flex-start;
+    padding-bottom: 0.5em;
+  }
 `;
 
-export const PanelButton = styled(roundButton)`
+export const DetailButton = styled(roundButton)`
   width: 1.25em;
   height: 1.25em;
   border: 0.09em solid var(--gray-400);

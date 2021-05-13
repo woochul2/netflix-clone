@@ -24,29 +24,25 @@ export const Title = styled.h2`
 export const ContentsWrapper = styled.div`
   position: relative;
   display: flex;
-  /* gap이 스타일에 아무 영향을 주진 않지만, javascript로 gap 값 받아올 때 이미 ContentsWrapper를
-   * 불러온 상황이면, 굳이 Slider를 불러오지 않아도 되게 하려고 값 지정했음 */
-  gap: ${sliderGap};
 `;
 
 export const Slider = styled.div`
   display: flex;
   gap: ${sliderGap};
   transform: translateX(0);
-  transition: transform 0.4s;
+  transition: transform 0.3s;
 `;
 
 const SliderControlButton = styled.button`
-  // 컨텐츠 썸네일보다 위에 보이도록 z-index 설정
-  z-index: 1;
   cursor: pointer;
   opacity: 0.7;
+  // 컨텐츠 썸네일보다 위에 보이도록 z-index 설정
+  z-index: 1;
   position: absolute;
   top: 0;
-  /* 버튼이 밑에 겹쳐진 컨텐츠를 완전히 가리지 못하는 미세한 틈이 있어서 1px 더해줌 */
+  /* 버튼이 z축 기준으로 밑에 있는 컨텐츠를 완전히 가리지 못하는 미세한 틈이 있어서 1px 더해줌 */
   width: calc(${homeSidePadding} - ${sliderGap} + 1px);
   height: 100%;
-  outline: 0;
   border: 0;
   background: var(--gray-700);
   color: var(--gray-100);
@@ -57,10 +53,6 @@ const SliderControlButton = styled.button`
     left: 50%;
     width: 1.75rem;
     height: 1.75rem;
-  }
-
-  &:focus-visible {
-    box-shadow: 0 0 0 0.125rem var(--white);
   }
 
   &:hover,

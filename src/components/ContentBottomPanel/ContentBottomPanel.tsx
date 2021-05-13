@@ -7,10 +7,10 @@ import * as Styled from './styles/ContentBottomPanel';
 interface Props {
   id: number;
   hasClickedContent: boolean;
-  toggleModal: () => void;
+  setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function ContentBottomPanel({ id, hasClickedContent, toggleModal }: Props) {
+export default function ContentBottomPanel({ id, hasClickedContent, setHasClickedContent }: Props) {
   const [tvDetail, setTvDetail] = useState<TvDetail.RootObject>();
   const [tvVideos, setTvVideos] = useState<TvVideos.RootObject>();
 
@@ -37,24 +37,49 @@ export default function ContentBottomPanel({ id, hasClickedContent, toggleModal 
       setTvVideos(response.data);
     };
 
-    const getData = () => {
+    const setData = () => {
       if (!tvDetail) getTvDetail();
       if (!tvVideos) getTvVideos();
     };
 
+    const setMockData = () => {
+      if (!tvDetail) setTvDetail(getMockTvDetail());
+      if (!tvVideos) setTvVideos(getMockTvVideos());
+    };
+
     if (hasClickedContent) {
-      setTvDetail(getMockTvDetail());
-      setTvVideos(getMockTvVideos());
-      // getData();
+      setMockData();
+      // setData();
     }
   }, [id, tvDetail, tvVideos, hasClickedContent]);
 
+  const handleClickDetailButton = () => setHasClickedContent(true);
+
+  const VideoLinks = (
+    <>
+      {tvVideos?.results.map(
+        (result) =>
+          result.type === 'Trailer' &&
+          result.site === 'YouTube' && (
+            <Styled.PageLink
+              key={result.id}
+              href={getYoutubeLink(result.key)}
+              target="_blank"
+              aria-label={`${result.name.split('|')[1]}`}
+            >
+              {result.name.split('|')[1]}
+            </Styled.PageLink>
+          )
+      )}
+    </>
+  );
+
   return (
-    <Styled.Container className="content-bottom-panel">
+    <Styled.Container className={hasClickedContent ? 'clicked' : ''}>
       {!hasClickedContent && (
-        <Styled.PanelButton aria-label="상세 정보 보기" onClick={toggleModal}>
+        <Styled.DetailButton aria-label="상세 정보 보기" onClick={handleClickDetailButton}>
           <ChevronDownIcon />
-        </Styled.PanelButton>
+        </Styled.DetailButton>
       )}
       {hasClickedContent && tvDetail && (
         <>
@@ -62,21 +87,7 @@ export default function ContentBottomPanel({ id, hasClickedContent, toggleModal 
             <Styled.PageLink href={tvDetail.homepage} target="_blank" aria-label="공식 홈페이지">
               공식 홈페이지
             </Styled.PageLink>
-            {tvVideos &&
-              tvVideos.results.map(
-                (result) =>
-                  result.type === 'Trailer' &&
-                  result.site === 'YouTube' && (
-                    <Styled.PageLink
-                      key={result.id}
-                      href={getYoutubeLink(result.key)}
-                      target="_blank"
-                      aria-label={`${result.name.split('|')[1]}`}
-                    >
-                      {result.name.split('|')[1]}
-                    </Styled.PageLink>
-                  )
-              )}
+            {VideoLinks}
           </Styled.LinkContainer>
           <Styled.Overview>{tvDetail.overview.split('. ').join('.\n').split('?').join('?\n')}</Styled.Overview>
           <Styled.Text>
