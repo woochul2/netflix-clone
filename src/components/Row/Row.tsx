@@ -77,11 +77,13 @@ export default function Row({
     let newIndex = sliderStartIndex - sliderContentCount;
     if (newIndex < 0) newIndex = 0;
     setSliderStartIndex(newIndex);
+    setContent(null);
   };
 
   const handleClickNextButton = () => {
     const newIndex = sliderStartIndex + sliderContentCount;
     setSliderStartIndex(newIndex);
+    setContent(null);
   };
 
   return (

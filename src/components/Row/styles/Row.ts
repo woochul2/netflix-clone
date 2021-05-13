@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro';
 import * as BREAKPOINTS from '../../../constants/breakpoints';
 import { homeSidePadding } from '../../../pages/Home/styles/Home';
+import { contentTransitionDuration } from '../../Content/styles/Content';
 
 const sliderGap = '0.25rem';
 
@@ -30,7 +31,7 @@ export const Slider = styled.div`
   display: flex;
   gap: ${sliderGap};
   transform: translateX(0);
-  transition: transform 0.3s;
+  transition: transform ${`${contentTransitionDuration}ms`};
 `;
 
 const SliderControlButton = styled.button`
