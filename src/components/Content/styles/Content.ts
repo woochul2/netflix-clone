@@ -9,6 +9,7 @@ export const Container = styled.div`
   z-index: 3;
   position: absolute;
   font-size: calc(var(--content-width) / 10);
+  border-radius: ${contentBorderRadius};
 
   &.clicked {
     width: 100vw;
@@ -20,6 +21,7 @@ export const Container = styled.div`
 
 export const Inside = styled.div`
   width: var(--content-width);
+  border-radius: ${contentBorderRadius};
   box-shadow: ${contentBoxShadow};
   transition: transform ${`${contentTransitionDuration}ms`};
 

@@ -11,7 +11,7 @@ export default function Home() {
   const homeRef = useRef<HTMLDivElement>(null);
   const contentsWrappersRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const slidersRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
-  const contentThumbnailsRef = useRef<{ [key: string]: HTMLButtonElement | null }>({});
+  const contentThumbnailsRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   const [isScrollDown, setIsScrollDown] = useState(false);
   const [sliderContentCount, setSliderContentCount] = useState(6);
@@ -89,6 +89,7 @@ export default function Home() {
             tvGenre={tvGenre}
             sliderContentCount={sliderContentCount}
             hasClickedContent={hasClickedContent}
+            setHasClickedContent={setHasClickedContent}
             content={content}
             setContent={setContent}
           />

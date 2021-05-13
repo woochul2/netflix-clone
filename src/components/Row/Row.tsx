@@ -9,10 +9,11 @@ import * as Styled from './styles/Row';
 interface Props {
   contentsWrappersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   slidersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
-  contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLButtonElement | null }>;
+  contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   tvGenre: { id: number; name: string };
   sliderContentCount: number;
   hasClickedContent: boolean;
+  setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
   content: HoveredContent | null;
   setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
 }
@@ -24,6 +25,7 @@ export default function Row({
   tvGenre,
   sliderContentCount,
   hasClickedContent,
+  setHasClickedContent,
   content,
   setContent,
 }: Props) {
@@ -109,6 +111,7 @@ export default function Row({
               sliderContentCount={sliderContentCount}
               sliderStartIndex={sliderStartIndex}
               hasClickedContent={hasClickedContent}
+              setHasClickedContent={setHasClickedContent}
               content={content}
               setContent={setContent}
             />

@@ -12,7 +12,7 @@ interface Props {
   homeRef: React.RefObject<HTMLDivElement>;
   contentsWrappersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   slidersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
-  contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLButtonElement | null }>;
+  contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   content: HoveredContent;
   hasClickedContent: boolean;
   setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
