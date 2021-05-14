@@ -56,13 +56,23 @@ const SliderControlButton = styled.button`
     height: 1.75rem;
   }
 
-  &:hover,
   &:focus-visible {
     opacity: 0.9;
 
     svg {
       width: 2.25rem;
       height: 2.25rem;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      opacity: 0.9;
+
+      svg {
+        width: 2.25rem;
+        height: 2.25rem;
+      }
     }
   }
 

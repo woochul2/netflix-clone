@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { HoveredContent } from '../../types';
-import { getMockTvShows } from '../../utils/getMockData';
 import { contentTransitionDuration } from '../Content/styles/Content';
 import ContentThumbnail from '../ContentThumbnail';
 import * as Styled from './styles/Row';
@@ -60,8 +59,8 @@ export default function Row({
       setTvShows(filteredTvShows);
     };
 
-    setTvShows(getMockTvShows(id));
-    // initTvShows();
+    // setTvShows(getMockTvShows(id));
+    initTvShows();
   }, [id]);
 
   const getSliderTransformStyle = (): string | undefined => {

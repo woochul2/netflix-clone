@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 import Content from '../../components/Content';
 import Row from '../../components/Row';
 import * as BREAKPOINTS from '../../constants/breakpoints';
@@ -49,11 +50,17 @@ export default function Home() {
     (event.target as HTMLDivElement).scrollTop > 0 ? setIsScrollDown(true) : setIsScrollDown(false);
   };
 
+  const getHomePaddingRight = (): string => {
+    if (isMobile) return '';
+    if (!homeRef.current) return '';
+    return '17px';
+  };
+
   const getHomeStyle = (): React.CSSProperties | undefined => {
     if (hasClickedContent) {
       return {
         overflow: 'hidden',
-        paddingRight: '17px',
+        paddingRight: getHomePaddingRight(),
       };
     }
   };

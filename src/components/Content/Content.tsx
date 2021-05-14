@@ -153,7 +153,15 @@ export default function Content({
   };
 
   const toggleModal = () => {
-    hasClickedContent ? setHasClickedContent(false) : setHasClickedContent(true);
+    if (hasClickedContent) {
+      setHasClickedContent(false);
+      setTimeout(() => {
+        setContent(null);
+      }, contentTransitionDuration);
+      return;
+    }
+
+    setHasClickedContent(true);
   };
 
   const getImageLink = (img: string | null): string => `https://image.tmdb.org/t/p/original${img}`;

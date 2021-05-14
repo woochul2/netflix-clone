@@ -28,11 +28,13 @@ export const Inside = styled.div`
   box-shadow: ${contentBoxShadow};
   transition: transform ${`${contentTransitionDuration}ms`};
 
-  &:hover {
-    transform: scale(1.5);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: scale(1.5);
 
-    [class^='ContentBottomPanel__Container'] {
-      visibility: visible;
+      [class^='ContentBottomPanel__Container'] {
+        visibility: visible;
+      }
     }
   }
 `;
@@ -51,6 +53,7 @@ export const Img = styled.img`
 `;
 
 export const Title = styled.h3`
+  user-select: none;
   cursor: pointer;
   position: absolute;
   bottom: 0.38rem;

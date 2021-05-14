@@ -29,7 +29,6 @@ export const DetailButton = styled(roundButton)`
   border: 0.09em solid var(--gray-400);
   margin: 0.3em;
 
-  &:hover,
   &:focus-visible {
     border-color: var(--gray-100);
     background-color: var(--gray-700);
@@ -37,6 +36,13 @@ export const DetailButton = styled(roundButton)`
 
   svg {
     padding: 0.25em;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      border-color: var(--gray-100);
+      background-color: var(--gray-700);
+    }
   }
 `;
 
@@ -52,8 +58,10 @@ export const PageLink = styled.a`
   margin-right: 1em;
   color: var(--white);
 
-  &:hover {
-    text-decoration: underline;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 

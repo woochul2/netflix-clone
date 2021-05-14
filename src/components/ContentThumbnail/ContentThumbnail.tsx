@@ -65,11 +65,12 @@ export default function ContentThumbnail({
   };
 
   const handleClickImgButton = () => {
+    if (content) return;
     if (isSliderMoving) return;
     setContent({ ...tvShow, transform_origin: getTransformOrigin() });
     setTimeout(() => {
       setHasClickedContent(true);
-    }, 0);
+    }, 1);
     const contentThumbnail = contentThumbnailsRef.current[`${id}`];
     if (!contentThumbnail) return;
     contentThumbnail.blur();
