@@ -92,7 +92,9 @@ export default function ContentThumbnail({
           <Styled.ImgButton tabIndex={getImgButtonTabIndex()} onClick={handleClickImgButton}>
             <Styled.Img src={getImageLink(backdrop_path)} alt={`${name} 썸네일`} />
           </Styled.ImgButton>
-          <Styled.Title className={`${name.length < 7 && 'short'}`}>{name}</Styled.Title>
+          <Styled.Title className={`${name.length < 7 && 'short'}`} onClick={handleClickImgButton}>
+            {name}
+          </Styled.Title>
         </>
       )}
     </Styled.Container>
