@@ -13,9 +13,9 @@ interface Props {
   tvGenre: { id: number; name: string };
   sliderContentCount: number;
   hasClickedContent: boolean;
-  setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
   content: HoveredContent | null;
   setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
+  setHasClickedContentThumbnail: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Row({
@@ -25,9 +25,9 @@ export default function Row({
   tvGenre,
   sliderContentCount,
   hasClickedContent,
-  setHasClickedContent,
   content,
   setContent,
+  setHasClickedContentThumbnail,
 }: Props) {
   const { id, name } = tvGenre;
   const [tvShows, setTvShows] = useState<TvShows.Result[]>([]);
@@ -127,7 +127,7 @@ export default function Row({
               sliderStartIndex={sliderStartIndex}
               isSliderMoving={isSliderMoving}
               hasClickedContent={hasClickedContent}
-              setHasClickedContent={setHasClickedContent}
+              setHasClickedContentThumbnail={setHasClickedContentThumbnail}
               content={content}
               setContent={setContent}
             />

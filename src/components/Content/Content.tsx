@@ -34,8 +34,15 @@ export default function Content({
   const insideRef = useRef<HTMLDivElement>(null);
   let isMouseOnContent = false;
 
+  const closeModal = () => {
+    setHasClickedContent(false);
+    setTimeout(() => {
+      setContent(null);
+    }, contentTransitionDuration);
+  };
+
   const handleClickContent = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (event.target === contentRef.current) setHasClickedContent(false);
+    if (event.target === contentRef.current) closeModal();
   };
 
   const handleMouseEnterContent = () => {
@@ -153,15 +160,7 @@ export default function Content({
   };
 
   const toggleModal = () => {
-    if (hasClickedContent) {
-      setHasClickedContent(false);
-      setTimeout(() => {
-        setContent(null);
-      }, contentTransitionDuration);
-      return;
-    }
-
-    setHasClickedContent(true);
+    hasClickedContent ? closeModal() : setHasClickedContent(true);
   };
 
   const getImageLink = (img: string | null): string => `https://image.tmdb.org/t/p/original${img}`;

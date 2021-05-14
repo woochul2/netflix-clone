@@ -18,6 +18,7 @@ export default function Home() {
   const [sliderContentCount, setSliderContentCount] = useState(6);
   const [content, setContent] = useState<HoveredContent | null>(null);
   const [hasClickedContent, setHasClickedContent] = useState(false);
+  const [hasClickedContentThumbnail, setHasClickedContentThumbnail] = useState(false);
 
   const setContentWidth = () => {
     let newSliderContentCount = 6;
@@ -37,12 +38,20 @@ export default function Home() {
     document.documentElement.style.setProperty('--content-width', `${contentWidth}px`);
   };
 
+  const removeContent = () => {
+    if (isMobile) return;
+    setContent(null);
+    setHasClickedContent(false);
+  };
+
   useEffect(() => {
     setContentWidth();
     window.addEventListener('resize', setContentWidth);
+    window.addEventListener('resize', removeContent);
 
     return () => {
       window.removeEventListener('resize', setContentWidth);
+      window.addEventListener('resize', removeContent);
     };
   }, []);
 
@@ -64,6 +73,13 @@ export default function Home() {
       };
     }
   };
+
+  useEffect(() => {
+    if (hasClickedContentThumbnail) {
+      setHasClickedContent(true);
+      setHasClickedContentThumbnail(false);
+    }
+  }, [content, hasClickedContentThumbnail]);
 
   return (
     <Styled.Container onScroll={handleScroll} style={getHomeStyle()} ref={homeRef}>
@@ -96,9 +112,9 @@ export default function Home() {
             tvGenre={tvGenre}
             sliderContentCount={sliderContentCount}
             hasClickedContent={hasClickedContent}
-            setHasClickedContent={setHasClickedContent}
             content={content}
             setContent={setContent}
+            setHasClickedContentThumbnail={setHasClickedContentThumbnail}
           />
         ))}
         {content && (
