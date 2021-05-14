@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { HoveredContent } from '../../types';
 import { getMockTvShows } from '../../utils/getMockData';
+import { contentTransitionDuration } from '../Content/styles/Content';
 import ContentThumbnail from '../ContentThumbnail';
 import * as Styled from './styles/Row';
 
@@ -32,6 +33,7 @@ export default function Row({
   const { id, name } = tvGenre;
   const [tvShows, setTvShows] = useState<TvShows.Result[]>([]);
   const [sliderStartIndex, setSliderStartIndex] = useState(0);
+  const [isSliderMoving, setIsSliderMoving] = useState(false);
 
   useEffect(() => {
     const getTvShowsLinks = (id: number, pageCount: number): string[] => {
@@ -74,16 +76,28 @@ export default function Row({
   };
 
   const handleClickPrevButton = () => {
+    if (isSliderMoving) return;
     let newIndex = sliderStartIndex - sliderContentCount;
     if (newIndex < 0) newIndex = 0;
     setSliderStartIndex(newIndex);
     setContent(null);
+
+    setIsSliderMoving(true);
+    setTimeout(() => {
+      setIsSliderMoving(false);
+    }, contentTransitionDuration);
   };
 
   const handleClickNextButton = () => {
+    if (isSliderMoving) return;
     const newIndex = sliderStartIndex + sliderContentCount;
     setSliderStartIndex(newIndex);
     setContent(null);
+
+    setIsSliderMoving(true);
+    setTimeout(() => {
+      setIsSliderMoving(false);
+    }, contentTransitionDuration);
   };
 
   return (
@@ -112,6 +126,7 @@ export default function Row({
               index={index}
               sliderContentCount={sliderContentCount}
               sliderStartIndex={sliderStartIndex}
+              isSliderMoving={isSliderMoving}
               hasClickedContent={hasClickedContent}
               setHasClickedContent={setHasClickedContent}
               content={content}

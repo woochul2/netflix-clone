@@ -3,9 +3,8 @@ import { contentBorderRadius, contentBoxShadow, roundButton } from '../../Conten
 
 export const Container = styled.div`
   // 그림자가 이미지 덮어쓰지 않게 하기 위해 z-index 설정
-  z-index: -1;
   visibility: hidden;
-  opacity: 0;
+  z-index: -1;
   position: absolute;
   top: 100%;
   display: flex;
@@ -19,7 +18,6 @@ export const Container = styled.div`
 
   &.clicked {
     visibility: visible;
-    opacity: 1;
     align-items: flex-start;
     padding-bottom: 0.5em;
   }

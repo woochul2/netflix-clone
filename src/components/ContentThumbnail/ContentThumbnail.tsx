@@ -9,6 +9,7 @@ interface Props {
   index: number;
   sliderContentCount: number;
   sliderStartIndex: number;
+  isSliderMoving: boolean;
   hasClickedContent: boolean;
   setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
   content: HoveredContent | null;
@@ -21,6 +22,7 @@ export default function ContentThumbnail({
   index,
   sliderContentCount,
   sliderStartIndex,
+  isSliderMoving,
   hasClickedContent,
   setHasClickedContent,
   content,
@@ -63,6 +65,7 @@ export default function ContentThumbnail({
   };
 
   const handleClickImgButton = () => {
+    if (isSliderMoving) return;
     setContent({ ...tvShow, transform_origin: getTransformOrigin() });
     setTimeout(() => {
       setHasClickedContent(true);

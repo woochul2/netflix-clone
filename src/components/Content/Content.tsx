@@ -94,6 +94,12 @@ export default function Content({
     return parseFloat(sliderTransformMaxtrix.split(', ')[4]);
   };
 
+  const getHomeSidePadding = (): string => {
+    if (window.innerWidth < changeRemToPx(BREAKPOINTS.SM)) return homeSidePadding.SM;
+    if (window.innerWidth < changeRemToPx(BREAKPOINTS.MD)) return homeSidePadding.MD;
+    return homeSidePadding.default;
+  };
+
   const getTranslationX = (): number => {
     const genreId = genre_ids[0];
 
@@ -104,6 +110,7 @@ export default function Content({
     if (!contentThumbnail) return 0;
     if (!insideRef.current) return 0;
 
+    const homeSidePadding = getHomeSidePadding();
     const rightPadding = changeRemToPx(homeSidePadding);
     const leftPadding = homeRef.current.clientWidth - insideRef.current.clientWidth * getScaleRatio() - rightPadding;
 
@@ -160,8 +167,8 @@ export default function Content({
       style={getContentStyle()}
       ref={contentRef}
     >
-      <Styled.Inside className={hasClickedContent ? 'clicked' : ''} style={getInsideStyle()} ref={insideRef}>
-        <Styled.ImgContainer className={hasClickedContent ? 'clicked' : ''} onClick={toggleModal}>
+      <Styled.Inside style={getInsideStyle()} ref={insideRef}>
+        <Styled.ImgContainer onClick={toggleModal}>
           <Styled.Img src={getImageLink(backdrop_path)} alt={`${name} 썸네일`} />
           <Styled.Title className={`${name.length < 7 && 'short'}`}>{name}</Styled.Title>
           {hasClickedContent && (

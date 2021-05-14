@@ -20,27 +20,20 @@ export const Container = styled.div`
 `;
 
 export const Inside = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: var(--content-width);
   border-radius: ${contentBorderRadius};
   box-shadow: ${contentBoxShadow};
   transition: transform ${`${contentTransitionDuration}ms`};
 
-  &:hover:not(.clicked) {
+  &:hover {
     transform: scale(1.5);
-
-    [class^='Content__ImgContainer'] {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
 
     [class^='ContentBottomPanel__Container'] {
       visibility: visible;
-      opacity: 1;
     }
-  }
-
-  &.clicked {
-    position: absolute;
   }
 `;
 
@@ -49,11 +42,8 @@ export const ImgContainer = styled.div`
   position: relative;
   overflow: hidden;
   border-radius: ${contentBorderRadius};
-
-  &.clicked {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 `;
 
 export const Img = styled.img`
@@ -61,12 +51,12 @@ export const Img = styled.img`
 `;
 
 export const Title = styled.h3`
+  cursor: pointer;
   position: absolute;
   bottom: 0.38rem;
   right: 0.5rem;
   text-align: right;
   font-family: 'Nanum Brush Script', cursive;
-  font-size: 1em;
   mix-blend-mode: luminosity;
   background: radial-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0) 100%);
 

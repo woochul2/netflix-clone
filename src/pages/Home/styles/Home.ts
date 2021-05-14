@@ -1,7 +1,11 @@
 import styled from 'styled-components/macro';
 import * as BREAKPOINTS from '../../../constants/breakpoints';
 
-export const homeSidePadding = '3.25rem';
+export const homeSidePadding = {
+  SM: '2.25rem',
+  MD: '2.75rem',
+  default: '3.25rem',
+};
 
 export const Container = styled.div`
   position: relative;
@@ -17,12 +21,20 @@ export const Header = styled.header`
   z-index: 2;
   position: sticky;
   top: 0;
-  padding: 0.875rem ${homeSidePadding};
+  padding: 0.875rem ${homeSidePadding.default};
   background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0));
   transition: background-color 0.4s;
 
   &.scroll-down {
     background-color: var(--gray-900);
+  }
+
+  @media (max-width: ${BREAKPOINTS.MD}) {
+    padding: 0.875rem ${homeSidePadding.MD};
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    padding: 0.875rem ${homeSidePadding.SM};
   }
 `;
 
@@ -43,7 +55,15 @@ export const LogoLink = styled.a`
 `;
 
 export const Main = styled.main`
-  padding: 0 ${homeSidePadding} 5rem;
+  padding: 0 ${homeSidePadding.default} 5rem;
+
+  @media (max-width: ${BREAKPOINTS.MD}) {
+    padding: 0 ${homeSidePadding.MD} 5rem;
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    padding: 0 ${homeSidePadding.SM} 5rem;
+  }
 `;
 
 export const Notification = styled.div`

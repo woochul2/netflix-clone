@@ -42,7 +42,7 @@ const SliderControlButton = styled.button`
   position: absolute;
   top: 0;
   /* 버튼이 z축 기준으로 밑에 있는 컨텐츠를 완전히 가리지 못하는 미세한 틈이 있어서 1px 더해줌 */
-  width: calc(${homeSidePadding} - ${sliderGap} + 1px);
+  width: calc(${homeSidePadding.default} - ${sliderGap} + 1px);
   height: 100%;
   border: 0;
   background: var(--gray-700);
@@ -65,20 +65,44 @@ const SliderControlButton = styled.button`
       height: 2.25rem;
     }
   }
+
+  @media (max-width: ${BREAKPOINTS.MD}) {
+    width: calc(${homeSidePadding.MD} - ${sliderGap} + 1px);
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    width: calc(${homeSidePadding.SM} - ${sliderGap} + 1px);
+  }
 `;
 
 export const PrevButton = styled(SliderControlButton)`
-  left: -${homeSidePadding};
+  left: -${homeSidePadding.default};
 
   svg {
     transform: translate(-50%, -50%) rotate(90deg);
   }
+
+  @media (max-width: ${BREAKPOINTS.MD}) {
+    left: -${homeSidePadding.MD};
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    left: -${homeSidePadding.SM};
+  }
 `;
 
 export const NextButton = styled(SliderControlButton)`
-  right: -${homeSidePadding};
+  right: -${homeSidePadding.default};
 
   svg {
     transform: translate(-50%, -50%) rotate(-90deg);
+  }
+
+  @media (max-width: ${BREAKPOINTS.MD}) {
+    right: -${homeSidePadding.MD};
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    right: -${homeSidePadding.SM};
   }
 `;
