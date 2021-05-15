@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
+import { getMockTvDetail, getMockTvVideos } from '../../utils/getMockData';
 import * as Styled from './styles/ContentBottomPanel';
 
 interface Props {
@@ -42,9 +43,9 @@ export default function ContentBottomPanel({ id, hasClickedContent, setHasClicke
     };
 
     if (hasClickedContent) {
-      // if (!tvDetail) setTvDetail(getMockTvDetail());
-      // if (!tvVideos) setTvVideos(getMockTvVideos());
-      setData();
+      if (!tvDetail) setTvDetail(getMockTvDetail());
+      if (!tvVideos) setTvVideos(getMockTvVideos());
+      // setData();
     }
   }, [id, tvDetail, tvVideos, hasClickedContent]);
 

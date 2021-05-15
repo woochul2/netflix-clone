@@ -14,6 +14,7 @@ interface Props {
   setHasClickedContentThumbnail: React.Dispatch<React.SetStateAction<boolean>>;
   content: HoveredContent | null;
   setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
+  contentWidth: number;
 }
 
 export default function ContentThumbnail({
@@ -27,6 +28,7 @@ export default function ContentThumbnail({
   setHasClickedContentThumbnail,
   content,
   setContent,
+  contentWidth,
 }: Props) {
   const { backdrop_path, id, name } = tvShow;
   let isMouseOnThumbnail = false;
@@ -48,6 +50,14 @@ export default function ContentThumbnail({
     if (!content) return false;
     if (content.id === id) return true;
     return false;
+  };
+
+  const getContentThumbnailStyle = (): React.CSSProperties | undefined => {
+    return {
+      width: `${contentWidth}px`,
+      fontSize: `${contentWidth / 10}px`,
+      boxShadow: checkContentExists() ? 'none' : '',
+    };
   };
 
   const getImgButtonTabIndex = (): number | undefined => {
@@ -80,7 +90,7 @@ export default function ContentThumbnail({
     <Styled.Container
       onMouseEnter={handleMouseEnterContentThumbnail}
       onMouseLeave={handleMouseLeaveContentThumbnail}
-      style={{ boxShadow: checkContentExists() ? 'none' : '' }}
+      style={getContentThumbnailStyle()}
       ref={(element) => (contentThumbnailsRef.current[`${id}`] = element)}
     >
       {checkContentExists() ? (

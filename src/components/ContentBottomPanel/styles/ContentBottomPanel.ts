@@ -10,7 +10,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: var(--content-width);
+  width: 100%;
   border-bottom-left-radius: ${contentBorderRadius};
   border-bottom-right-radius: ${contentBorderRadius};
   box-shadow: ${contentBoxShadow};

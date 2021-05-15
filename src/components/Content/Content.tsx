@@ -14,9 +14,10 @@ interface Props {
   slidersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   content: HoveredContent;
+  setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
+  contentWidth: number;
   hasClickedContent: boolean;
   setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
-  setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
 }
 
 export default function Content({
@@ -25,9 +26,10 @@ export default function Content({
   slidersRef,
   contentThumbnailsRef,
   content,
+  setContent,
+  contentWidth,
   hasClickedContent,
   setHasClickedContent,
-  setContent,
 }: Props) {
   const { backdrop_path, genre_ids, id, name, transform_origin } = content;
   const contentRef = useRef<HTMLDivElement>(null);
@@ -71,7 +73,7 @@ export default function Content({
       return {
         top: `${contentsWrapper.offsetTop}px`,
         left: `${contentsWrapper.offsetLeft + contentThumbnail.offsetLeft + getSliderTranslationX()}px`,
-        height: '',
+        fontSize: `${contentWidth / 10}px`,
       };
     }
 
@@ -80,6 +82,7 @@ export default function Content({
       top: '0px',
       left: '0px',
       height: `${homeRef.current.clientHeight + homeRef.current.scrollTop}px`,
+      fontSize: `${contentWidth / 10}px`,
     };
   };
 
@@ -135,6 +138,7 @@ export default function Content({
   const getInsideStyle = (): React.CSSProperties | undefined => {
     if (!hasClickedContent) {
       return {
+        width: `${contentWidth}px`,
         transformOrigin: transform_origin,
       };
     }
@@ -154,6 +158,7 @@ export default function Content({
     return {
       top: `${contentsWrapper.offsetTop}px`,
       left: `${contentsWrapper.offsetLeft + contentThumbnail.offsetLeft + getSliderTranslationX()}px`,
+      width: `${contentWidth}px`,
       transform: `translate(${getTranslationX()}px, ${translationY}px) scale(${getScaleRatio()})`,
       transformOrigin: transform_origin,
     };

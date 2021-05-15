@@ -9,7 +9,3 @@
   --red: hsl(357, 92%, 46%);
   --orange: hsl(32, 98%, 46%);
 }
-
-:root {
-  --content-width: 0px;
-}

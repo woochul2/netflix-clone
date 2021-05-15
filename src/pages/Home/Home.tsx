@@ -17,10 +17,11 @@ export default function Home() {
   const [isScrollDown, setIsScrollDown] = useState(false);
   const [sliderContentCount, setSliderContentCount] = useState(6);
   const [content, setContent] = useState<HoveredContent | null>(null);
+  const [contentWidth, setContentWidth] = useState(0);
   const [hasClickedContent, setHasClickedContent] = useState(false);
   const [hasClickedContentThumbnail, setHasClickedContentThumbnail] = useState(false);
 
-  const setContentWidth = () => {
+  const changeContentWidth = () => {
     let newSliderContentCount = 6;
     if (window.innerWidth > changeRemToPx(BREAKPOINTS.XL)) newSliderContentCount = 6;
     else if (window.innerWidth > changeRemToPx(BREAKPOINTS.LG)) newSliderContentCount = 5;
@@ -34,8 +35,7 @@ export default function Home() {
     const slider = slidersRef.current[Object.keys(slidersRef.current)[0]];
     if (!slider) return;
     const gap = parseFloat(getComputedStyle(slider).gap);
-    const contentWidth = (contentsWrapper.clientWidth - gap * (newSliderContentCount - 1)) / newSliderContentCount;
-    document.documentElement.style.setProperty('--content-width', `${contentWidth}px`);
+    setContentWidth((contentsWrapper.clientWidth - gap * (newSliderContentCount - 1)) / newSliderContentCount);
   };
 
   const removeContent = () => {
@@ -45,12 +45,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setContentWidth();
-    window.addEventListener('resize', setContentWidth);
+    changeContentWidth();
+    window.addEventListener('resize', changeContentWidth);
     window.addEventListener('resize', removeContent);
 
     return () => {
-      window.removeEventListener('resize', setContentWidth);
+      window.removeEventListener('resize', changeContentWidth);
       window.addEventListener('resize', removeContent);
     };
   }, []);
@@ -114,6 +114,7 @@ export default function Home() {
             hasClickedContent={hasClickedContent}
             content={content}
             setContent={setContent}
+            contentWidth={contentWidth}
             setHasClickedContentThumbnail={setHasClickedContentThumbnail}
           />
         ))}
@@ -125,9 +126,10 @@ export default function Home() {
             slidersRef={slidersRef}
             contentThumbnailsRef={contentThumbnailsRef}
             content={content}
+            setContent={setContent}
+            contentWidth={contentWidth}
             hasClickedContent={hasClickedContent}
             setHasClickedContent={setHasClickedContent}
-            setContent={setContent}
           />
         )}
       </Styled.Main>

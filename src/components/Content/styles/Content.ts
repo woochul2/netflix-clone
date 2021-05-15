@@ -8,12 +8,10 @@ export const Container = styled.div`
   // 가장 위에 위치하도록 z-index 설정
   z-index: 3;
   position: absolute;
-  font-size: calc(var(--content-width) / 10);
   border-radius: ${contentBorderRadius};
 
   &.clicked {
     width: 100vw;
-    height: 100vh;
     overflow: auto;
     background-color: hsla(0, 0%, 0%, 0.7);
   }
@@ -23,7 +21,6 @@ export const Inside = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: var(--content-width);
   border-radius: ${contentBorderRadius};
   box-shadow: ${contentBoxShadow};
   transition: transform ${`${contentTransitionDuration}ms`};

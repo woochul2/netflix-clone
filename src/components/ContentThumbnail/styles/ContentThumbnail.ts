@@ -3,8 +3,6 @@ import { contentBorderRadius, contentBoxShadow, Title as ContentTitle } from '..
 
 export const Container = styled.div`
   position: relative;
-  width: var(--content-width);
-  font-size: calc(var(--content-width) / 10);
   color: var(--gray-100);
 `;
 
