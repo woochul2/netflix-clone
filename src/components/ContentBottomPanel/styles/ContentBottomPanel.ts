@@ -22,6 +22,18 @@ export const Container = styled.div`
     align-items: flex-start;
     padding: 1.5rem 2rem;
   }
+
+  @media (max-width: ${BREAKPOINTS.LG}) {
+    &.clicked {
+      padding: 1.25rem 1.75rem;
+    }
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    &.clicked {
+      padding: 1rem 1.5rem;
+    }
+  }
 `;
 
 export const DetailButton = styled(roundButton)`
