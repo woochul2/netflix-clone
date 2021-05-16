@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useTvVideos } from '../../hooks/useTvVideos';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import * as Styled from './styles/ContentBottomPanel';
 
@@ -17,14 +18,10 @@ export default function ContentBottomPanel({
   setHasClickedContent,
 }: Props) {
   const [tvDetail, setTvDetail] = useState<TvDetail.RootObject>();
-  const [tvVideos, setTvVideos] = useState<TvVideos.RootObject>();
+  const tvVideos = useTvVideos(id);
 
   const getTvDetailLink = (id: number): string => {
     return `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
-  };
-
-  const getTvVideosLink = (id: number): string => {
-    return `https://api.themoviedb.org/3/tv/${id}/videos?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
   };
 
   const getYoutubeLink = (key: string): string => `https://www.youtube.com/watch?v=${key}`;
@@ -36,23 +33,12 @@ export default function ContentBottomPanel({
       setTvDetail(response.data);
     };
 
-    const getTvVideos = async () => {
-      const link = getTvVideosLink(id);
-      const response = await axios.get<TvVideos.RootObject>(link);
-      setTvVideos(response.data);
-    };
-
-    const setData = () => {
-      if (!tvDetail) getTvDetail();
-      if (!tvVideos) getTvVideos();
-    };
-
     if (hasClickedContent) {
       // if (!tvDetail) setTvDetail(getMockTvDetail());
       // if (!tvVideos) setTvVideos(getMockTvVideos());
-      setData();
+      if (!tvDetail) getTvDetail();
     }
-  }, [id, tvDetail, tvVideos, hasClickedContent]);
+  }, [id, tvDetail, hasClickedContent]);
 
   const handleClickDetailButton = () => setHasClickedContent(true);
 

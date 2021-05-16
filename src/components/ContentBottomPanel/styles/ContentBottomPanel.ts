@@ -70,7 +70,7 @@ export const LinkContainer = styled.div`
   }
 
   @media (max-width: ${BREAKPOINTS.SM}) {
-    font-size: 1.375rem;
+    font-size: 1.125rem;
   }
 `;
 

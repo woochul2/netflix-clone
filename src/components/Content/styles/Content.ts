@@ -60,6 +60,10 @@ export const Title = styled.h3`
   }
 `;
 
+export const Iframe = styled.iframe`
+  border: 0;
+`;
+
 export const roundButton = styled.button`
   cursor: pointer;
   position: relative;

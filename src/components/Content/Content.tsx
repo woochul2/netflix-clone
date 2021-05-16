@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as BREAKPOINTS from '../../constants/breakpoints';
+import { useTvVideos } from '../../hooks/useTvVideos';
 import CloseIcon from '../../icons/CloseIcon';
 import { HoveredContent } from '../../types';
 import { changeRemToPx } from '../../utils/changeRemToPx';
@@ -34,12 +35,13 @@ export default function Content({
 }: Props) {
   const { backdrop_path, genre_ids, id, name, transform_origin } = content;
   const fontSize = contentWidth / 10;
-  const hoverScaleRatio = 1.5;
+  const hoverScaleRatio = 2;
   const contentRef = useRef<HTMLDivElement>(null);
   const insideRef = useRef<HTMLDivElement>(null);
   const contentBottomPanelRef = useRef<HTMLDivElement>(null);
   let isMouseOnContent = false;
   const [isShrinkingAfterClick, setIsShrinkingAfterClick] = useState(false);
+  const tvVideos = useTvVideos(id);
 
   const getSliderTranslationX = (): number => {
     const genreId = genre_ids[0];
@@ -227,6 +229,47 @@ export default function Content({
     return `https://image.tmdb.org/t/p/w500${img}`;
   };
 
+  const getYoutubeLink = (key: string): string => `https://www.youtube.com/embed/${key}?autoplay=1&mute=1`;
+
+  const ImgOrVideo = (): JSX.Element => {
+    const contentThumbnail = contentThumbnailsRef.current[`${content.id}`];
+    if (!contentThumbnail) return <></>;
+
+    const video = tvVideos?.results
+      .filter((result) => result.type === 'Trailer')
+      .find((result) => result.site === 'YouTube');
+    if (video) {
+      if (hasClickedContent) {
+        return (
+          <Styled.Iframe
+            title={video.name}
+            width={contentThumbnail.offsetWidth * getScaleRatio()}
+            height={contentThumbnail.offsetHeight * getScaleRatio()}
+            src={getYoutubeLink(video.key)}
+          ></Styled.Iframe>
+        );
+      }
+
+      return (
+        <Styled.Iframe
+          title={video.name}
+          width={contentThumbnail.offsetWidth * hoverScaleRatio}
+          height={contentThumbnail.offsetHeight * hoverScaleRatio}
+          src={getYoutubeLink(video.key)}
+        ></Styled.Iframe>
+      );
+    }
+
+    return (
+      <>
+        <Styled.Img src={getImageLink(backdrop_path)} alt={`${name} 썸네일`} onClick={toggleModal} />
+        <Styled.Title className={`${name.length < 7 && 'short'}`} onClick={toggleModal}>
+          {name}
+        </Styled.Title>
+      </>
+    );
+  };
+
   return (
     <Styled.Container
       className={hasClickedContent ? 'clicked' : ''}
@@ -240,11 +283,10 @@ export default function Content({
         style={getInsideStyle()}
         ref={insideRef}
       >
-        <Styled.ImgContainer onClick={toggleModal}>
-          <Styled.Img src={getImageLink(backdrop_path)} alt={`${name} 썸네일`} />
-          <Styled.Title className={`${name.length < 7 && 'short'}`}>{name}</Styled.Title>
+        <Styled.ImgContainer>
+          {ImgOrVideo()}
           {hasClickedContent && (
-            <Styled.CloseButton aria-label="닫기">
+            <Styled.CloseButton aria-label="닫기" onClick={closeModal}>
               <CloseIcon />
             </Styled.CloseButton>
           )}
