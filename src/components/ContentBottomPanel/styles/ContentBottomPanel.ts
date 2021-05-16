@@ -76,13 +76,21 @@ export const LinkContainer = styled.div`
 
 export const PageLink = styled.a`
   text-decoration: none;
-  margin-right: 1rem;
+  margin-right: 2rem;
   color: var(--white);
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  @media (max-width: ${BREAKPOINTS.LG}) {
+    margin-right: 1.5rem;
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    margin-right: 1rem;
   }
 `;
 
