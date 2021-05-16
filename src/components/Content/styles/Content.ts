@@ -52,6 +52,7 @@ export const Title = styled.h3`
   right: 0.4em;
   text-align: right;
   font-family: 'Nanum Brush Script', cursive;
+  font-size: 1em;
   mix-blend-mode: luminosity;
   background: radial-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0) 100%);
 

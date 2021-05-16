@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { HoveredContent } from '../../types';
 import { contentTransitionDuration } from '../Content/styles/Content';
 import * as Styled from './styles/ContentThumbnail';
@@ -30,6 +30,7 @@ export default function ContentThumbnail({
 }: Props) {
   const { backdrop_path, id, name } = tvShow;
   let isMouseOnThumbnail = false;
+  const [hasImageLoaded, setHasImageLoaded] = useState(false);
 
   const handleMouseEnterContentThumbnail = () => {
     if (index < sliderStartIndex) return;
@@ -68,6 +69,8 @@ export default function ContentThumbnail({
 
   const getImageLink = (img: string | null): string => `https://image.tmdb.org/t/p/w500${img}`;
 
+  const handleImageLoad = () => setHasImageLoaded(true);
+
   const handleClickImgButton = () => {
     if (index < sliderStartIndex) return;
     if (index >= sliderStartIndex + sliderContentCount) return;
@@ -101,11 +104,13 @@ export default function ContentThumbnail({
             onClick={handleClickImgButton}
             style={getImgButtonStyle()}
           >
-            <Styled.Img src={getImageLink(backdrop_path)} alt={`${name} 썸네일`} />
+            <Styled.Img src={getImageLink(backdrop_path)} alt={`${name} 썸네일`} onLoad={handleImageLoad} />
           </Styled.ImgButton>
-          <Styled.Title className={`${name.length < 7 && 'short'}`} onClick={handleClickImgButton}>
-            {name}
-          </Styled.Title>
+          {hasImageLoaded && (
+            <Styled.Title className={`${name.length < 7 && 'short'}`} onClick={handleClickImgButton}>
+              {name}
+            </Styled.Title>
+          )}
         </>
       )}
     </Styled.Container>
