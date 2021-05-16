@@ -38,9 +38,8 @@ export default function Content({
   const hoverScaleRatio = 2;
   const contentRef = useRef<HTMLDivElement>(null);
   const insideRef = useRef<HTMLDivElement>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
   const contentBottomPanelRef = useRef<HTMLDivElement>(null);
-  let isMouseOnContent = false;
+  const [isShrinkingAfterHover, setIsShrinkingAfterHover] = useState(false);
   const [isShrinkingAfterClick, setIsShrinkingAfterClick] = useState(false);
   const tvVideos = useTvVideos(id);
 
@@ -72,19 +71,7 @@ export default function Content({
     insideRef.current.style.left = `${left}px`;
     insideRef.current.style.width = `${contentWidth}px`;
     insideRef.current.style.fontSize = `${fontSize}px`;
-
-    if (!iframeRef.current) return;
-    iframeRef.current.style.width = '';
-    iframeRef.current.style.height = '';
   };
-
-  useEffect(() => {
-    if (!hasClickedContent) return;
-
-    if (!iframeRef.current) return;
-    iframeRef.current.style.width = '';
-    iframeRef.current.style.height = '';
-  }, [hasClickedContent]);
 
   const closeModal = () => {
     setHasClickedContent(false);
@@ -129,7 +116,7 @@ export default function Content({
     const contentThumbnail = contentThumbnailsRef.current[`${id}`];
     if (!contentThumbnail) return { top: 0, left: 0 };
     const { top, left } = getInsideDefaultPosition();
-    const newTop = top - contentThumbnail.offsetHeight * (hoverScaleRatio - 1);
+    const newTop = top - contentThumbnail.clientHeight * (hoverScaleRatio - 1);
 
     if (transform_origin === 'left') {
       return {
@@ -162,19 +149,11 @@ export default function Content({
 
     if (!contentBottomPanelRef.current) return;
     contentBottomPanelRef.current.style.visibility = 'visible';
-
-    if (!iframeRef.current) return;
-    const contentThumbnail = contentThumbnailsRef.current[`${content.id}`];
-    if (!contentThumbnail) return;
-    iframeRef.current.style.width = `${contentWidth * hoverScaleRatio}px`;
-    iframeRef.current.style.height = `${contentThumbnail.offsetHeight * hoverScaleRatio}px`;
   };
 
   const handleMouseOverInside = () => {
-    if (isMouseOnContent) return;
-    isMouseOnContent = true;
-
     if (hasClickedContent) return;
+    if (isShrinkingAfterHover) return;
     if (isShrinkingAfterClick) return;
     addInsideHoverStyles();
   };
@@ -186,13 +165,12 @@ export default function Content({
 
   const handleMouseLeaveInside = () => {
     if (hasClickedContent) return;
-    isMouseOnContent = false;
+    setIsShrinkingAfterHover(true);
 
     removeInsideHoverStyles();
 
     setTimeout(() => {
-      if (isMouseOnContent) return;
-
+      setIsShrinkingAfterHover(false);
       setContent(null);
     }, contentTransitionDuration);
   };
@@ -257,14 +235,21 @@ export default function Content({
 
     if (hasClickedContent) {
       return {
-        width: contentThumbnail.offsetWidth * getScaleRatio(),
-        height: contentThumbnail.offsetHeight * getScaleRatio(),
+        width: contentThumbnail.clientWidth * getScaleRatio(),
+        height: contentThumbnail.clientHeight * getScaleRatio(),
+      };
+    }
+
+    if (isShrinkingAfterClick || isShrinkingAfterHover) {
+      return {
+        width: contentThumbnail.clientWidth,
+        height: contentThumbnail.clientHeight,
       };
     }
 
     return {
-      width: contentThumbnail.offsetWidth,
-      height: contentThumbnail.offsetHeight,
+      width: contentThumbnail.clientWidth * hoverScaleRatio,
+      height: contentThumbnail.clientHeight * hoverScaleRatio,
     };
   };
 
@@ -285,7 +270,6 @@ export default function Content({
           width={size.width}
           height={size.height}
           src={getYoutubeLink(video.key)}
-          ref={iframeRef}
         ></Styled.Iframe>
       );
     }
