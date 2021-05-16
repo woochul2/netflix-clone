@@ -4,7 +4,8 @@ import * as BREAKPOINTS from '../../../constants/breakpoints';
 export const homeSidePadding = {
   SM: '2.25rem',
   MD: '2.75rem',
-  default: '3.25rem',
+  LG: '3.5rem',
+  XL: '4.25rem',
 };
 
 export const Container = styled.div`
@@ -18,15 +19,19 @@ export const Container = styled.div`
 
 export const Header = styled.header`
   // 모달을 제외한 나머지 중에서 가장 위에 보이도록 z-index 설정
-  z-index: 2;
+  z-index: 3;
   position: sticky;
   top: 0;
-  padding: 0.875rem ${homeSidePadding.default};
+  padding: 0.875rem ${homeSidePadding.XL};
   background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0));
   transition: background-color 0.4s;
 
   &.scroll-down {
     background-color: var(--gray-900);
+  }
+
+  @media (max-width: ${BREAKPOINTS.LG}) {
+    padding: 0.875rem ${homeSidePadding.LG};
   }
 
   @media (max-width: ${BREAKPOINTS.MD}) {
@@ -41,6 +46,7 @@ export const Header = styled.header`
 export const LogoLink = styled.a`
   user-select: none;
   text-decoration: none;
+  font-family: Arial, sans-serif;
   font-weight: bold;
   font-size: 2rem;
   color: var(--red);
@@ -55,7 +61,11 @@ export const LogoLink = styled.a`
 `;
 
 export const Main = styled.main`
-  padding: 0 ${homeSidePadding.default} 5rem;
+  padding: 0 ${homeSidePadding.XL} 5rem;
+
+  @media (max-width: ${BREAKPOINTS.LG}) {
+    padding: 0 ${homeSidePadding.LG} 5rem;
+  }
 
   @media (max-width: ${BREAKPOINTS.MD}) {
     padding: 0 ${homeSidePadding.MD} 5rem;
@@ -67,6 +77,9 @@ export const Main = styled.main`
 `;
 
 export const Notification = styled.div`
+  // 평소에 모달 배경보다 위에 보이도록 z-index 설정
+  z-index: 1;
+  position: relative;
   text-align: center;
   font-weight: bold;
   font-size: 1.25rem;

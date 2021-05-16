@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 import CloseIcon from '../../icons/CloseIcon';
-import { homeSidePadding } from '../../pages/Home/styles/Home';
 import { HoveredContent } from '../../types';
 import { changeRemToPx } from '../../utils/changeRemToPx';
 import ContentBottomPanel from '../ContentBottomPanel';
@@ -18,6 +17,7 @@ interface Props {
   contentWidth: number;
   hasClickedContent: boolean;
   setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
+  hasContentExpanded: boolean;
 }
 
 export default function Content({
@@ -30,71 +30,16 @@ export default function Content({
   contentWidth,
   hasClickedContent,
   setHasClickedContent,
+  hasContentExpanded,
 }: Props) {
   const { backdrop_path, genre_ids, id, name, transform_origin } = content;
+  const fontSize = contentWidth / 10;
+  const hoverScaleRatio = 1.5;
   const contentRef = useRef<HTMLDivElement>(null);
   const insideRef = useRef<HTMLDivElement>(null);
+  const contentBottomPanelRef = useRef<HTMLDivElement>(null);
   let isMouseOnContent = false;
-
-  const closeModal = () => {
-    setHasClickedContent(false);
-    setTimeout(() => {
-      setContent(null);
-    }, contentTransitionDuration);
-  };
-
-  const handleClickContent = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (event.target === contentRef.current) closeModal();
-  };
-
-  const handleMouseEnterContent = () => {
-    isMouseOnContent = true;
-  };
-
-  const handleMouseLeaveContent = () => {
-    isMouseOnContent = false;
-
-    setTimeout(() => {
-      if (isMouseOnContent) return;
-      if (hasClickedContent) return;
-
-      setContent(null);
-    }, contentTransitionDuration);
-  };
-
-  const getContentStyle = (): React.CSSProperties | undefined => {
-    if (!hasClickedContent) {
-      const genreId = content.genre_ids[0];
-      const contentsWrapper = contentsWrappersRef.current[`${genreId}`];
-      if (!contentsWrapper) return;
-      const contentThumbnail = contentThumbnailsRef.current[`${content.id}`];
-      if (!contentThumbnail) return;
-
-      return {
-        top: `${contentsWrapper.offsetTop}px`,
-        left: `${contentsWrapper.offsetLeft + contentThumbnail.offsetLeft + getSliderTranslationX()}px`,
-        fontSize: `${contentWidth / 10}px`,
-      };
-    }
-
-    if (!homeRef.current) return;
-    return {
-      top: '0px',
-      left: '0px',
-      height: `${homeRef.current.clientHeight + homeRef.current.scrollTop}px`,
-      fontSize: `${contentWidth / 10}px`,
-    };
-  };
-
-  const getScaleRatio = (): number => {
-    if (!homeRef.current) return 0;
-    if (!insideRef.current) return 0;
-    const fullScaleRatio = homeRef.current.clientWidth / insideRef.current.clientWidth;
-    if (window.innerWidth > changeRemToPx(BREAKPOINTS.XL)) return fullScaleRatio * 0.4;
-    if (window.innerWidth > changeRemToPx(BREAKPOINTS.LG)) return fullScaleRatio * 0.55;
-    if (window.innerWidth > changeRemToPx(BREAKPOINTS.MD)) return fullScaleRatio * 0.75;
-    return fullScaleRatio * 0.995;
-  };
+  const [isShrinkingAfterClick, setIsShrinkingAfterClick] = useState(false);
 
   const getSliderTranslationX = (): number => {
     const genreId = genre_ids[0];
@@ -104,82 +49,197 @@ export default function Content({
     return parseFloat(sliderTransformMaxtrix.split(', ')[4]);
   };
 
-  const getHomeSidePadding = (): string => {
-    if (window.innerWidth < changeRemToPx(BREAKPOINTS.SM)) return homeSidePadding.SM;
-    if (window.innerWidth < changeRemToPx(BREAKPOINTS.MD)) return homeSidePadding.MD;
-    return homeSidePadding.default;
+  const getInsideDefaultPosition = (): { top: number; left: number } => {
+    const genreId = genre_ids[0];
+    const contentsWrapper = contentsWrappersRef.current[`${genreId}`];
+    if (!contentsWrapper) return { top: 0, left: 0 };
+    const contentThumbnail = contentThumbnailsRef.current[`${id}`];
+    if (!contentThumbnail) return { top: 0, left: 0 };
+    return {
+      top: contentsWrapper.offsetTop,
+      left: contentsWrapper.offsetLeft + contentThumbnail.offsetLeft + getSliderTranslationX(),
+    };
   };
 
-  const getTranslationX = (): number => {
-    const genreId = genre_ids[0];
+  const removeInsideHoverStyles = () => {
+    if (!insideRef.current) return;
+    const { top, left } = getInsideDefaultPosition();
+    insideRef.current.style.top = `${top}px`;
+    insideRef.current.style.left = `${left}px`;
+    insideRef.current.style.width = `${contentWidth}px`;
+    insideRef.current.style.fontSize = `${fontSize}px`;
+  };
 
-    if (!homeRef.current) return 0;
-    const contentsWrapper = contentsWrappersRef.current[`${genreId}`];
-    if (!contentsWrapper) return 0;
+  const closeModal = () => {
+    setHasClickedContent(false);
+    removeInsideHoverStyles();
+    setIsShrinkingAfterClick(true);
+    if (!contentBottomPanelRef.current) return;
+    contentBottomPanelRef.current.style.visibility = '';
+
+    setTimeout(() => {
+      setContent(null);
+    }, contentTransitionDuration);
+  };
+
+  const handleClickContent = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (event.target === contentRef.current) closeModal();
+  };
+
+  const getContentStyle = (): React.CSSProperties | undefined => {
+    if (!homeRef.current) return;
+    const height = `${homeRef.current.clientHeight + homeRef.current.scrollTop}px`;
+
+    if (!hasClickedContent) {
+      const genreId = content.genre_ids[0];
+      const contentsWrapper = contentsWrappersRef.current[`${genreId}`];
+      if (!contentsWrapper) return;
+      const contentThumbnail = contentThumbnailsRef.current[`${content.id}`];
+      if (!contentThumbnail) return;
+
+      return {
+        height,
+        fontSize: `${fontSize}px`,
+      };
+    }
+
+    return {
+      height,
+      fontSize: `${fontSize}px`,
+    };
+  };
+
+  const getInsideHoverPosition = (): { top: number; left: number } => {
     const contentThumbnail = contentThumbnailsRef.current[`${id}`];
-    if (!contentThumbnail) return 0;
-    if (!insideRef.current) return 0;
+    if (!contentThumbnail) return { top: 0, left: 0 };
+    const { top, left } = getInsideDefaultPosition();
+    const newTop = top - contentThumbnail.offsetHeight * (hoverScaleRatio - 1);
 
-    const homeSidePadding = getHomeSidePadding();
-    const rightPadding = changeRemToPx(homeSidePadding);
-    const leftPadding = homeRef.current.clientWidth - insideRef.current.clientWidth * getScaleRatio() - rightPadding;
+    if (transform_origin === 'left') {
+      return {
+        top: newTop,
+        left,
+      };
+    }
 
-    if (transform_origin === 'right') return (rightPadding - leftPadding) / 2;
-    if (transform_origin === 'left') return (leftPadding - rightPadding) / 2;
-    return (
-      -contentsWrapper.offsetLeft -
-      contentThumbnail.offsetLeft +
-      homeRef.current.clientWidth / 2 -
-      insideRef.current.clientWidth / 2 -
-      getSliderTranslationX()
-    );
+    if (transform_origin === 'right') {
+      return {
+        top: newTop,
+        left: left - contentWidth * (hoverScaleRatio - 1),
+      };
+    }
+
+    return {
+      top: newTop,
+      left: left - (contentWidth * (hoverScaleRatio - 1)) / 2,
+    };
+  };
+
+  const addInsideHoverStyles = () => {
+    if (!insideRef.current) return;
+    if (!contentBottomPanelRef.current) return;
+
+    const { top, left } = getInsideHoverPosition();
+    insideRef.current.style.top = `${top}px`;
+    insideRef.current.style.left = `${left}px`;
+    insideRef.current.style.width = `${contentWidth * hoverScaleRatio}px`;
+    insideRef.current.style.fontSize = `${fontSize * hoverScaleRatio}px`;
+
+    contentBottomPanelRef.current.style.visibility = 'visible';
+  };
+
+  const handleMouseOverInside = () => {
+    if (isMouseOnContent) return;
+    isMouseOnContent = true;
+
+    if (hasClickedContent) return;
+    if (isShrinkingAfterClick) return;
+    addInsideHoverStyles();
+  };
+
+  useEffect(() => {
+    addInsideHoverStyles();
+    // eslint-disable-next-line
+  }, []);
+
+  const handleMouseLeaveInside = () => {
+    if (hasClickedContent) return;
+    isMouseOnContent = false;
+
+    removeInsideHoverStyles();
+
+    setTimeout(() => {
+      if (isMouseOnContent) return;
+
+      setContent(null);
+    }, contentTransitionDuration);
+  };
+
+  const getScaleRatio = (): number => {
+    if (!homeRef.current) return 0;
+
+    const maxWidth = 996;
+    if (homeRef.current.offsetWidth > maxWidth) return maxWidth / contentWidth;
+
+    const fullScaleRatio = homeRef.current.offsetWidth / contentWidth;
+    if (window.innerWidth < changeRemToPx(BREAKPOINTS.SM)) return fullScaleRatio * 0.99;
+    return fullScaleRatio * 0.97;
   };
 
   const getInsideStyle = (): React.CSSProperties | undefined => {
     if (!hasClickedContent) {
+      const { top, left } = getInsideDefaultPosition();
+
       return {
+        top: `${top}px`,
+        left: `${left}px`,
         width: `${contentWidth}px`,
-        transformOrigin: transform_origin,
       };
     }
 
-    const genreId = genre_ids[0];
-
     if (!homeRef.current) return;
-    const contentsWrapper = contentsWrappersRef.current[`${genreId}`];
-    if (!contentsWrapper) return;
-    const contentThumbnail = contentThumbnailsRef.current[`${id}`];
-    if (!contentThumbnail) return;
-    if (!insideRef.current) return;
 
-    const translationY =
-      homeRef.current.scrollTop - contentsWrapper.offsetTop + (insideRef.current.clientHeight * getScaleRatio()) / 2;
+    const width = contentWidth * getScaleRatio();
 
     return {
-      top: `${contentsWrapper.offsetTop}px`,
-      left: `${contentsWrapper.offsetLeft + contentThumbnail.offsetLeft + getSliderTranslationX()}px`,
-      width: `${contentWidth}px`,
-      transform: `translate(${getTranslationX()}px, ${translationY}px) scale(${getScaleRatio()})`,
-      transformOrigin: transform_origin,
+      top: `${homeRef.current.scrollTop + 50}px`,
+      left: `${(homeRef.current.offsetWidth - width) / 2}px`,
+      width: `${width}px`,
+      fontSize: `${fontSize * getScaleRatio()}px`,
     };
   };
 
   const toggleModal = () => {
-    hasClickedContent ? closeModal() : setHasClickedContent(true);
+    if (hasClickedContent) {
+      closeModal();
+      return;
+    }
+
+    if (!contentBottomPanelRef.current) return;
+
+    setHasClickedContent(true);
+    contentBottomPanelRef.current.style.visibility = '';
+    return;
   };
 
-  const getImageLink = (img: string | null): string => `https://image.tmdb.org/t/p/original${img}`;
+  const getImageLink = (img: string | null): string => {
+    if (hasContentExpanded) return `https://image.tmdb.org/t/p/original${img}`;
+    return `https://image.tmdb.org/t/p/w500${img}`;
+  };
 
   return (
     <Styled.Container
       className={hasClickedContent ? 'clicked' : ''}
       onClick={handleClickContent}
-      onMouseEnter={handleMouseEnterContent}
-      onMouseLeave={handleMouseLeaveContent}
       style={getContentStyle()}
       ref={contentRef}
     >
-      <Styled.Inside style={getInsideStyle()} ref={insideRef}>
+      <Styled.Inside
+        onMouseOver={handleMouseOverInside}
+        onMouseLeave={handleMouseLeaveInside}
+        style={getInsideStyle()}
+        ref={insideRef}
+      >
         <Styled.ImgContainer onClick={toggleModal}>
           <Styled.Img src={getImageLink(backdrop_path)} alt={`${name} 썸네일`} />
           <Styled.Title className={`${name.length < 7 && 'short'}`}>{name}</Styled.Title>
@@ -189,7 +249,12 @@ export default function Content({
             </Styled.CloseButton>
           )}
         </Styled.ImgContainer>
-        <ContentBottomPanel id={id} hasClickedContent={hasClickedContent} setHasClickedContent={setHasClickedContent} />
+        <ContentBottomPanel
+          contentBottomPanelRef={contentBottomPanelRef}
+          id={id}
+          hasClickedContent={hasClickedContent}
+          setHasClickedContent={setHasClickedContent}
+        />
       </Styled.Inside>
     </Styled.Container>
   );

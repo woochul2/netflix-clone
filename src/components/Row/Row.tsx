@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { HoveredContent } from '../../types';
-import { getMockTvShows } from '../../utils/getMockData';
 import { contentTransitionDuration } from '../Content/styles/Content';
 import ContentThumbnail from '../ContentThumbnail';
 import * as Styled from './styles/Row';
@@ -16,7 +15,6 @@ interface Props {
   hasClickedContent: boolean;
   content: HoveredContent | null;
   setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
-  contentWidth: number;
   setHasClickedContentThumbnail: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -29,7 +27,6 @@ export default function Row({
   hasClickedContent,
   content,
   setContent,
-  contentWidth,
   setHasClickedContentThumbnail,
 }: Props) {
   const { id, name } = tvGenre;
@@ -62,18 +59,21 @@ export default function Row({
       setTvShows(filteredTvShows);
     };
 
-    setTvShows(getMockTvShows(id));
-    // initTvShows();
+    // setTvShows(getMockTvShows(id));
+    initTvShows();
   }, [id]);
 
-  const getSliderTransformStyle = (): string | undefined => {
-    if (sliderStartIndex === 0) return '';
+  const getSliderStyle = (): React.CSSProperties | undefined => {
+    if (sliderStartIndex === 0) return;
 
     const slider = slidersRef.current[`${id}`];
     if (!slider) return;
 
+    const contentWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--content-width'));
     const gap = parseFloat(getComputedStyle(slider).gap);
-    return `translateX(${-((sliderStartIndex * (contentWidth + gap)) / slider.clientWidth) * 100}%)`;
+    return {
+      transform: `translateX(${-((sliderStartIndex * (contentWidth + gap)) / slider.clientWidth) * 100}%)`,
+    };
   };
 
   const handleClickPrevButton = () => {
@@ -115,10 +115,7 @@ export default function Row({
             <ChevronDownIcon />
           </Styled.PrevButton>
         )}
-        <Styled.Slider
-          style={{ transform: getSliderTransformStyle() }}
-          ref={(element) => (slidersRef.current[`${id}`] = element)}
-        >
+        <Styled.Slider style={getSliderStyle()} ref={(element) => (slidersRef.current[`${id}`] = element)}>
           {tvShows.map((tvShow, index) => (
             <ContentThumbnail
               key={tvShow.id}
@@ -132,7 +129,6 @@ export default function Row({
               setHasClickedContentThumbnail={setHasClickedContentThumbnail}
               content={content}
               setContent={setContent}
-              contentWidth={contentWidth}
             />
           ))}
         </Styled.Slider>

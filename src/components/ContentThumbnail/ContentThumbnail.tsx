@@ -14,7 +14,6 @@ interface Props {
   setHasClickedContentThumbnail: React.Dispatch<React.SetStateAction<boolean>>;
   content: HoveredContent | null;
   setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
-  contentWidth: number;
 }
 
 export default function ContentThumbnail({
@@ -28,12 +27,13 @@ export default function ContentThumbnail({
   setHasClickedContentThumbnail,
   content,
   setContent,
-  contentWidth,
 }: Props) {
   const { backdrop_path, id, name } = tvShow;
   let isMouseOnThumbnail = false;
 
   const handleMouseEnterContentThumbnail = () => {
+    if (index < sliderStartIndex) return;
+    if (index >= sliderStartIndex + sliderContentCount) return;
     isMouseOnThumbnail = true;
 
     setTimeout(() => {
@@ -52,14 +52,6 @@ export default function ContentThumbnail({
     return false;
   };
 
-  const getContentThumbnailStyle = (): React.CSSProperties | undefined => {
-    return {
-      width: `${contentWidth}px`,
-      fontSize: `${contentWidth / 10}px`,
-      boxShadow: checkContentExists() ? 'none' : '',
-    };
-  };
-
   const getImgButtonTabIndex = (): number | undefined => {
     if (content) return -1;
     if (hasClickedContent) return -1;
@@ -74,7 +66,12 @@ export default function ContentThumbnail({
     return 'center';
   };
 
+  const getImageLink = (img: string | null): string => `https://image.tmdb.org/t/p/w500${img}`;
+
   const handleClickImgButton = () => {
+    if (index < sliderStartIndex) return;
+    if (index >= sliderStartIndex + sliderContentCount) return;
+
     if (content) return;
     if (isSliderMoving) return;
     setContent({ ...tvShow, transform_origin: getTransformOrigin() });
@@ -84,20 +81,26 @@ export default function ContentThumbnail({
     contentThumbnail.blur();
   };
 
-  const getImageLink = (img: string | null): string => `https://image.tmdb.org/t/p/original${img}`;
+  const getImgButtonStyle = (): React.CSSProperties | undefined => {
+    if (index === sliderStartIndex - 1 || index === sliderStartIndex + sliderContentCount) return { cursor: 'default' };
+  };
 
   return (
     <Styled.Container
       onMouseEnter={handleMouseEnterContentThumbnail}
       onMouseLeave={handleMouseLeaveContentThumbnail}
-      style={getContentThumbnailStyle()}
+      style={{ boxShadow: checkContentExists() ? 'none' : '' }}
       ref={(element) => (contentThumbnailsRef.current[`${id}`] = element)}
     >
       {checkContentExists() ? (
         <Styled.Img />
       ) : (
         <>
-          <Styled.ImgButton tabIndex={getImgButtonTabIndex()} onClick={handleClickImgButton}>
+          <Styled.ImgButton
+            tabIndex={getImgButtonTabIndex()}
+            onClick={handleClickImgButton}
+            style={getImgButtonStyle()}
+          >
             <Styled.Img src={getImageLink(backdrop_path)} alt={`${name} 썸네일`} />
           </Styled.ImgButton>
           <Styled.Title className={`${name.length < 7 && 'short'}`} onClick={handleClickImgButton}>

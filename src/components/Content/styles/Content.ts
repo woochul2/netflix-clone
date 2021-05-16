@@ -1,39 +1,34 @@
 import styled from 'styled-components/macro';
 
 export const contentBorderRadius = '0.25rem';
-export const contentBoxShadow = '0 0 0.25rem 0.065rem var(--black)';
+export const contentBoxShadow = '0 0.25rem 0.5rem hsla(0, 0%, 0%, 0.75)';
 export const contentTransitionDuration = 200;
 
 export const Container = styled.div`
-  // 가장 위에 위치하도록 z-index 설정
-  z-index: 3;
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
   border-radius: ${contentBorderRadius};
 
   &.clicked {
-    width: 100vw;
+    // 가장 위에 위치하도록 z-index 설정
+    z-index: 4;
     overflow: auto;
     background-color: hsla(0, 0%, 0%, 0.7);
   }
 `;
 
 export const Inside = styled.div`
+  // 가장 위에 위치하도록 z-index 설정
+  z-index: 4;
   position: absolute;
   top: 0;
   left: 0;
   border-radius: ${contentBorderRadius};
   box-shadow: ${contentBoxShadow};
-  transition: transform ${`${contentTransitionDuration}ms`};
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      transform: scale(1.5);
-
-      [class^='ContentBottomPanel__Container'] {
-        visibility: visible;
-      }
-    }
-  }
+  transition-property: top, left, width, font-size, transform;
+  transition-duration: ${`${contentTransitionDuration}ms`};
 `;
 
 export const ImgContainer = styled.div`
@@ -53,8 +48,8 @@ export const Title = styled.h3`
   user-select: none;
   cursor: pointer;
   position: absolute;
-  bottom: 0.38rem;
-  right: 0.5rem;
+  bottom: 0.3em;
+  right: 0.4em;
   text-align: right;
   font-family: 'Nanum Brush Script', cursive;
   mix-blend-mode: luminosity;

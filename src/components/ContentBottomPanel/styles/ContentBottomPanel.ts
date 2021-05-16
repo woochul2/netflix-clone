@@ -1,4 +1,5 @@
 import styled from 'styled-components/macro';
+import * as BREAKPOINTS from '../../../constants/breakpoints';
 import { contentBorderRadius, contentBoxShadow, roundButton } from '../../Content/styles/Content';
 
 export const Container = styled.div`
@@ -19,7 +20,7 @@ export const Container = styled.div`
   &.clicked {
     visibility: visible;
     align-items: flex-start;
-    padding-bottom: 0.5em;
+    padding: 1.5rem 2rem;
   }
 `;
 
@@ -49,13 +50,21 @@ export const DetailButton = styled(roundButton)`
 export const LinkContainer = styled.div`
   display: flex;
   font-weight: bold;
-  font-size: 0.35em;
-  margin: 1em 1.275em 0.7em;
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: ${BREAKPOINTS.LG}) {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    font-size: 1.375rem;
+  }
 `;
 
 export const PageLink = styled.a`
   text-decoration: none;
-  margin-right: 1em;
+  margin-right: 1rem;
   color: var(--white);
 
   @media (hover: hover) and (pointer: fine) {
@@ -67,13 +76,29 @@ export const PageLink = styled.a`
 
 export const Overview = styled.p`
   white-space: pre-line;
-  font-size: 0.3em;
-  margin: 0 1.5em 1em;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: ${BREAKPOINTS.LG}) {
+    font-size: 1.125rem;
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    font-size: 1rem;
+  }
 `;
 
 export const Text = styled.p`
-  font-size: 0.275em;
-  margin: 0 1.625em 0.4em;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+
+  @media (max-width: ${BREAKPOINTS.LG}) {
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    font-size: 0.75rem;
+  }
 `;
 
 export const GrayText = styled.span`

@@ -1,16 +1,21 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
-import { getMockTvDetail, getMockTvVideos } from '../../utils/getMockData';
 import * as Styled from './styles/ContentBottomPanel';
 
 interface Props {
+  contentBottomPanelRef: React.RefObject<HTMLDivElement>;
   id: number;
   hasClickedContent: boolean;
   setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function ContentBottomPanel({ id, hasClickedContent, setHasClickedContent }: Props) {
+export default function ContentBottomPanel({
+  contentBottomPanelRef,
+  id,
+  hasClickedContent,
+  setHasClickedContent,
+}: Props) {
   const [tvDetail, setTvDetail] = useState<TvDetail.RootObject>();
   const [tvVideos, setTvVideos] = useState<TvVideos.RootObject>();
 
@@ -43,9 +48,9 @@ export default function ContentBottomPanel({ id, hasClickedContent, setHasClicke
     };
 
     if (hasClickedContent) {
-      if (!tvDetail) setTvDetail(getMockTvDetail());
-      if (!tvVideos) setTvVideos(getMockTvVideos());
-      // setData();
+      // if (!tvDetail) setTvDetail(getMockTvDetail());
+      // if (!tvVideos) setTvVideos(getMockTvVideos());
+      setData();
     }
   }, [id, tvDetail, tvVideos, hasClickedContent]);
 
@@ -71,7 +76,7 @@ export default function ContentBottomPanel({ id, hasClickedContent, setHasClicke
   );
 
   return (
-    <Styled.Container className={hasClickedContent ? 'clicked' : ''}>
+    <Styled.Container className={hasClickedContent ? 'clicked' : ''} ref={contentBottomPanelRef}>
       {!hasClickedContent && (
         <Styled.DetailButton aria-label="상세 정보 보기" onClick={handleClickDetailButton}>
           <ChevronDownIcon />

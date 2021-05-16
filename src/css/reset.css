@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Noto+Sans+KR&display=swap');
 
 html {
-  font-family: Arial, sans-serif;
-  line-height: 1.45;
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 1.5;
   word-break: keep-all;
 }
 

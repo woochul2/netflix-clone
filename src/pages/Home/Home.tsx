@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import Content from '../../components/Content';
+import { contentTransitionDuration } from '../../components/Content/styles/Content';
 import Row from '../../components/Row';
 import * as BREAKPOINTS from '../../constants/breakpoints';
 import { HoveredContent } from '../../types';
 import { changeRemToPx } from '../../utils/changeRemToPx';
 import * as Styled from './styles/Home';
 import tvGenres from './tv-genres.json';
-
 export default function Home() {
   const homeRef = useRef<HTMLDivElement>(null);
   const contentsWrappersRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -20,6 +20,7 @@ export default function Home() {
   const [contentWidth, setContentWidth] = useState(0);
   const [hasClickedContent, setHasClickedContent] = useState(false);
   const [hasClickedContentThumbnail, setHasClickedContentThumbnail] = useState(false);
+  const [hasContentExpanded, setHasContentExpanded] = useState(false);
 
   const changeContentWidth = () => {
     let newSliderContentCount = 6;
@@ -35,23 +36,17 @@ export default function Home() {
     const slider = slidersRef.current[Object.keys(slidersRef.current)[0]];
     if (!slider) return;
     const gap = parseFloat(getComputedStyle(slider).gap);
-    setContentWidth((contentsWrapper.clientWidth - gap * (newSliderContentCount - 1)) / newSliderContentCount);
-  };
-
-  const removeContent = () => {
-    if (isMobile) return;
-    setContent(null);
-    setHasClickedContent(false);
+    const newContentWidth = (contentsWrapper.clientWidth - gap * (newSliderContentCount - 1)) / newSliderContentCount;
+    document.documentElement.style.setProperty('--content-width', `${newContentWidth}px`);
+    setContentWidth(newContentWidth);
   };
 
   useEffect(() => {
     changeContentWidth();
     window.addEventListener('resize', changeContentWidth);
-    window.addEventListener('resize', removeContent);
 
     return () => {
       window.removeEventListener('resize', changeContentWidth);
-      window.addEventListener('resize', removeContent);
     };
   }, []);
 
@@ -80,6 +75,18 @@ export default function Home() {
       setHasClickedContentThumbnail(false);
     }
   }, [content, hasClickedContentThumbnail]);
+
+  useEffect(() => {
+    if (!hasClickedContent && hasContentExpanded) {
+      setHasContentExpanded(false);
+    }
+
+    if (hasClickedContent) {
+      setTimeout(() => {
+        setHasContentExpanded(true);
+      }, contentTransitionDuration);
+    }
+  }, [hasClickedContent, hasContentExpanded]);
 
   return (
     <Styled.Container onScroll={handleScroll} style={getHomeStyle()} ref={homeRef}>
@@ -114,7 +121,6 @@ export default function Home() {
             hasClickedContent={hasClickedContent}
             content={content}
             setContent={setContent}
-            contentWidth={contentWidth}
             setHasClickedContentThumbnail={setHasClickedContentThumbnail}
           />
         ))}
@@ -130,6 +136,7 @@ export default function Home() {
             contentWidth={contentWidth}
             hasClickedContent={hasClickedContent}
             setHasClickedContent={setHasClickedContent}
+            hasContentExpanded={hasContentExpanded}
           />
         )}
       </Styled.Main>
