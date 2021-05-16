@@ -20,7 +20,7 @@ export const Container = styled.div`
   &.clicked {
     visibility: visible;
     align-items: flex-start;
-    padding: 1.5rem 2rem;
+    padding: 1.75rem 2.25rem;
   }
 
   @media (max-width: ${BREAKPOINTS.LG}) {

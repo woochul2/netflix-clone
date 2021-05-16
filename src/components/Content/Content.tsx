@@ -38,6 +38,7 @@ export default function Content({
   const hoverScaleRatio = 2;
   const contentRef = useRef<HTMLDivElement>(null);
   const insideRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const contentBottomPanelRef = useRef<HTMLDivElement>(null);
   let isMouseOnContent = false;
   const [isShrinkingAfterClick, setIsShrinkingAfterClick] = useState(false);
@@ -65,12 +66,25 @@ export default function Content({
 
   const removeInsideHoverStyles = () => {
     if (!insideRef.current) return;
+
     const { top, left } = getInsideDefaultPosition();
     insideRef.current.style.top = `${top}px`;
     insideRef.current.style.left = `${left}px`;
     insideRef.current.style.width = `${contentWidth}px`;
     insideRef.current.style.fontSize = `${fontSize}px`;
+
+    if (!iframeRef.current) return;
+    iframeRef.current.style.width = '';
+    iframeRef.current.style.height = '';
   };
+
+  useEffect(() => {
+    if (!hasClickedContent) return;
+
+    if (!iframeRef.current) return;
+    iframeRef.current.style.width = '';
+    iframeRef.current.style.height = '';
+  }, [hasClickedContent]);
 
   const closeModal = () => {
     setHasClickedContent(false);
@@ -139,7 +153,6 @@ export default function Content({
 
   const addInsideHoverStyles = () => {
     if (!insideRef.current) return;
-    if (!contentBottomPanelRef.current) return;
 
     const { top, left } = getInsideHoverPosition();
     insideRef.current.style.top = `${top}px`;
@@ -147,7 +160,14 @@ export default function Content({
     insideRef.current.style.width = `${contentWidth * hoverScaleRatio}px`;
     insideRef.current.style.fontSize = `${fontSize * hoverScaleRatio}px`;
 
+    if (!contentBottomPanelRef.current) return;
     contentBottomPanelRef.current.style.visibility = 'visible';
+
+    if (!iframeRef.current) return;
+    const contentThumbnail = contentThumbnailsRef.current[`${content.id}`];
+    if (!contentThumbnail) return;
+    iframeRef.current.style.width = `${contentWidth * hoverScaleRatio}px`;
+    iframeRef.current.style.height = `${contentThumbnail.offsetHeight * hoverScaleRatio}px`;
   };
 
   const handleMouseOverInside = () => {
@@ -231,6 +251,23 @@ export default function Content({
 
   const getYoutubeLink = (key: string): string => `https://www.youtube.com/embed/${key}?autoplay=1&mute=1`;
 
+  const getIframeSize = (): { width: number; height: number } => {
+    const contentThumbnail = contentThumbnailsRef.current[`${content.id}`];
+    if (!contentThumbnail) return { width: 0, height: 0 };
+
+    if (hasClickedContent) {
+      return {
+        width: contentThumbnail.offsetWidth * getScaleRatio(),
+        height: contentThumbnail.offsetHeight * getScaleRatio(),
+      };
+    }
+
+    return {
+      width: contentThumbnail.offsetWidth,
+      height: contentThumbnail.offsetHeight,
+    };
+  };
+
   const ImgOrVideo = (): JSX.Element => {
     const contentThumbnail = contentThumbnailsRef.current[`${content.id}`];
     if (!contentThumbnail) return <></>;
@@ -238,24 +275,17 @@ export default function Content({
     const video = tvVideos?.results
       .filter((result) => result.type === 'Trailer')
       .find((result) => result.site === 'YouTube');
+
     if (video) {
-      if (hasClickedContent) {
-        return (
-          <Styled.Iframe
-            title={video.name}
-            width={contentThumbnail.offsetWidth * getScaleRatio()}
-            height={contentThumbnail.offsetHeight * getScaleRatio()}
-            src={getYoutubeLink(video.key)}
-          ></Styled.Iframe>
-        );
-      }
+      const size = getIframeSize();
 
       return (
         <Styled.Iframe
           title={video.name}
-          width={contentThumbnail.offsetWidth * hoverScaleRatio}
-          height={contentThumbnail.offsetHeight * hoverScaleRatio}
+          width={size.width}
+          height={size.height}
           src={getYoutubeLink(video.key)}
+          ref={iframeRef}
         ></Styled.Iframe>
       );
     }
