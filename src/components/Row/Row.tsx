@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { HoveredContent } from '../../types';
+import { changeRemToPx } from '../../utils/changeRemToPx';
 import { contentTransitionDuration } from '../Content/styles/Content';
 import ContentThumbnail from '../ContentThumbnail';
 import * as Styled from './styles/Row';
@@ -70,7 +71,7 @@ export default function Row({
     if (!slider) return;
 
     const contentWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--content-width'));
-    const gap = parseFloat(getComputedStyle(slider).gap);
+    const gap = changeRemToPx(Styled.sliderGap);
     return {
       transform: `translateX(${-((sliderStartIndex * (contentWidth + gap)) / slider.clientWidth) * 100}%)`,
     };

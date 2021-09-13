@@ -18,3 +18,7 @@ img,
 iframe {
   display: block;
 }
+
+button {
+  font-size: 100%;
+}

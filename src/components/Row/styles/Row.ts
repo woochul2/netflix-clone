@@ -3,7 +3,7 @@ import * as BREAKPOINTS from '../../../constants/breakpoints';
 import { homeSidePadding } from '../../../pages/Home/styles/Home';
 import { contentTransitionDuration } from '../../Content/styles/Content';
 
-const sliderGap = '0.25rem';
+export const sliderGap = '0.25rem';
 
 export const Container = styled.div`
   margin-bottom: 5rem;
