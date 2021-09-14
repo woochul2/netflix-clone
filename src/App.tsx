@@ -1,5 +1,5 @@
-import Home from './pages/Home';
+import TvShows from './pages/TvShows';
 
 export default function App() {
-  return <Home />;
+  return <TvShows />;
 }

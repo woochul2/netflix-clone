@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import * as BREAKPOINTS from '../../constants/breakpoints';
+import React, { useEffect, useRef } from 'react';
+import { BREAKPOINTS } from '../../constants';
 import { useTvVideos } from '../../hooks/useTvVideos';
 import CloseIcon from '../../icons/CloseIcon';
 import { HoveredContent } from '../../types';
 import { changeRemToPx } from '../../utils/changeRemToPx';
+import { getScrollbarWidth } from '../../utils/getScrollbarWidth';
 import ContentBottomPanel from '../ContentBottomPanel';
 import * as Styled from './styles/Content';
 import { contentTransitionDuration } from './styles/Content';
@@ -18,7 +19,6 @@ interface Props {
   contentWidth: number;
   hasClickedContent: boolean;
   setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
-  hasContentExpanded: boolean;
 }
 
 export default function Content({
@@ -31,16 +31,16 @@ export default function Content({
   contentWidth,
   hasClickedContent,
   setHasClickedContent,
-  hasContentExpanded,
 }: Props) {
-  const { backdrop_path, genre_ids, id, name, transform_origin } = content;
-  const fontSize = contentWidth / 10;
-  const hoverScaleRatio = 2;
+  const HOVER_SCALE_RATIO = 2;
+
   const contentRef = useRef<HTMLDivElement>(null);
   const insideRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
   const contentBottomPanelRef = useRef<HTMLDivElement>(null);
-  const [isShrinkingAfterHover, setIsShrinkingAfterHover] = useState(false);
-  const [isShrinkingAfterClick, setIsShrinkingAfterClick] = useState(false);
+
+  const { backdrop_path, genre_ids, id, name, transform_origin } = content;
+  const fontSize = contentWidth / 10;
   const tvVideos = useTvVideos(id);
 
   const getSliderTranslationX = (): number => {
@@ -76,7 +76,6 @@ export default function Content({
   const closeModal = () => {
     setHasClickedContent(false);
     removeInsideHoverStyles();
-    setIsShrinkingAfterClick(true);
     if (!contentBottomPanelRef.current) return;
     contentBottomPanelRef.current.style.visibility = '';
 
@@ -84,6 +83,19 @@ export default function Content({
       setContent(null);
     }, contentTransitionDuration);
   };
+
+  const closeEvent = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') closeModal();
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', closeEvent);
+
+    return () => {
+      window.removeEventListener('keydown', closeEvent);
+    };
+    // eslint-disable-next-line
+  }, []);
 
   const handleClickContent = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (event.target === contentRef.current) closeModal();
@@ -116,7 +128,7 @@ export default function Content({
     const contentThumbnail = contentThumbnailsRef.current[`${id}`];
     if (!contentThumbnail) return { top: 0, left: 0 };
     const { top, left } = getInsideDefaultPosition();
-    const newTop = top - contentThumbnail.clientHeight * (hoverScaleRatio - 1);
+    const newTop = top - contentThumbnail.clientHeight * (HOVER_SCALE_RATIO - 1);
 
     if (transform_origin === 'left') {
       return {
@@ -128,13 +140,13 @@ export default function Content({
     if (transform_origin === 'right') {
       return {
         top: newTop,
-        left: left - contentWidth * (hoverScaleRatio - 1),
+        left: left - contentWidth * (HOVER_SCALE_RATIO - 1),
       };
     }
 
     return {
       top: newTop,
-      left: left - (contentWidth * (hoverScaleRatio - 1)) / 2,
+      left: left - (contentWidth * (HOVER_SCALE_RATIO - 1)) / 2,
     };
   };
 
@@ -144,18 +156,11 @@ export default function Content({
     const { top, left } = getInsideHoverPosition();
     insideRef.current.style.top = `${top}px`;
     insideRef.current.style.left = `${left}px`;
-    insideRef.current.style.width = `${contentWidth * hoverScaleRatio}px`;
-    insideRef.current.style.fontSize = `${fontSize * hoverScaleRatio}px`;
+    insideRef.current.style.width = `${contentWidth * HOVER_SCALE_RATIO}px`;
+    insideRef.current.style.fontSize = `${fontSize * HOVER_SCALE_RATIO}px`;
 
     if (!contentBottomPanelRef.current) return;
     contentBottomPanelRef.current.style.visibility = 'visible';
-  };
-
-  const handleMouseOverInside = () => {
-    if (hasClickedContent) return;
-    if (isShrinkingAfterHover) return;
-    if (isShrinkingAfterClick) return;
-    addInsideHoverStyles();
   };
 
   useEffect(() => {
@@ -165,23 +170,25 @@ export default function Content({
 
   const handleMouseLeaveInside = () => {
     if (hasClickedContent) return;
-    setIsShrinkingAfterHover(true);
-
     removeInsideHoverStyles();
 
     setTimeout(() => {
-      setIsShrinkingAfterHover(false);
       setContent(null);
     }, contentTransitionDuration);
+  };
+
+  const getHomeWidth = () => {
+    if (!homeRef.current) return 0;
+    return homeRef.current.offsetWidth - getScrollbarWidth();
   };
 
   const getScaleRatio = (): number => {
     if (!homeRef.current) return 0;
 
     const maxWidth = 996;
-    if (homeRef.current.offsetWidth > maxWidth) return maxWidth / contentWidth;
+    if (getHomeWidth() > maxWidth) return maxWidth / contentWidth;
 
-    const fullScaleRatio = homeRef.current.offsetWidth / contentWidth;
+    const fullScaleRatio = getHomeWidth() / contentWidth;
     if (window.innerWidth < changeRemToPx(BREAKPOINTS.SM)) return fullScaleRatio * 0.99;
     return fullScaleRatio * 0.97;
   };
@@ -203,7 +210,7 @@ export default function Content({
 
     return {
       top: `${homeRef.current.scrollTop + 50}px`,
-      left: `${(homeRef.current.offsetWidth - width) / 2}px`,
+      left: `${(getHomeWidth() - width) / 2}px`,
       width: `${width}px`,
       fontSize: `${fontSize * getScaleRatio()}px`,
     };
@@ -222,10 +229,10 @@ export default function Content({
     return;
   };
 
-  const getImageLink = (img: string | null): string => {
-    if (hasContentExpanded) return `https://image.tmdb.org/t/p/original${img}`;
-    return `https://image.tmdb.org/t/p/w500${img}`;
-  };
+  useEffect(() => {
+    if (!imgRef.current) return;
+    imgRef.current.src = `https://image.tmdb.org/t/p/original${backdrop_path}`;
+  }, [backdrop_path]);
 
   const getYoutubeLink = (key: string): string => `https://www.youtube.com/embed/${key}?autoplay=1&mute=1`;
 
@@ -240,16 +247,9 @@ export default function Content({
       };
     }
 
-    if (isShrinkingAfterClick || isShrinkingAfterHover) {
-      return {
-        width: contentThumbnail.clientWidth,
-        height: contentThumbnail.clientHeight,
-      };
-    }
-
     return {
-      width: contentThumbnail.clientWidth * hoverScaleRatio,
-      height: contentThumbnail.clientHeight * hoverScaleRatio,
+      width: contentThumbnail.clientWidth * HOVER_SCALE_RATIO,
+      height: contentThumbnail.clientHeight * HOVER_SCALE_RATIO,
     };
   };
 
@@ -276,7 +276,12 @@ export default function Content({
 
     return (
       <>
-        <Styled.Img src={getImageLink(backdrop_path)} alt={`${name} 썸네일`} onClick={toggleModal} />
+        <Styled.Img
+          src={`https://image.tmdb.org/t/p/w500${backdrop_path}`}
+          alt={`${name} 썸네일`}
+          onClick={toggleModal}
+          ref={imgRef}
+        />
         <Styled.Title className={`${name.length < 7 && 'short'}`} onClick={toggleModal}>
           {name}
         </Styled.Title>
@@ -291,12 +296,7 @@ export default function Content({
       style={getContentStyle()}
       ref={contentRef}
     >
-      <Styled.Inside
-        onMouseOver={handleMouseOverInside}
-        onMouseLeave={handleMouseLeaveInside}
-        style={getInsideStyle()}
-        ref={insideRef}
-      >
+      <Styled.Inside onMouseLeave={handleMouseLeaveInside} style={getInsideStyle()} ref={insideRef}>
         <Styled.ImgContainer>
           {ImgOrVideo()}
           {hasClickedContent && (

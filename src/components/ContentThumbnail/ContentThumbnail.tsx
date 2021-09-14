@@ -11,7 +11,7 @@ interface Props {
   sliderStartIndex: number;
   isSliderMoving: boolean;
   hasClickedContent: boolean;
-  setHasClickedContentThumbnail: React.Dispatch<React.SetStateAction<boolean>>;
+  setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
   content: HoveredContent | null;
   setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
 }
@@ -24,7 +24,7 @@ export default function ContentThumbnail({
   sliderStartIndex,
   isSliderMoving,
   hasClickedContent,
-  setHasClickedContentThumbnail,
+  setHasClickedContent,
   content,
   setContent,
 }: Props) {
@@ -78,7 +78,9 @@ export default function ContentThumbnail({
     if (content) return;
     if (isSliderMoving) return;
     setContent({ ...tvShow, transform_origin: getTransformOrigin() });
-    setHasClickedContentThumbnail(true);
+    setTimeout(() => {
+      setHasClickedContent(true);
+    }, 0);
     const contentThumbnail = contentThumbnailsRef.current[`${id}`];
     if (!contentThumbnail) return;
     contentThumbnail.blur();

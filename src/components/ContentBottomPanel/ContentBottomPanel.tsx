@@ -34,8 +34,6 @@ export default function ContentBottomPanel({
     };
 
     if (hasClickedContent) {
-      // if (!tvDetail) setTvDetail(getMockTvDetail());
-      // if (!tvVideos) setTvVideos(getMockTvVideos());
       if (!tvDetail) getTvDetail();
     }
   }, [id, tvDetail, hasClickedContent]);

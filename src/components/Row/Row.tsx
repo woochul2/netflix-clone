@@ -14,9 +14,9 @@ interface Props {
   tvGenre: { id: number; name: string };
   sliderContentCount: number;
   hasClickedContent: boolean;
+  setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
   content: HoveredContent | null;
   setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
-  setHasClickedContentThumbnail: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Row({
@@ -26,9 +26,9 @@ export default function Row({
   tvGenre,
   sliderContentCount,
   hasClickedContent,
+  setHasClickedContent,
   content,
   setContent,
-  setHasClickedContentThumbnail,
 }: Props) {
   const { id, name } = tvGenre;
   const [tvShows, setTvShows] = useState<TvShows.Result[]>([]);
@@ -37,7 +37,7 @@ export default function Row({
 
   useEffect(() => {
     const getTvShowsLinks = (id: number, pageCount: number): string[] => {
-      let links = [];
+      const links = [];
       for (let i = 1; i <= pageCount; i++) {
         links.push(
           `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=${i}&with_networks=213&with_genres=${id}`
@@ -47,20 +47,19 @@ export default function Row({
     };
 
     const initTvShows = async () => {
-      let filteredTvShows: TvShows.Result[] = [];
+      const filteredTvShows: TvShows.Result[] = [];
       const links = getTvShowsLinks(id, 2);
 
       for (let i = 0; i < links.length; i++) {
         const link = links[i];
         const response = await axios.get<TvShows.RootObject>(link);
         const results = response.data.results.filter((result) => result.genre_ids[0] === id);
-        filteredTvShows = filteredTvShows.concat(results);
+        filteredTvShows.push(...results);
       }
 
       setTvShows(filteredTvShows);
     };
 
-    // setTvShows(getMockTvShows(id));
     initTvShows();
   }, [id]);
 
@@ -127,7 +126,7 @@ export default function Row({
               sliderStartIndex={sliderStartIndex}
               isSliderMoving={isSliderMoving}
               hasClickedContent={hasClickedContent}
-              setHasClickedContentThumbnail={setHasClickedContentThumbnail}
+              setHasClickedContent={setHasClickedContent}
               content={content}
               setContent={setContent}
             />

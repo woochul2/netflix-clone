@@ -1,10 +1,10 @@
 import styled from 'styled-components/macro';
-import * as BREAKPOINTS from '../../../constants/breakpoints';
+import { BREAKPOINTS } from '../../../constants';
 import { contentBorderRadius, contentBoxShadow, roundButton } from '../../Content/styles/Content';
 
 export const Container = styled.div`
-  // 그림자가 이미지 덮어쓰지 않게 하기 위해 z-index 설정
   visibility: hidden;
+  // 그림자가 이미지 덮어쓰지 않게 하기 위해 z-index 설정
   z-index: -1;
   position: absolute;
   top: 100%;

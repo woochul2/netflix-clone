@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
-import * as BREAKPOINTS from '../../../constants/breakpoints';
-import { homeSidePadding } from '../../../pages/Home/styles/Home';
+import { BREAKPOINTS } from '../../../constants';
+import { homeSidePadding } from '../../Browse/styles/Browse';
 import { contentTransitionDuration } from '../../Content/styles/Content';
 
 export const sliderGap = '0.25rem';

@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import * as BREAKPOINTS from '../../../constants/breakpoints';
+import { BREAKPOINTS } from '../../../constants';
 
 export const homeSidePadding = {
   SM: '2.25rem',
@@ -97,7 +97,7 @@ export const Notification = styled.div`
   }
 `;
 
-export const TMDbLogo = styled.a`
+export const TMDbLogoLink = styled.a`
   display: inline-block;
   width: 10em;
   margin: 0 0.2em 0 0.3em;
