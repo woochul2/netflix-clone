@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useTvVideos } from '../../hooks/useTvVideos';
+import { useVideos } from '../../hooks/useVideos';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import * as Styled from './styles/ContentBottomPanel';
 
 interface Props {
   contentBottomPanelRef: React.RefObject<HTMLDivElement>;
+  variant: 'tv' | 'movie';
   id: number;
   hasClickedContent: boolean;
   setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,36 +14,33 @@ interface Props {
 
 export default function ContentBottomPanel({
   contentBottomPanelRef,
+  variant,
   id,
   hasClickedContent,
   setHasClickedContent,
 }: Props) {
-  const [tvDetail, setTvDetail] = useState<TvDetail.RootObject>();
-  const tvVideos = useTvVideos(id);
-
-  const getTvDetailLink = (id: number): string => {
-    return `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
-  };
+  const [detail, setDetail] = useState<any>();
+  const videos = useVideos(variant, id);
 
   const getYoutubeLink = (key: string): string => `https://www.youtube.com/watch?v=${key}`;
 
   useEffect(() => {
-    const getTvDetail = async () => {
-      const link = getTvDetailLink(id);
+    const getDetail = async () => {
+      const link = `https://api.themoviedb.org/3/${variant}/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
       const response = await axios.get<TvDetail.RootObject>(link);
-      setTvDetail(response.data);
+      setDetail(response.data);
     };
 
     if (hasClickedContent) {
-      if (!tvDetail) getTvDetail();
+      if (!detail) getDetail();
     }
-  }, [id, tvDetail, hasClickedContent]);
+  }, [variant, id, detail, hasClickedContent]);
 
   const handleClickDetailButton = () => setHasClickedContent(true);
 
   const VideoLinks = (
     <>
-      {tvVideos?.results.map(
+      {videos?.results.map(
         (result) =>
           result.type === 'Trailer' &&
           result.site === 'YouTube' && (
@@ -66,44 +64,72 @@ export default function ContentBottomPanel({
           <ChevronDownIcon />
         </Styled.DetailButton>
       )}
-      {hasClickedContent && tvDetail && (
+      {hasClickedContent && detail && (
         <>
           <Styled.LinkContainer>
-            <Styled.PageLink href={tvDetail.homepage} target="_blank" aria-label="공식 홈페이지">
+            <Styled.PageLink href={detail.homepage} target="_blank" aria-label="공식 홈페이지">
               공식 홈페이지
             </Styled.PageLink>
             {VideoLinks}
           </Styled.LinkContainer>
-          <Styled.Overview>{tvDetail.overview.split('. ').join('.\n').split('?').join('?\n')}</Styled.Overview>
+          <Styled.Overview>{detail.overview.split('. ').join('.\n').split('?').join('?\n')}</Styled.Overview>
           <Styled.Text>
             <Styled.GrayText>장르: </Styled.GrayText>
-            {tvDetail.genres.map((genre, index) => (
-              <span key={genre.id}>
-                {index === tvDetail.genres.length - 1 ? <>{genre.name}</> : <>{genre.name}, </>}
-              </span>
+            {detail.genres.map((genre: any, index: number) => (
+              <span key={genre.id}>{index === detail.genres.length - 1 ? <>{genre.name}</> : <>{genre.name}, </>}</span>
             ))}
           </Styled.Text>
           <Styled.Text>
-            <Styled.GrayText>첫 방송 날짜: </Styled.GrayText>
-            {tvDetail.first_air_date.split('-').join('.')}
+            {variant === 'tv' && (
+              <>
+                <Styled.GrayText>첫 방송 날짜: </Styled.GrayText>
+                {detail.first_air_date.split('-').join('.')}
+              </>
+            )}
+            {variant === 'movie' && (
+              <>
+                <Styled.GrayText>개봉일: </Styled.GrayText>
+                {detail.release_date.split('-').join('.')}
+              </>
+            )}
           </Styled.Text>
-          <Styled.Text>
-            <Styled.GrayText>시즌 수: </Styled.GrayText>
-            {tvDetail.number_of_seasons}개
-          </Styled.Text>
+          {variant === 'tv' && (
+            <Styled.Text>
+              <Styled.GrayText>시즌 수: </Styled.GrayText>
+              {detail.number_of_seasons}개
+            </Styled.Text>
+          )}
           <Styled.Text>
             <Styled.GrayText>회원 평점: </Styled.GrayText>
-            {tvDetail.vote_average}
+            {detail.vote_average}
           </Styled.Text>
-          {tvDetail.created_by.length !== 0 && (
+          {variant === 'tv' && detail.created_by.length !== 0 && (
             <Styled.Text>
               <Styled.GrayText>제작: </Styled.GrayText>
-              {tvDetail.created_by.map((person, index) => (
+              {detail.created_by.map((person: any, index: number) => (
                 <span key={person.id}>
-                  {index === tvDetail.created_by.length - 1 ? <>{person.name}</> : <>{person.name}, </>}
+                  {index === detail.created_by.length - 1 ? <>{person.name}</> : <>{person.name}, </>}
                 </span>
               ))}
             </Styled.Text>
+          )}
+          {variant === 'movie' && (
+            <>
+              <Styled.Text>
+                <Styled.GrayText>상영 시간: </Styled.GrayText>
+                {detail.runtime}분
+              </Styled.Text>
+              {detail.budget > 0 && (
+                <Styled.Text>
+                  <Styled.GrayText>제작비: </Styled.GrayText>
+                  {detail.budget.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    maximumFractionDigits: 0,
+                  })}
+                </Styled.Text>
+              )}
+            </>
           )}
         </>
       )}

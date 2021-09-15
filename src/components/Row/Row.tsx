@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
-import { HoveredContent } from '../../types';
 import { changeRemToPx } from '../../utils/changeRemToPx';
 import { contentTransitionDuration } from '../Content/styles/Content';
 import ContentThumbnail from '../ContentThumbnail';
@@ -11,57 +10,63 @@ interface Props {
   contentsWrappersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   slidersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
-  tvGenre: { id: number; name: string };
+  variant: 'tv' | 'movie';
+  genre: { id: number; name: string };
   sliderContentCount: number;
   hasClickedContent: boolean;
   setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
-  content: HoveredContent | null;
-  setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
+  content: any;
+  setContent: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function Row({
   contentsWrappersRef,
   slidersRef,
   contentThumbnailsRef,
-  tvGenre,
+  variant,
+  genre,
   sliderContentCount,
   hasClickedContent,
   setHasClickedContent,
   content,
   setContent,
 }: Props) {
-  const { id, name } = tvGenre;
-  const [tvShows, setTvShows] = useState<TvShows.Result[]>([]);
+  const { id, name } = genre;
+  const [contentsInfo, setContentsInfo] = useState<any[]>([]);
   const [sliderStartIndex, setSliderStartIndex] = useState(0);
   const [isSliderMoving, setIsSliderMoving] = useState(false);
 
   useEffect(() => {
-    const getTvShowsLinks = (id: number, pageCount: number): string[] => {
-      const links = [];
+    const getContentsUrls = (id: number, pageCount: number): string[] => {
+      const urls = [];
       for (let i = 1; i <= pageCount; i++) {
-        links.push(
-          `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=${i}&with_networks=213&with_genres=${id}`
-        );
+        const BASE_ENDPOINT = 'https://api.themoviedb.org/3/discover';
+        const apiUrl = `${BASE_ENDPOINT}/${variant}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=${i}&with_genres=${id}`;
+        const url =
+          variant === 'tv'
+            ? `${apiUrl}&with_networks=213`
+            : `${apiUrl}&region=KR&with_watch_providers=8&watch_region=KR`;
+        urls.push(url);
       }
-      return links;
+      return urls;
     };
 
-    const initTvShows = async () => {
-      const filteredTvShows: TvShows.Result[] = [];
-      const links = getTvShowsLinks(id, 2);
+    const initContentsInfo = async () => {
+      const filteredContentsInfo: any[] = [];
+      const urls = getContentsUrls(id, 2);
 
-      for (let i = 0; i < links.length; i++) {
-        const link = links[i];
-        const response = await axios.get<TvShows.RootObject>(link);
-        const results = response.data.results.filter((result) => result.genre_ids[0] === id);
-        filteredTvShows.push(...results);
+      for (let i = 0; i < urls.length; i++) {
+        const url = urls[i];
+        const response = await axios.get(url);
+        const results = response.data.results.filter((result: any) => result.genre_ids[0] === id);
+        filteredContentsInfo.push(...results);
       }
 
-      setTvShows(filteredTvShows);
+      setContentsInfo(filteredContentsInfo);
     };
 
-    initTvShows();
-  }, [id]);
+    initContentsInfo();
+  }, [variant, id]);
 
   const getSliderStyle = (): React.CSSProperties | undefined => {
     if (sliderStartIndex === 0) return;
@@ -116,11 +121,12 @@ export default function Row({
           </Styled.PrevButton>
         )}
         <Styled.Slider style={getSliderStyle()} ref={(element) => (slidersRef.current[`${id}`] = element)}>
-          {tvShows.map((tvShow, index) => (
+          {contentsInfo.map((contentInfo, index) => (
             <ContentThumbnail
-              key={tvShow.id}
+              key={contentInfo.id}
               contentThumbnailsRef={contentThumbnailsRef}
-              tvShow={tvShow}
+              variant={variant}
+              contentInfo={contentInfo}
               index={index}
               sliderContentCount={sliderContentCount}
               sliderStartIndex={sliderStartIndex}
@@ -132,7 +138,7 @@ export default function Row({
             />
           ))}
         </Styled.Slider>
-        {sliderStartIndex + sliderContentCount < tvShows.length && (
+        {sliderStartIndex + sliderContentCount < contentsInfo.length && (
           <Styled.NextButton
             aria-label="컨텐츠 더 보기"
             onClick={handleClickNextButton}

@@ -4,3 +4,8 @@ export const BREAKPOINTS = {
   LG: '59.375rem',
   XL: '90.625rem',
 };
+
+export const PATHS = {
+  MOVIES: '/movies',
+  TV: '/',
+};

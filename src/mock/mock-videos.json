@@ -1,0 +1,29 @@
+{
+  "id": 87739,
+  "results": [
+    {
+      "iso_639_1": "ko",
+      "iso_3166_1": "KR",
+      "name": "퀸스 갬빗 | 공식 예고편 | Netflix",
+      "key": "qNC0WKAe7kA",
+      "site": "YouTube",
+      "size": 1080,
+      "type": "Trailer",
+      "official": true,
+      "published_at": "2020-09-24T12:30:02.000Z",
+      "id": "5f6ccfe2e62719003708b273"
+    },
+    {
+      "iso_639_1": "ko",
+      "iso_3166_1": "KR",
+      "name": "퀸스 갬빗 | 곧 넷플릭스에서 | Netflix",
+      "key": "2Kd_4OOfmE0",
+      "site": "YouTube",
+      "size": 1080,
+      "type": "Teaser",
+      "official": true,
+      "published_at": "2020-08-27T15:00:02.000Z",
+      "id": "5f4859bb7739410035e8f374"
+    }
+  ]
+}

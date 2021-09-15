@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { BREAKPOINTS } from '../../constants';
-import { useTvVideos } from '../../hooks/useTvVideos';
+import { useVideos } from '../../hooks/useVideos';
 import CloseIcon from '../../icons/CloseIcon';
-import { HoveredContent } from '../../types';
 import { changeRemToPx } from '../../utils/changeRemToPx';
 import { getScrollbarWidth } from '../../utils/getScrollbarWidth';
 import ContentBottomPanel from '../ContentBottomPanel';
@@ -10,18 +9,20 @@ import * as Styled from './styles/Content';
 import { contentTransitionDuration } from './styles/Content';
 
 interface Props {
+  variant: 'tv' | 'movie';
   homeRef: React.RefObject<HTMLDivElement>;
   contentsWrappersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   slidersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
-  content: HoveredContent;
-  setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
+  content: any;
+  setContent: React.Dispatch<React.SetStateAction<any>>;
   contentWidth: number;
   hasClickedContent: boolean;
   setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Content({
+  variant,
   homeRef,
   contentsWrappersRef,
   slidersRef,
@@ -39,9 +40,10 @@ export default function Content({
   const imgRef = useRef<HTMLImageElement>(null);
   const contentBottomPanelRef = useRef<HTMLDivElement>(null);
 
-  const { backdrop_path, genre_ids, id, name, transform_origin } = content;
+  const { backdrop_path, genre_ids, id, transform_origin } = content;
+  const title = variant === 'tv' ? content.name : content.title;
   const fontSize = contentWidth / 10;
-  const tvVideos = useTvVideos(id);
+  const videos = useVideos(variant, id);
 
   const getSliderTranslationX = (): number => {
     const genreId = genre_ids[0];
@@ -257,7 +259,7 @@ export default function Content({
     const contentThumbnail = contentThumbnailsRef.current[`${content.id}`];
     if (!contentThumbnail) return <></>;
 
-    const video = tvVideos?.results
+    const video = videos?.results
       .filter((result) => result.type === 'Trailer')
       .find((result) => result.site === 'YouTube');
 
@@ -278,12 +280,12 @@ export default function Content({
       <>
         <Styled.Img
           src={`https://image.tmdb.org/t/p/w500${backdrop_path}`}
-          alt={`${name} 썸네일`}
+          alt={`${title} 썸네일`}
           onClick={toggleModal}
           ref={imgRef}
         />
-        <Styled.Title className={`${name.length < 7 && 'short'}`} onClick={toggleModal}>
-          {name}
+        <Styled.Title className={`${title.length < 7 && 'short'}`} onClick={toggleModal}>
+          {title}
         </Styled.Title>
       </>
     );
@@ -307,6 +309,7 @@ export default function Content({
         </Styled.ImgContainer>
         <ContentBottomPanel
           contentBottomPanelRef={contentBottomPanelRef}
+          variant={variant}
           id={id}
           hasClickedContent={hasClickedContent}
           setHasClickedContent={setHasClickedContent}

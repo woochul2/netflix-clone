@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { BREAKPOINTS } from '../../../constants';
 
@@ -22,7 +23,11 @@ export const Header = styled.header`
   z-index: 3;
   position: sticky;
   top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0.875rem ${homeSidePadding.XL};
+  font-size: 0.875rem;
   background-image: linear-gradient(hsla(0, 0%, 0%, 0.7) 10%, hsla(0, 0%, 0%, 0));
   transition: background-color 0.4s;
 
@@ -36,14 +41,16 @@ export const Header = styled.header`
 
   @media (max-width: ${BREAKPOINTS.MD}) {
     padding: 0.875rem ${homeSidePadding.MD};
+    font-size: 0.75rem;
   }
 
   @media (max-width: ${BREAKPOINTS.SM}) {
     padding: 0.875rem ${homeSidePadding.SM};
+    font-size: 0.5rem;
   }
 `;
 
-export const LogoLink = styled.a`
+export const LogoLink = styled(Link)`
   user-select: none;
   text-decoration: none;
   font-family: Arial, sans-serif;
@@ -57,6 +64,49 @@ export const LogoLink = styled.a`
 
   @media (max-width: ${BREAKPOINTS.SM}) {
     font-size: 1.25rem;
+  }
+`;
+
+export const Nav = styled.nav`
+  display: flex;
+  flex-grow: 1;
+  gap: 1.5rem;
+  margin-left: 1.5rem;
+
+  @media (max-width: ${BREAKPOINTS.MD}) {
+    gap: 1rem;
+    margin-left: 1rem;
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    gap: 0.875rem;
+    margin-left: 0.875rem;
+  }
+`;
+
+export const NavTab = styled(Link)`
+  text-decoration: none;
+  font-size: 1em;
+  color: var(--gray-100);
+  transition: color 0.2s;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: var(--gray-200);
+    }
+  }
+`;
+
+export const GithubLink = styled.a`
+  font-size: 1.75em;
+  color: var(--gray-100);
+  transition: color 0.2s;
+  transform: translateY(5%);
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: var(--gray-200);
+    }
   }
 `;
 

@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
-import { HoveredContent } from '../../types';
 import { contentTransitionDuration } from '../Content/styles/Content';
 import * as Styled from './styles/ContentThumbnail';
 
 interface Props {
   contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
-  tvShow: TvShows.Result;
+  variant: 'tv' | 'movie';
+  contentInfo: any;
   index: number;
   sliderContentCount: number;
   sliderStartIndex: number;
   isSliderMoving: boolean;
   hasClickedContent: boolean;
   setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
-  content: HoveredContent | null;
-  setContent: React.Dispatch<React.SetStateAction<HoveredContent | null>>;
+  content: any;
+  setContent: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function ContentThumbnail({
   contentThumbnailsRef,
-  tvShow,
+  variant,
+  contentInfo,
   index,
   sliderContentCount,
   sliderStartIndex,
@@ -28,7 +29,8 @@ export default function ContentThumbnail({
   content,
   setContent,
 }: Props) {
-  const { backdrop_path, id, name } = tvShow;
+  const { backdrop_path, id } = contentInfo;
+  const title = variant === 'tv' ? contentInfo.name : contentInfo.title;
   let isMouseOnThumbnail = false;
   const [hasImageLoaded, setHasImageLoaded] = useState(false);
 
@@ -39,7 +41,7 @@ export default function ContentThumbnail({
 
     setTimeout(() => {
       if (!isMouseOnThumbnail) return;
-      setContent({ ...tvShow, transform_origin: getTransformOrigin() });
+      setContent({ ...contentInfo, transform_origin: getTransformOrigin() });
     }, contentTransitionDuration);
   };
 
@@ -77,7 +79,7 @@ export default function ContentThumbnail({
 
     if (content) return;
     if (isSliderMoving) return;
-    setContent({ ...tvShow, transform_origin: getTransformOrigin() });
+    setContent({ ...contentInfo, transform_origin: getTransformOrigin() });
     setTimeout(() => {
       setHasClickedContent(true);
     }, 0);
@@ -106,11 +108,11 @@ export default function ContentThumbnail({
             onClick={handleClickImgButton}
             style={getImgButtonStyle()}
           >
-            <Styled.Img src={getImageLink(backdrop_path)} alt={`${name} 썸네일`} onLoad={handleImageLoad} />
+            <Styled.Img src={getImageLink(backdrop_path)} alt={`${title} 썸네일`} onLoad={handleImageLoad} />
           </Styled.ImgButton>
           {hasImageLoaded && (
-            <Styled.Title className={`${name.length < 7 && 'short'}`} onClick={handleClickImgButton}>
-              {name}
+            <Styled.Title className={`${title.length < 7 && 'short'}`} onClick={handleClickImgButton}>
+              {title}
             </Styled.Title>
           )}
         </>

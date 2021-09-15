@@ -1,15 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { BREAKPOINTS, PATHS } from '../../constants';
+import GithubIcon from '../../icons/GithubIcon';
+import { changeRemToPx } from '../../utils/changeRemToPx';
+import { getScrollbarWidth } from '../../utils/getScrollbarWidth';
 import Content from '../Content';
 import Row from '../Row';
 import { sliderGap } from '../Row/styles/Row';
-import { BREAKPOINTS } from '../../constants';
-import { HoveredContent } from '../../types';
-import { changeRemToPx } from '../../utils/changeRemToPx';
-import { getScrollbarWidth } from '../../utils/getScrollbarWidth';
 import * as Styled from './styles/Browse';
-import tvGenres from './tv-genres.json';
 
-export default function Browse() {
+interface Props {
+  variant: 'tv' | 'movie';
+  genres: { id: number; name: string }[];
+}
+
+export default function Browse({ variant, genres }: Props) {
   const homeRef = useRef<HTMLDivElement>(null);
   const contentsWrappersRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const slidersRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -17,7 +21,7 @@ export default function Browse() {
 
   const [isScrollDown, setIsScrollDown] = useState(false);
   const [sliderContentCount, setSliderContentCount] = useState(6);
-  const [content, setContent] = useState<HoveredContent | null>(null);
+  const [content, setContent] = useState<any>(null);
   const [contentWidth, setContentWidth] = useState(0);
   const [hasClickedContent, setHasClickedContent] = useState(false);
 
@@ -63,13 +67,29 @@ export default function Browse() {
   return (
     <Styled.Container onScroll={handleScroll} style={getHomeStyle()} ref={homeRef}>
       <Styled.Header className={isScrollDown ? 'scroll-down' : ''}>
-        <Styled.LogoLink href="#" aria-label="Netflix Clone" tabIndex={content ? -1 : undefined}>
+        <Styled.LogoLink to={PATHS.TV} aria-label="Netflix Clone" tabIndex={content ? -1 : undefined}>
           NETFLIX.clone
         </Styled.LogoLink>
+        <Styled.Nav>
+          <Styled.NavTab to={PATHS.TV} aria-label="TV 프로그램" tabIndex={content ? -1 : undefined}>
+            TV 프로그램
+          </Styled.NavTab>
+          <Styled.NavTab to={PATHS.MOVIES} aria-label="영화" tabIndex={content ? -1 : undefined}>
+            영화
+          </Styled.NavTab>
+        </Styled.Nav>
+        <Styled.GithubLink
+          href="https://github.com/woochul2/netflix-clone"
+          aria-label="깃허브"
+          tabIndex={content ? -1 : undefined}
+          target="blank"
+        >
+          <GithubIcon />
+        </Styled.GithubLink>
       </Styled.Header>
       <Styled.Main>
         <Styled.Notification>
-          모든 TV 프로그램 데이터베이스는
+          모든 데이터베이스는
           <Styled.TMDbLogoLink
             href="https://www.themoviedb.org/"
             aria-label="The Movie DB"
@@ -82,13 +102,14 @@ export default function Browse() {
           </Styled.TMDbLogoLink>
           에서 받아왔습니다.
         </Styled.Notification>
-        {tvGenres.map((tvGenre) => (
+        {genres.map((genre) => (
           <Row
-            key={tvGenre.id}
+            key={genre.id}
             contentsWrappersRef={contentsWrappersRef}
             slidersRef={slidersRef}
             contentThumbnailsRef={contentThumbnailsRef}
-            tvGenre={tvGenre}
+            variant={variant}
+            genre={genre}
             sliderContentCount={sliderContentCount}
             hasClickedContent={hasClickedContent}
             setHasClickedContent={setHasClickedContent}
@@ -103,6 +124,7 @@ export default function Browse() {
             contentsWrappersRef={contentsWrappersRef}
             slidersRef={slidersRef}
             contentThumbnailsRef={contentThumbnailsRef}
+            variant={variant}
             content={content}
             setContent={setContent}
             contentWidth={contentWidth}
