@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { contentTransitionDuration } from '../Content/styles/Content';
 import * as Styled from './styles/ContentThumbnail';
 
 interface Props {
+  browseRef: React.RefObject<HTMLDivElement>;
+  nextButtonRef: React.RefObject<HTMLButtonElement>;
   contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   variant: 'tv' | 'movie';
   contentInfo: any;
@@ -17,6 +19,8 @@ interface Props {
 }
 
 export default function ContentThumbnail({
+  browseRef,
+  nextButtonRef,
   contentThumbnailsRef,
   variant,
   contentInfo,
@@ -29,10 +33,44 @@ export default function ContentThumbnail({
   content,
   setContent,
 }: Props) {
+  const imgRef = useRef<HTMLImageElement>(null);
   const { backdrop_path, id } = contentInfo;
   const title = variant === 'tv' ? contentInfo.name : contentInfo.title;
   let isMouseOnThumbnail = false;
   const [hasImageLoaded, setHasImageLoaded] = useState(false);
+
+  useEffect(() => {
+    const $browse = browseRef.current;
+    const $nextButton = nextButtonRef.current;
+    if (!$browse) return;
+    if (!$nextButton) return;
+
+    const removeEvent = () => {
+      $browse.removeEventListener('scroll', lazyLoad);
+      $nextButton.removeEventListener('click', lazyLoad);
+      window.removeEventListener('resize', lazyLoad);
+    };
+
+    const lazyLoad = () => {
+      const $contentThumbnail = contentThumbnailsRef.current[`${id}`];
+      const $img = imgRef.current;
+      if (!$contentThumbnail) return;
+      if (!$img) return;
+
+      const rect = $contentThumbnail.getBoundingClientRect();
+      if (rect.top < $browse.clientHeight) {
+        $img.src = $img.dataset.src as string;
+        removeEvent();
+      }
+    };
+
+    lazyLoad();
+    $browse.addEventListener('scroll', lazyLoad);
+    $nextButton.addEventListener('click', lazyLoad);
+    window.addEventListener('resize', lazyLoad);
+
+    return removeEvent;
+  }, [browseRef, contentThumbnailsRef, nextButtonRef, id]);
 
   const handleMouseEnterContentThumbnail = () => {
     if (index < sliderStartIndex) return;
@@ -68,8 +106,6 @@ export default function ContentThumbnail({
     if (index % sliderContentCount === (sliderStartIndex + sliderContentCount - 1) % sliderContentCount) return 'right';
     return 'center';
   };
-
-  const getImageLink = (img: string | null): string => `https://image.tmdb.org/t/p/w500${img}`;
 
   const handleImageLoad = () => setHasImageLoaded(true);
 
@@ -108,7 +144,12 @@ export default function ContentThumbnail({
             onClick={handleClickImgButton}
             style={getImgButtonStyle()}
           >
-            <Styled.Img src={getImageLink(backdrop_path)} alt={`${title} 썸네일`} onLoad={handleImageLoad} />
+            <Styled.Img
+              data-src={`https://image.tmdb.org/t/p/w500${backdrop_path}`}
+              alt={`${title} 썸네일`}
+              onLoad={handleImageLoad}
+              ref={imgRef}
+            />
           </Styled.ImgButton>
           {hasImageLoaded && (
             <Styled.Title className={`${title.length < 7 && 'short'}`} onClick={handleClickImgButton}>

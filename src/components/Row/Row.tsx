@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ChevronDownIcon from '../../icons/ChevronDownIcon';
 import { changeRemToPx } from '../../utils/changeRemToPx';
 import { contentTransitionDuration } from '../Content/styles/Content';
@@ -7,6 +7,7 @@ import ContentThumbnail from '../ContentThumbnail';
 import * as Styled from './styles/Row';
 
 interface Props {
+  browseRef: React.RefObject<HTMLDivElement>;
   contentsWrappersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   slidersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export default function Row({
+  browseRef,
   contentsWrappersRef,
   slidersRef,
   contentThumbnailsRef,
@@ -31,6 +33,7 @@ export default function Row({
   content,
   setContent,
 }: Props) {
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
   const { id, name } = genre;
   const [contentsInfo, setContentsInfo] = useState<any[]>([]);
   const [sliderStartIndex, setSliderStartIndex] = useState(0);
@@ -124,6 +127,8 @@ export default function Row({
           {contentsInfo.map((contentInfo, index) => (
             <ContentThumbnail
               key={contentInfo.id}
+              browseRef={browseRef}
+              nextButtonRef={nextButtonRef}
               contentThumbnailsRef={contentThumbnailsRef}
               variant={variant}
               contentInfo={contentInfo}
@@ -144,6 +149,7 @@ export default function Row({
             onClick={handleClickNextButton}
             tabIndex={content ? -1 : undefined}
             style={{ display: hasClickedContent ? 'none' : '' }}
+            ref={nextButtonRef}
           >
             <ChevronDownIcon />
           </Styled.NextButton>

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { PATHS } from './constants';
 import Movies from './pages/Movies';
 import TvShows from './pages/TvShows';
@@ -10,9 +10,10 @@ export default function App() {
         <Route path={PATHS.MOVIES}>
           <Movies />
         </Route>
-        <Route path={PATHS.TV}>
+        <Route exact path={PATHS.TV_SHOWS}>
           <TvShows />
         </Route>
+        <Redirect to={PATHS.TV_SHOWS} />
       </Switch>
     </Router>
   );

@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function Browse({ variant, genres }: Props) {
-  const homeRef = useRef<HTMLDivElement>(null);
+  const browseRef = useRef<HTMLDivElement>(null);
   const contentsWrappersRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const slidersRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const contentThumbnailsRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -65,16 +65,16 @@ export default function Browse({ variant, genres }: Props) {
   };
 
   return (
-    <Styled.Container onScroll={handleScroll} style={getHomeStyle()} ref={homeRef}>
+    <Styled.Container onScroll={handleScroll} style={getHomeStyle()} ref={browseRef}>
       <Styled.Header className={isScrollDown ? 'scroll-down' : ''}>
-        <Styled.LogoLink to={PATHS.TV} aria-label="Netflix Clone" tabIndex={content ? -1 : undefined}>
+        <Styled.LogoLink to={PATHS.TV_SHOWS} aria-label="Netflix Clone" tabIndex={content ? -1 : undefined}>
           NETFLIX.clone
         </Styled.LogoLink>
         <Styled.Nav>
-          <Styled.NavTab to={PATHS.TV} aria-label="TV 프로그램" tabIndex={content ? -1 : undefined}>
+          <Styled.NavTab exact to={PATHS.TV_SHOWS} aria-label="TV 프로그램" tabIndex={content ? -1 : undefined}>
             TV 프로그램
           </Styled.NavTab>
-          <Styled.NavTab to={PATHS.MOVIES} aria-label="영화" tabIndex={content ? -1 : undefined}>
+          <Styled.NavTab exact to={PATHS.MOVIES} aria-label="영화" tabIndex={content ? -1 : undefined}>
             영화
           </Styled.NavTab>
         </Styled.Nav>
@@ -105,6 +105,7 @@ export default function Browse({ variant, genres }: Props) {
         {genres.map((genre) => (
           <Row
             key={genre.id}
+            browseRef={browseRef}
             contentsWrappersRef={contentsWrappersRef}
             slidersRef={slidersRef}
             contentThumbnailsRef={contentThumbnailsRef}
@@ -120,7 +121,7 @@ export default function Browse({ variant, genres }: Props) {
         {content && (
           <Content
             key={content.id}
-            homeRef={homeRef}
+            browseRef={browseRef}
             contentsWrappersRef={contentsWrappersRef}
             slidersRef={slidersRef}
             contentThumbnailsRef={contentThumbnailsRef}

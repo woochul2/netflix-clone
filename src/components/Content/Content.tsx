@@ -10,7 +10,7 @@ import { contentTransitionDuration } from './styles/Content';
 
 interface Props {
   variant: 'tv' | 'movie';
-  homeRef: React.RefObject<HTMLDivElement>;
+  browseRef: React.RefObject<HTMLDivElement>;
   contentsWrappersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   slidersRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
@@ -23,7 +23,7 @@ interface Props {
 
 export default function Content({
   variant,
-  homeRef,
+  browseRef,
   contentsWrappersRef,
   slidersRef,
   contentThumbnailsRef,
@@ -104,8 +104,8 @@ export default function Content({
   };
 
   const getContentStyle = (): React.CSSProperties | undefined => {
-    if (!homeRef.current) return;
-    const height = `${homeRef.current.clientHeight + homeRef.current.scrollTop}px`;
+    if (!browseRef.current) return;
+    const height = `${browseRef.current.clientHeight + browseRef.current.scrollTop}px`;
 
     if (!hasClickedContent) {
       const genreId = content.genre_ids[0];
@@ -180,12 +180,12 @@ export default function Content({
   };
 
   const getHomeWidth = () => {
-    if (!homeRef.current) return 0;
-    return homeRef.current.offsetWidth - getScrollbarWidth();
+    if (!browseRef.current) return 0;
+    return browseRef.current.offsetWidth - getScrollbarWidth();
   };
 
   const getScaleRatio = (): number => {
-    if (!homeRef.current) return 0;
+    if (!browseRef.current) return 0;
 
     const maxWidth = 996;
     if (getHomeWidth() > maxWidth) return maxWidth / contentWidth;
@@ -206,12 +206,12 @@ export default function Content({
       };
     }
 
-    if (!homeRef.current) return;
+    if (!browseRef.current) return;
 
     const width = contentWidth * getScaleRatio();
 
     return {
-      top: `${homeRef.current.scrollTop + 50}px`,
+      top: `${browseRef.current.scrollTop + 50}px`,
       left: `${(getHomeWidth() - width) / 2}px`,
       width: `${width}px`,
       fontSize: `${fontSize * getScaleRatio()}px`,

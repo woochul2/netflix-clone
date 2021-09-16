@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { BREAKPOINTS } from '../../../constants';
 
@@ -41,16 +41,15 @@ export const Header = styled.header`
 
   @media (max-width: ${BREAKPOINTS.MD}) {
     padding: 0.875rem ${homeSidePadding.MD};
-    font-size: 0.75rem;
   }
 
   @media (max-width: ${BREAKPOINTS.SM}) {
     padding: 0.875rem ${homeSidePadding.SM};
-    font-size: 0.5rem;
+    font-size: 0.75rem;
   }
 `;
 
-export const LogoLink = styled(Link)`
+export const LogoLink = styled(NavLink)`
   user-select: none;
   text-decoration: none;
   font-family: Arial, sans-serif;
@@ -84,28 +83,32 @@ export const Nav = styled.nav`
   }
 `;
 
-export const NavTab = styled(Link)`
+export const NavTab = styled(NavLink)`
   text-decoration: none;
   font-size: 1em;
-  color: var(--gray-100);
+  color: var(--gray-200);
   transition: color 0.2s;
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      color: var(--gray-200);
+      color: var(--gray-300);
     }
+  }
+
+  &.active {
+    color: var(--white);
   }
 `;
 
 export const GithubLink = styled.a`
   font-size: 1.75em;
-  color: var(--gray-100);
+  color: var(--gray-200);
   transition: color 0.2s;
   transform: translateY(5%);
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      color: var(--gray-200);
+      color: var(--gray-300);
     }
   }
 `;
@@ -134,6 +137,7 @@ export const Notification = styled.div`
   font-weight: bold;
   font-size: 1.25rem;
   margin-bottom: 4rem;
+  padding: 0 0.25rem;
   background-color: var(--gray-800);
   color: var(--orange);
 

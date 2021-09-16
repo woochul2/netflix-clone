@@ -7,5 +7,5 @@ export const BREAKPOINTS = {
 
 export const PATHS = {
   MOVIES: '/movies',
-  TV: '/',
+  TV_SHOWS: '/',
 };
