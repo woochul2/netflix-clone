@@ -16,10 +16,18 @@ export const ImgButton = styled.button`
   border: 0;
   border-radius: ${contentBorderRadius};
   background: none;
+
+  &.hidden {
+    display: none;
+  }
 `;
 
 export const Img = styled.img`
   width: 100%;
+
+  &.hidden {
+    display: none;
+  }
 `;
 
 export const Title = styled(ContentTitle)``;

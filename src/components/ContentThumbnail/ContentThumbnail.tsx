@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { throttle } from '../../utils/throttle';
 import { contentTransitionDuration } from '../Content/styles/Content';
 import * as Styled from './styles/ContentThumbnail';
 
@@ -41,33 +42,37 @@ export default function ContentThumbnail({
 
   useEffect(() => {
     const $browse = browseRef.current;
-    const $nextButton = nextButtonRef.current;
     if (!$browse) return;
-    if (!$nextButton) return;
 
     const removeEvent = () => {
       $browse.removeEventListener('scroll', lazyLoad);
-      $nextButton.removeEventListener('click', lazyLoad);
       window.removeEventListener('resize', lazyLoad);
+      const $nextButton = nextButtonRef.current;
+      if ($nextButton) $nextButton.removeEventListener('click', lazyLoad);
     };
 
-    const lazyLoad = () => {
+    const lazyLoad = throttle((event?: Event) => {
       const $contentThumbnail = contentThumbnailsRef.current[`${id}`];
       const $img = imgRef.current;
       if (!$contentThumbnail) return;
       if (!$img) return;
 
       const rect = $contentThumbnail.getBoundingClientRect();
-      if (rect.top < $browse.clientHeight) {
+      const isInsideScreenHeight = rect.top < $browse.clientHeight + 100 && rect.left < $browse.clientWidth;
+      // NextButton 클릭 직후 rect.left는 슬라이더 이동 애니메이션이 발생하기 전의 위치이므로 화면 너비의 두 배를 기준으로 비교했다.
+      const isInsideScreenWidth = event?.type === 'click' && rect.left < $browse.clientWidth * 2;
+      if (isInsideScreenHeight || isInsideScreenWidth) {
         $img.src = $img.dataset.src as string;
+        $img.classList.remove('hidden');
         removeEvent();
       }
-    };
+    }, 20);
 
     lazyLoad();
     $browse.addEventListener('scroll', lazyLoad);
-    $nextButton.addEventListener('click', lazyLoad);
     window.addEventListener('resize', lazyLoad);
+    const $nextButton = nextButtonRef.current;
+    if ($nextButton) $nextButton.addEventListener('click', lazyLoad);
 
     return removeEvent;
   }, [browseRef, contentThumbnailsRef, nextButtonRef, id]);
@@ -135,28 +140,26 @@ export default function ContentThumbnail({
       style={{ boxShadow: checkContentExists() ? 'none' : '' }}
       ref={(element) => (contentThumbnailsRef.current[`${id}`] = element)}
     >
-      {checkContentExists() ? (
-        <Styled.Img />
-      ) : (
-        <>
-          <Styled.ImgButton
-            tabIndex={getImgButtonTabIndex()}
-            onClick={handleClickImgButton}
-            style={getImgButtonStyle()}
-          >
-            <Styled.Img
-              data-src={`https://image.tmdb.org/t/p/w500${backdrop_path}`}
-              alt={`${title} 썸네일`}
-              onLoad={handleImageLoad}
-              ref={imgRef}
-            />
-          </Styled.ImgButton>
-          {hasImageLoaded && (
-            <Styled.Title className={`${title.length < 7 && 'short'}`} onClick={handleClickImgButton}>
-              {title}
-            </Styled.Title>
-          )}
-        </>
+      <div></div>
+      <Styled.ImgButton
+        tabIndex={getImgButtonTabIndex()}
+        onClick={handleClickImgButton}
+        style={getImgButtonStyle()}
+        className={checkContentExists() ? 'hidden' : ''}
+        aria-label={`${title} 열기`}
+      >
+        <Styled.Img
+          data-src={`https://image.tmdb.org/t/p/w500${backdrop_path}`}
+          className="hidden"
+          alt={`${title} 썸네일`}
+          onLoad={handleImageLoad}
+          ref={imgRef}
+        />
+      </Styled.ImgButton>
+      {hasImageLoaded && !checkContentExists() && (
+        <Styled.Title className={`${title.length < 7 && 'short'}`} onClick={handleClickImgButton}>
+          {title}
+        </Styled.Title>
       )}
     </Styled.Container>
   );
