@@ -22,7 +22,6 @@ export default function Browse({ variant, genres }: Props) {
   const [isScrollDown, setIsScrollDown] = useState(false);
   const [sliderContentCount, setSliderContentCount] = useState(6);
   const [content, setContent] = useState<any>(null);
-  const [contentWidth, setContentWidth] = useState(0);
   const [hasClickedContent, setHasClickedContent] = useState(false);
 
   const changeContentWidth = () => {
@@ -39,7 +38,6 @@ export default function Browse({ variant, genres }: Props) {
     const gap = changeRemToPx(sliderGap);
     const newContentWidth = (contentsWrapper.clientWidth - gap * (newSliderContentCount - 1)) / newSliderContentCount;
     document.documentElement.style.setProperty('--content-width', `${newContentWidth}px`);
-    setContentWidth(newContentWidth);
   };
 
   useEffect(() => {
@@ -55,7 +53,7 @@ export default function Browse({ variant, genres }: Props) {
     (event.target as HTMLDivElement).scrollTop > 0 ? setIsScrollDown(true) : setIsScrollDown(false);
   };
 
-  const getHomeStyle = (): React.CSSProperties | undefined => {
+  const getBrowseStyle = (): React.CSSProperties | undefined => {
     if (hasClickedContent) {
       return {
         overflow: 'hidden',
@@ -64,17 +62,41 @@ export default function Browse({ variant, genres }: Props) {
     }
   };
 
+  const handleClickLink = () => {
+    (browseRef.current as HTMLDivElement).scrollTop = 0;
+  };
+
   return (
-    <Styled.Container onScroll={handleScroll} style={getHomeStyle()} ref={browseRef}>
-      <Styled.Header className={isScrollDown ? 'scroll-down' : ''}>
-        <Styled.LogoLink to={PATHS.TV_SHOWS} aria-label="Netflix Clone" tabIndex={content ? -1 : undefined}>
+    <Styled.Container onScroll={handleScroll} style={getBrowseStyle()} ref={browseRef}>
+      <Styled.Header
+        className={isScrollDown ? 'scroll-down' : ''}
+        style={{ marginRight: hasClickedContent ? `${-getScrollbarWidth()}px` : '' }}
+      >
+        <Styled.LogoLink
+          to={PATHS.TV_SHOWS}
+          aria-label="Netflix Clone"
+          tabIndex={content ? -1 : undefined}
+          onClick={handleClickLink}
+        >
           NETFLIX.clone
         </Styled.LogoLink>
         <Styled.Nav>
-          <Styled.NavTab exact to={PATHS.TV_SHOWS} aria-label="TV 프로그램" tabIndex={content ? -1 : undefined}>
+          <Styled.NavTab
+            exact
+            to={PATHS.TV_SHOWS}
+            aria-label="TV 프로그램"
+            tabIndex={content ? -1 : undefined}
+            onClick={handleClickLink}
+          >
             TV 프로그램
           </Styled.NavTab>
-          <Styled.NavTab exact to={PATHS.MOVIES} aria-label="영화" tabIndex={content ? -1 : undefined}>
+          <Styled.NavTab
+            exact
+            to={PATHS.MOVIES}
+            aria-label="영화"
+            tabIndex={content ? -1 : undefined}
+            onClick={handleClickLink}
+          >
             영화
           </Styled.NavTab>
         </Styled.Nav>
@@ -83,6 +105,7 @@ export default function Browse({ variant, genres }: Props) {
           aria-label="깃허브"
           tabIndex={content ? -1 : undefined}
           target="blank"
+          style={{ marginRight: hasClickedContent ? `${getScrollbarWidth()}px` : '' }}
         >
           <GithubIcon />
         </Styled.GithubLink>
@@ -120,7 +143,6 @@ export default function Browse({ variant, genres }: Props) {
         ))}
         {content && (
           <Content
-            key={content.id}
             browseRef={browseRef}
             contentsWrappersRef={contentsWrappersRef}
             slidersRef={slidersRef}
@@ -128,7 +150,6 @@ export default function Browse({ variant, genres }: Props) {
             variant={variant}
             content={content}
             setContent={setContent}
-            contentWidth={contentWidth}
             hasClickedContent={hasClickedContent}
             setHasClickedContent={setHasClickedContent}
           />

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BREAKPOINTS } from '../../constants';
 import { useVideos } from '../../hooks/useVideos';
 import CloseIcon from '../../icons/CloseIcon';
@@ -16,7 +16,6 @@ interface Props {
   contentThumbnailsRef: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
   content: any;
   setContent: React.Dispatch<React.SetStateAction<any>>;
-  contentWidth: number;
   hasClickedContent: boolean;
   setHasClickedContent: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -29,57 +28,116 @@ export default function Content({
   contentThumbnailsRef,
   content,
   setContent,
-  contentWidth,
   hasClickedContent,
   setHasClickedContent,
 }: Props) {
   const HOVER_SCALE_RATIO = 2;
+  const { backdrop_path, genre_ids, id, transform_origin } = content;
+  const title = variant === 'tv' ? content.name : content.title;
 
+  const $browse = browseRef.current as HTMLDivElement;
+  const $contentsWrapper = contentsWrappersRef.current[`${genre_ids[0]}`] as HTMLDivElement;
+  const $slider = slidersRef.current[`${genre_ids[0]}`] as HTMLDivElement;
+  const $contentThumbnail = contentThumbnailsRef.current[`${id}`] as HTMLDivElement;
   const contentRef = useRef<HTMLDivElement>(null);
   const insideRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const contentBottomPanelRef = useRef<HTMLDivElement>(null);
 
-  const { backdrop_path, genre_ids, id, transform_origin } = content;
-  const title = variant === 'tv' ? content.name : content.title;
+  const browseWidth = $browse.offsetWidth - getScrollbarWidth();
+  const [contentWidth, setContentWidth] = useState($contentThumbnail.getBoundingClientRect().width);
+  const contentHeight = $contentThumbnail.getBoundingClientRect().height;
   const fontSize = contentWidth / 10;
   const videos = useVideos(variant, id);
 
-  const getSliderTranslationX = (): number => {
-    const genreId = genre_ids[0];
-    const slider = slidersRef.current[`${genreId}`];
-    if (!slider) return 0;
-    const sliderTransformMaxtrix = getComputedStyle(slider).transform;
-    return parseFloat(sliderTransformMaxtrix.split(', ')[4]);
-  };
+  useEffect(() => {
+    const resizeEvent = () => {
+      setContentWidth($contentThumbnail.getBoundingClientRect().width);
+    };
+    window.addEventListener('resize', resizeEvent);
 
-  const getInsideDefaultPosition = (): { top: number; left: number } => {
-    const genreId = genre_ids[0];
-    const contentsWrapper = contentsWrappersRef.current[`${genreId}`];
-    if (!contentsWrapper) return { top: 0, left: 0 };
-    const contentThumbnail = contentThumbnailsRef.current[`${id}`];
-    if (!contentThumbnail) return { top: 0, left: 0 };
+    return () => {
+      window.removeEventListener('resize', resizeEvent);
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  const getContentStyle = (): React.CSSProperties => {
     return {
-      top: contentsWrapper.offsetTop,
-      left: contentsWrapper.offsetLeft + contentThumbnail.offsetLeft + getSliderTranslationX(),
+      height: `${$browse.clientHeight + $browse.scrollTop}px`,
+      fontSize: `${fontSize}px`,
     };
   };
 
-  const removeInsideHoverStyles = () => {
-    if (!insideRef.current) return;
+  const getSliderTranslationX = (): number => {
+    // sliderTransformMaxtrix: matrix(a, b, c, d, tx, ty)
+    const sliderTransformMaxtrix = getComputedStyle($slider).transform;
+    return parseFloat(sliderTransformMaxtrix.split(', ')[4]);
+  };
 
-    const { top, left } = getInsideDefaultPosition();
-    insideRef.current.style.top = `${top}px`;
-    insideRef.current.style.left = `${left}px`;
-    insideRef.current.style.width = `${contentWidth}px`;
-    insideRef.current.style.fontSize = `${fontSize}px`;
+  const getScaleRatio = (): number => {
+    const MAX_WIDTH = 996;
+    if (browseWidth > MAX_WIDTH) return MAX_WIDTH / contentWidth;
+
+    const fullScaleRatio = browseWidth / contentWidth;
+    if (browseWidth < changeRemToPx(BREAKPOINTS.SM)) return fullScaleRatio * 0.99;
+    return fullScaleRatio * 0.97;
+  };
+
+  const getInsideBaseStyle = (): { top: number; left: number; width: number; fontSize: number; transform: string } => {
+    return {
+      top: $contentsWrapper.offsetTop,
+      left: $contentsWrapper.offsetLeft + $contentThumbnail.offsetLeft + getSliderTranslationX(),
+      width: contentWidth * getScaleRatio(),
+      fontSize: fontSize * getScaleRatio(),
+      transform: `scale(${1 / getScaleRatio()})`,
+    };
+  };
+
+  const addInsideHoverStyles = () => {
+    const $inside = insideRef.current as HTMLDivElement;
+
+    const getTranslateX = (): number => {
+      if (transform_origin === 'left') return 0;
+      if (transform_origin === 'right') return -contentWidth * (HOVER_SCALE_RATIO - 1);
+      return (-contentWidth * (HOVER_SCALE_RATIO - 1)) / 2;
+    };
+
+    const translate = `translate(${getTranslateX()}px, ${-contentHeight * (HOVER_SCALE_RATIO - 1)}px)`;
+    const scale = `scale(${(1 / getScaleRatio()) * HOVER_SCALE_RATIO})`;
+    const baseStyle = getInsideBaseStyle();
+    $inside.style.transform = `${baseStyle.transform}px`;
+    $inside.style.transform = `${translate} ${scale}`;
+
+    (contentBottomPanelRef.current as HTMLDivElement).style.visibility = 'visible';
+  };
+
+  useEffect(() => {
+    addInsideHoverStyles();
+    // eslint-disable-next-line
+  }, []);
+
+  const removeInsideHoverStyles = () => {
+    const $inside = insideRef.current as HTMLDivElement;
+    const baseStyle = getInsideBaseStyle();
+    $inside.style.width = `${baseStyle.width}px`;
+    $inside.style.fontSize = `${baseStyle.fontSize}px`;
+    $inside.style.transform = baseStyle.transform;
+  };
+
+  const handleMouseLeaveInside = () => {
+    if (hasClickedContent) return;
+    removeInsideHoverStyles();
+
+    setTimeout(() => {
+      setContent(null);
+    }, contentTransitionDuration);
   };
 
   const closeModal = () => {
     setHasClickedContent(false);
     removeInsideHoverStyles();
-    if (!contentBottomPanelRef.current) return;
-    contentBottomPanelRef.current.style.visibility = '';
+    (contentBottomPanelRef.current as HTMLDivElement).style.visibility = '';
 
     setTimeout(() => {
       setContent(null);
@@ -103,175 +161,44 @@ export default function Content({
     if (event.target === contentRef.current) closeModal();
   };
 
-  const getContentStyle = (): React.CSSProperties | undefined => {
-    if (!browseRef.current) return;
-    const height = `${browseRef.current.clientHeight + browseRef.current.scrollTop}px`;
-
-    if (!hasClickedContent) {
-      const genreId = content.genre_ids[0];
-      const contentsWrapper = contentsWrappersRef.current[`${genreId}`];
-      if (!contentsWrapper) return;
-      const contentThumbnail = contentThumbnailsRef.current[`${content.id}`];
-      if (!contentThumbnail) return;
-
-      return {
-        height,
-        fontSize: `${fontSize}px`,
-      };
-    }
-
-    return {
-      height,
-      fontSize: `${fontSize}px`,
-    };
-  };
-
-  const getInsideHoverPosition = (): { top: number; left: number } => {
-    const contentThumbnail = contentThumbnailsRef.current[`${id}`];
-    if (!contentThumbnail) return { top: 0, left: 0 };
-    const { top, left } = getInsideDefaultPosition();
-    const newTop = top - contentThumbnail.clientHeight * (HOVER_SCALE_RATIO - 1);
-
-    if (transform_origin === 'left') {
-      return {
-        top: newTop,
-        left,
-      };
-    }
-
-    if (transform_origin === 'right') {
-      return {
-        top: newTop,
-        left: left - contentWidth * (HOVER_SCALE_RATIO - 1),
-      };
-    }
-
-    return {
-      top: newTop,
-      left: left - (contentWidth * (HOVER_SCALE_RATIO - 1)) / 2,
-    };
-  };
-
-  const addInsideHoverStyles = () => {
-    if (!insideRef.current) return;
-
-    const { top, left } = getInsideHoverPosition();
-    insideRef.current.style.top = `${top}px`;
-    insideRef.current.style.left = `${left}px`;
-    insideRef.current.style.width = `${contentWidth * HOVER_SCALE_RATIO}px`;
-    insideRef.current.style.fontSize = `${fontSize * HOVER_SCALE_RATIO}px`;
-
-    if (!contentBottomPanelRef.current) return;
-    contentBottomPanelRef.current.style.visibility = 'visible';
-  };
-
-  useEffect(() => {
-    addInsideHoverStyles();
-    // eslint-disable-next-line
-  }, []);
-
-  const handleMouseLeaveInside = () => {
-    if (hasClickedContent) return;
-    removeInsideHoverStyles();
-
-    setTimeout(() => {
-      setContent(null);
-    }, contentTransitionDuration);
-  };
-
-  const getHomeWidth = () => {
-    if (!browseRef.current) return 0;
-    return browseRef.current.offsetWidth - getScrollbarWidth();
-  };
-
-  const getScaleRatio = (): number => {
-    if (!browseRef.current) return 0;
-
-    const maxWidth = 996;
-    if (getHomeWidth() > maxWidth) return maxWidth / contentWidth;
-
-    const fullScaleRatio = getHomeWidth() / contentWidth;
-    if (window.innerWidth < changeRemToPx(BREAKPOINTS.SM)) return fullScaleRatio * 0.99;
-    return fullScaleRatio * 0.97;
-  };
-
   const getInsideStyle = (): React.CSSProperties | undefined => {
-    if (!hasClickedContent) {
-      const { top, left } = getInsideDefaultPosition();
-
-      return {
-        top: `${top}px`,
-        left: `${left}px`,
-        width: `${contentWidth}px`,
-      };
-    }
-
-    if (!browseRef.current) return;
-
-    const width = contentWidth * getScaleRatio();
-
+    const baseStyle = getInsideBaseStyle();
+    if (!hasClickedContent) return baseStyle;
+    const translateX = -baseStyle.left + (browseWidth - baseStyle.width) / 2;
+    const translateY = -baseStyle.top + 50 + $browse.scrollTop;
     return {
-      top: `${browseRef.current.scrollTop + 50}px`,
-      left: `${(getHomeWidth() - width) / 2}px`,
-      width: `${width}px`,
-      fontSize: `${fontSize * getScaleRatio()}px`,
+      ...baseStyle,
+      transform: `translate(${translateX}px, ${translateY}px) scale(1)`,
     };
   };
 
   const toggleModal = () => {
     if (hasClickedContent) {
       closeModal();
-      return;
+    } else {
+      setHasClickedContent(true);
+      (contentBottomPanelRef.current as HTMLDivElement).style.visibility = '';
     }
-
-    if (!contentBottomPanelRef.current) return;
-
-    setHasClickedContent(true);
-    contentBottomPanelRef.current.style.visibility = '';
-    return;
   };
 
   useEffect(() => {
-    if (!imgRef.current) return;
-    imgRef.current.src = `https://image.tmdb.org/t/p/original${backdrop_path}`;
+    const $img = imgRef.current;
+    if ($img) $img.src = `https://image.tmdb.org/t/p/original${backdrop_path}`;
   }, [backdrop_path]);
 
-  const getYoutubeLink = (key: string): string => `https://www.youtube.com/embed/${key}?autoplay=1&mute=1`;
-
-  const getIframeSize = (): { width: number; height: number } => {
-    const contentThumbnail = contentThumbnailsRef.current[`${content.id}`];
-    if (!contentThumbnail) return { width: 0, height: 0 };
-
-    if (hasClickedContent) {
-      return {
-        width: contentThumbnail.clientWidth * getScaleRatio(),
-        height: contentThumbnail.clientHeight * getScaleRatio(),
-      };
-    }
-
-    return {
-      width: contentThumbnail.clientWidth * HOVER_SCALE_RATIO,
-      height: contentThumbnail.clientHeight * HOVER_SCALE_RATIO,
-    };
-  };
-
   const ImgOrVideo = (): JSX.Element => {
-    const contentThumbnail = contentThumbnailsRef.current[`${content.id}`];
-    if (!contentThumbnail) return <></>;
-
     const video = videos?.results
       .filter((result) => result.type === 'Trailer')
       .find((result) => result.site === 'YouTube');
 
     if (video) {
-      const size = getIframeSize();
-
+      const baseStyle = getInsideBaseStyle();
       return (
         <Styled.Iframe
           title={video.name}
-          width={size.width}
-          height={size.height}
-          src={getYoutubeLink(video.key)}
+          width={baseStyle.width}
+          height={contentHeight * getScaleRatio()}
+          src={`https://www.youtube.com/embed/${video.key}?autoplay=1&mute=1`}
         ></Styled.Iframe>
       );
     }

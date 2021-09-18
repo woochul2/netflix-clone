@@ -23,11 +23,10 @@ export const Inside = styled.div`
   // 가장 위에 위치하도록 z-index 설정
   z-index: 4;
   position: absolute;
-  top: 0;
-  left: 0;
   border-radius: ${contentBorderRadius};
   box-shadow: ${contentBoxShadow};
-  transition-property: top, left, width, font-size, transform;
+  transform-origin: top left;
+  transition-property: transform;
   transition-duration: ${`${contentTransitionDuration}ms`};
 `;
 

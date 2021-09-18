@@ -25,18 +25,18 @@ export default function ContentBottomPanel({
   const getYoutubeLink = (key: string): string => `https://www.youtube.com/watch?v=${key}`;
 
   useEffect(() => {
-    const getDetail = async () => {
-      const link = `https://api.themoviedb.org/3/${variant}/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
-      const response = await axios.get<TvDetail.RootObject>(link);
-      setDetail(response.data);
-    };
-
-    if (hasClickedContent) {
-      if (!detail) getDetail();
+    if (hasClickedContent && !detail) {
+      (async function () {
+        const link = `https://api.themoviedb.org/3/${variant}/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
+        const response = await axios.get<TvDetail.RootObject>(link);
+        setDetail(response.data);
+      })();
     }
   }, [variant, id, detail, hasClickedContent]);
 
-  const handleClickDetailButton = () => setHasClickedContent(true);
+  const handleClickDetailButton = () => {
+    setHasClickedContent(true);
+  };
 
   const VideoLinks = (
     <>

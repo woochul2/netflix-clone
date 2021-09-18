@@ -2,7 +2,7 @@
 
 넷플릭스 클론 프로젝트입니다. 콘텐츠 탐색 페이지만 최대한 비슷하게 구현해봤습니다.
 
-![demo](https://user-images.githubusercontent.com/49304239/122042348-fd57f580-ce14-11eb-93af-3a0667495b52.gif)
+![demo](https://user-images.githubusercontent.com/49304239/133887411-fb79e84f-2bec-431d-8ba0-f3ad797ec632.gif)
 
 데모 링크: https://netflix-clone-ko.netlify.app/
 
