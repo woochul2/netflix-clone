@@ -131,6 +131,13 @@ export default function ContentBottomPanel({
               )}
             </>
           )}
+          <Styled.EditLink
+            href={`https://www.themoviedb.org/${variant}/${id}/edit`}
+            target="_blank"
+            aria-label="편집하기"
+          >
+            편집하기
+          </Styled.EditLink>
         </>
       )}
     </Styled.Container>

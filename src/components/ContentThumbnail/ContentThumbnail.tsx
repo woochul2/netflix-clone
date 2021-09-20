@@ -68,11 +68,11 @@ export default function ContentThumbnail({
       }
     }, 20);
 
-    lazyLoad();
     $browse.addEventListener('scroll', lazyLoad);
     window.addEventListener('resize', lazyLoad);
     const $nextButton = nextButtonRef.current;
     if ($nextButton) $nextButton.addEventListener('click', lazyLoad);
+    lazyLoad();
 
     return removeEvent;
   }, [browseRef, contentThumbnailsRef, nextButtonRef, id]);

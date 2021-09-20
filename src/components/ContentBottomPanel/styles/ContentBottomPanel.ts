@@ -79,10 +79,8 @@ export const PageLink = styled.a`
   margin-right: 2rem;
   color: var(--white);
 
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      text-decoration: underline;
-    }
+  &:hover {
+    text-decoration: underline;
   }
 
   @media (max-width: ${BREAKPOINTS.LG}) {
@@ -123,4 +121,24 @@ export const Text = styled.p`
 
 export const GrayText = styled.span`
   color: var(--gray-400);
+`;
+
+export const EditLink = styled.a`
+  margin-top: 0.5rem;
+  text-decoration: none;
+  font-size: 1rem;
+  color: var(--gray-300);
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--orange);
+  }
+
+  @media (max-width: ${BREAKPOINTS.LG}) {
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: ${BREAKPOINTS.SM}) {
+    font-size: 0.75rem;
+  }
 `;
