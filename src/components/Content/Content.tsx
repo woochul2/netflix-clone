@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 import { BREAKPOINTS } from '../../constants';
 import { useVideos } from '../../hooks/useVideos';
 import CloseIcon from '../../icons/CloseIcon';
@@ -198,7 +199,7 @@ export default function Content({
           title={video.name}
           width={baseStyle.width}
           height={contentHeight * getScaleRatio()}
-          src={`https://www.youtube.com/embed/${video.key}?autoplay=1&mute=1`}
+          src={`https://www.youtube.com/embed/${video.key}?autoplay=1${isMobile ? '' : '&mute=1'}`}
         ></Styled.Iframe>
       );
     }

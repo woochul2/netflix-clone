@@ -39,6 +39,7 @@ export default function ContentThumbnail({
   const title = variant === 'tv' ? contentInfo.name : contentInfo.title;
   let isMouseOnThumbnail = false;
   const [hasImageLoaded, setHasImageLoaded] = useState(false);
+  const [hasTouchedContentThumbnail, setHasTouchedContentThumbnail] = useState(false);
 
   useEffect(() => {
     const $browse = browseRef.current;
@@ -77,7 +78,8 @@ export default function ContentThumbnail({
     return removeEvent;
   }, [browseRef, contentThumbnailsRef, nextButtonRef, id]);
 
-  const handleMouseEnterContentThumbnail = () => {
+  const handleMouseEnterContentThumbnail = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (hasTouchedContentThumbnail) return;
     if (index < sliderStartIndex) return;
     if (index >= sliderStartIndex + sliderContentCount) return;
     isMouseOnThumbnail = true;
@@ -86,10 +88,6 @@ export default function ContentThumbnail({
       if (!isMouseOnThumbnail) return;
       setContent({ ...contentInfo, transform_origin: getTransformOrigin() });
     }, contentTransitionDuration);
-  };
-
-  const handleMouseLeaveContentThumbnail = () => {
-    isMouseOnThumbnail = false;
   };
 
   const checkContentExists = (): boolean => {
@@ -112,21 +110,17 @@ export default function ContentThumbnail({
     return 'center';
   };
 
-  const handleImageLoad = () => setHasImageLoaded(true);
-
-  const handleClickImgButton = () => {
+  const handleClickContentThumbnail = () => {
     if (index < sliderStartIndex) return;
     if (index >= sliderStartIndex + sliderContentCount) return;
-
     if (content) return;
     if (isSliderMoving) return;
+
     setContent({ ...contentInfo, transform_origin: getTransformOrigin() });
+    setHasTouchedContentThumbnail(false);
     setTimeout(() => {
       setHasClickedContent(true);
     }, 0);
-    const contentThumbnail = contentThumbnailsRef.current[`${id}`];
-    if (!contentThumbnail) return;
-    contentThumbnail.blur();
   };
 
   const getImgButtonStyle = (): React.CSSProperties | undefined => {
@@ -135,15 +129,20 @@ export default function ContentThumbnail({
 
   return (
     <Styled.Container
+      onTouchStart={() => {
+        setHasTouchedContentThumbnail(true);
+      }}
       onMouseEnter={handleMouseEnterContentThumbnail}
-      onMouseLeave={handleMouseLeaveContentThumbnail}
+      onMouseLeave={() => {
+        isMouseOnThumbnail = false;
+      }}
+      onClick={handleClickContentThumbnail}
       style={{ boxShadow: checkContentExists() ? 'none' : '' }}
       ref={(element) => (contentThumbnailsRef.current[`${id}`] = element)}
     >
       <div></div>
       <Styled.ImgButton
         tabIndex={getImgButtonTabIndex()}
-        onClick={handleClickImgButton}
         style={getImgButtonStyle()}
         className={checkContentExists() ? 'hidden' : ''}
         aria-label={`${title} 열기`}
@@ -152,14 +151,14 @@ export default function ContentThumbnail({
           data-src={`https://image.tmdb.org/t/p/w500${backdrop_path}`}
           className="hidden"
           alt={`${title} 썸네일`}
-          onLoad={handleImageLoad}
+          onLoad={() => {
+            setHasImageLoaded(true);
+          }}
           ref={imgRef}
         />
       </Styled.ImgButton>
       {hasImageLoaded && !checkContentExists() && (
-        <Styled.Title className={`${title.length < 7 && 'short'}`} onClick={handleClickImgButton}>
-          {title}
-        </Styled.Title>
+        <Styled.Title className={`${title.length < 7 && 'short'}`}>{title}</Styled.Title>
       )}
     </Styled.Container>
   );
