@@ -65,7 +65,7 @@ export default function Content({
 
   const getContentStyle = (): React.CSSProperties => {
     return {
-      height: `${$browse.clientHeight + $browse.scrollTop}px`,
+      top: `${$browse.scrollTop}px`,
       fontSize: `${fontSize}px`,
     };
   };
@@ -87,7 +87,7 @@ export default function Content({
 
   const getInsideBaseStyle = (): { top: number; left: number; width: number; fontSize: number; transform: string } => {
     return {
-      top: $contentsWrapper.offsetTop,
+      top: $contentsWrapper.offsetTop - $browse.scrollTop,
       left: $contentsWrapper.offsetLeft + $contentThumbnail.offsetLeft + getSliderTranslationX(),
       width: contentWidth * getScaleRatio(),
       fontSize: fontSize * getScaleRatio(),
@@ -166,7 +166,7 @@ export default function Content({
     const baseStyle = getInsideBaseStyle();
     if (!hasClickedContent) return baseStyle;
     const translateX = -baseStyle.left + (browseWidth - baseStyle.width) / 2;
-    const translateY = -baseStyle.top + 50 + $browse.scrollTop;
+    const translateY = -baseStyle.top + 50;
     return {
       ...baseStyle,
       transform: `translate(${translateX}px, ${translateY}px) scale(1)`,

@@ -4,6 +4,10 @@ html {
   word-break: keep-all;
 }
 
+body {
+  background-color: var(--gray-900);
+}
+
 * {
   margin: 0;
   padding: 0;
