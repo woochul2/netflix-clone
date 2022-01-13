@@ -48,6 +48,7 @@ export default function ContentThumbnail({
     const removeEvent = () => {
       $browse.removeEventListener('scroll', lazyLoad);
       window.removeEventListener('resize', lazyLoad);
+      window.removeEventListener('orientationchange', orientationChangeEvent);
       const $nextButton = nextButtonRef.current;
       if ($nextButton) $nextButton.removeEventListener('click', lazyLoad);
     };
@@ -69,8 +70,15 @@ export default function ContentThumbnail({
       }
     }, 20);
 
+    const orientationChangeEvent = () => {
+      setTimeout(() => {
+        lazyLoad();
+      }, 1);
+    };
+
     $browse.addEventListener('scroll', lazyLoad);
     window.addEventListener('resize', lazyLoad);
+    window.addEventListener('orientationchange', orientationChangeEvent);
     const $nextButton = nextButtonRef.current;
     if ($nextButton) $nextButton.addEventListener('click', lazyLoad);
     lazyLoad();
@@ -78,7 +86,7 @@ export default function ContentThumbnail({
     return removeEvent;
   }, [browseRef, contentThumbnailsRef, nextButtonRef, id]);
 
-  const handleMouseEnterContentThumbnail = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseEnterContentThumbnail = () => {
     if (hasTouchedContentThumbnail) return;
     if (index < sliderStartIndex) return;
     if (index >= sliderStartIndex + sliderContentCount) return;

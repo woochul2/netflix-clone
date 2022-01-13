@@ -2,7 +2,7 @@ import styled from 'styled-components/macro';
 
 export const contentBorderRadius = '0.25rem';
 export const contentBoxShadow = '0 0.25rem 0.5rem hsla(0, 0%, 0%, 0.75)';
-export const contentTransitionDuration = 200;
+export const contentTransitionDuration = 300;
 
 export const Container = styled.div`
   position: absolute;
@@ -27,6 +27,7 @@ export const Inside = styled.div`
   box-shadow: ${contentBoxShadow};
   transform-origin: top left;
   transition-property: transform;
+  transition-timing-function: cubic-bezier(0.5, 0, 0.1, 1);
   transition-duration: ${`${contentTransitionDuration}ms`};
 `;
 

@@ -57,10 +57,19 @@ export default function Content({
       if (contentRef.current) contentRef.current.style.height = `${$browse.clientHeight}px`;
     };
 
+    const orientationChangeEvent = () => {
+      setTimeout(() => {
+        if (contentRef.current?.clientHeight === $browse.clientHeight) return;
+        resizeEvent();
+      }, 1);
+    };
+
     window.addEventListener('resize', resizeEvent);
+    window.addEventListener('orientationchange', orientationChangeEvent);
 
     return () => {
       window.removeEventListener('resize', resizeEvent);
+      window.removeEventListener('orientationchange', orientationChangeEvent);
     };
     // eslint-disable-next-line
   }, []);

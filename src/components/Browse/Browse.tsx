@@ -51,12 +51,20 @@ export default function Browse({ variant, genres }: Props) {
       changeBrowseHeight();
     };
 
+    const orientationChangeEvent = () => {
+      setTimeout(() => {
+        resizeEvent();
+      }, 1);
+    };
+
     changeContentWidth();
 
     window.addEventListener('resize', resizeEvent);
+    window.addEventListener('orientationchange', orientationChangeEvent);
 
     return () => {
       window.removeEventListener('resize', resizeEvent);
+      window.removeEventListener('orientationchange', orientationChangeEvent);
     };
   }, []);
 
