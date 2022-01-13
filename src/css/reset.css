@@ -5,6 +5,7 @@ html {
 }
 
 body {
+  overflow: hidden;
   background-color: var(--gray-900);
 }
 

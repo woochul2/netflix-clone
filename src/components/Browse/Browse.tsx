@@ -24,28 +24,39 @@ export default function Browse({ variant, genres }: Props) {
   const [content, setContent] = useState<any>(null);
   const [hasClickedContent, setHasClickedContent] = useState(false);
 
-  const changeContentWidth = () => {
-    let newSliderContentCount = 6;
-    if (window.innerWidth > changeRemToPx(BREAKPOINTS.XL)) newSliderContentCount = 6;
-    else if (window.innerWidth > changeRemToPx(BREAKPOINTS.LG)) newSliderContentCount = 5;
-    else if (window.innerWidth > changeRemToPx(BREAKPOINTS.MD)) newSliderContentCount = 4;
-    else if (window.innerWidth > changeRemToPx(BREAKPOINTS.SM)) newSliderContentCount = 3;
-    else newSliderContentCount = 2;
-    setSliderContentCount(newSliderContentCount);
-
-    const contentsWrapper = contentsWrappersRef.current[Object.keys(contentsWrappersRef.current)[0]];
-    if (!contentsWrapper) return;
-    const gap = changeRemToPx(sliderGap);
-    const newContentWidth = (contentsWrapper.clientWidth - gap * (newSliderContentCount - 1)) / newSliderContentCount;
-    document.documentElement.style.setProperty('--content-width', `${newContentWidth}px`);
-  };
-
   useEffect(() => {
+    const changeContentWidth = () => {
+      let newSliderContentCount = 6;
+      if (window.innerWidth > changeRemToPx(BREAKPOINTS.XL)) newSliderContentCount = 6;
+      else if (window.innerWidth > changeRemToPx(BREAKPOINTS.LG)) newSliderContentCount = 5;
+      else if (window.innerWidth > changeRemToPx(BREAKPOINTS.MD)) newSliderContentCount = 4;
+      else if (window.innerWidth > changeRemToPx(BREAKPOINTS.SM)) newSliderContentCount = 3;
+      else newSliderContentCount = 2;
+      setSliderContentCount(newSliderContentCount);
+
+      const contentsWrapper = contentsWrappersRef.current[Object.keys(contentsWrappersRef.current)[0]];
+      if (!contentsWrapper) return;
+      const gap = changeRemToPx(sliderGap);
+      const newContentWidth = (contentsWrapper.clientWidth - gap * (newSliderContentCount - 1)) / newSliderContentCount;
+      document.documentElement.style.setProperty('--content-width', `${newContentWidth}px`);
+    };
+
+    const changeBrowseHeight = () => {
+      if (!browseRef.current) return;
+      browseRef.current.style.height = `${window.innerHeight}px`;
+    };
+
+    const resizeEvent = () => {
+      changeContentWidth();
+      changeBrowseHeight();
+    };
+
     changeContentWidth();
-    window.addEventListener('resize', changeContentWidth);
+
+    window.addEventListener('resize', resizeEvent);
 
     return () => {
-      window.removeEventListener('resize', changeContentWidth);
+      window.removeEventListener('resize', resizeEvent);
     };
   }, []);
 
@@ -54,12 +65,17 @@ export default function Browse({ variant, genres }: Props) {
   };
 
   const getBrowseStyle = (): React.CSSProperties | undefined => {
+    const common = { height: window.innerHeight };
+
     if (hasClickedContent) {
       return {
+        ...common,
         overflow: 'hidden',
         paddingRight: getScrollbarWidth(),
       };
     }
+
+    return common;
   };
 
   const handleClickLink = () => {

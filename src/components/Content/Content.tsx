@@ -54,7 +54,9 @@ export default function Content({
   useEffect(() => {
     const resizeEvent = () => {
       setContentWidth($contentThumbnail.getBoundingClientRect().width);
+      if (contentRef.current) contentRef.current.style.height = `${$browse.clientHeight}px`;
     };
+
     window.addEventListener('resize', resizeEvent);
 
     return () => {
@@ -65,6 +67,7 @@ export default function Content({
 
   const getContentStyle = (): React.CSSProperties => {
     return {
+      height: $browse.clientHeight,
       top: `${$browse.scrollTop}px`,
       fontSize: `${fontSize}px`,
     };

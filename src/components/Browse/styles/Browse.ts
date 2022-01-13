@@ -12,7 +12,6 @@ export const homeSidePadding = {
 export const Container = styled.div`
   position: relative;
   min-width: 18.75rem;
-  max-height: 100vh;
   overflow-x: hidden;
   background-color: var(--gray-900);
   color: var(--gray-100);
