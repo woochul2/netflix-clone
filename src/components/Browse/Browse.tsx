@@ -3,6 +3,7 @@ import { BREAKPOINTS, PATHS } from '../../constants';
 import GithubIcon from '../../icons/GithubIcon';
 import { changeRemToPx } from '../../utils/changeRemToPx';
 import { getScrollbarWidth } from '../../utils/getScrollbarWidth';
+import { getWindowHeight } from '../../utils/getWindowHeight';
 import Content from '../Content';
 import Row from '../Row';
 import { sliderGap } from '../Row/styles/Row';
@@ -27,10 +28,10 @@ export default function Browse({ variant, genres }: Props) {
   useEffect(() => {
     const changeContentWidth = () => {
       let newSliderContentCount = 6;
-      if (window.innerWidth > changeRemToPx(BREAKPOINTS.XL)) newSliderContentCount = 6;
-      else if (window.innerWidth > changeRemToPx(BREAKPOINTS.LG)) newSliderContentCount = 5;
-      else if (window.innerWidth > changeRemToPx(BREAKPOINTS.MD)) newSliderContentCount = 4;
-      else if (window.innerWidth > changeRemToPx(BREAKPOINTS.SM)) newSliderContentCount = 3;
+      if (document.body.clientWidth > changeRemToPx(BREAKPOINTS.XL)) newSliderContentCount = 6;
+      else if (document.body.clientWidth > changeRemToPx(BREAKPOINTS.LG)) newSliderContentCount = 5;
+      else if (document.body.clientWidth > changeRemToPx(BREAKPOINTS.MD)) newSliderContentCount = 4;
+      else if (document.body.clientWidth > changeRemToPx(BREAKPOINTS.SM)) newSliderContentCount = 3;
       else newSliderContentCount = 2;
       setSliderContentCount(newSliderContentCount);
 
@@ -43,7 +44,7 @@ export default function Browse({ variant, genres }: Props) {
 
     const changeBrowseHeight = () => {
       if (!browseRef.current) return;
-      browseRef.current.style.height = `${window.innerHeight}px`;
+      browseRef.current.style.height = `${getWindowHeight()}px`;
     };
 
     const resizeEvent = () => {
@@ -73,7 +74,7 @@ export default function Browse({ variant, genres }: Props) {
   };
 
   const getBrowseStyle = (): React.CSSProperties | undefined => {
-    const common = { height: window.innerHeight };
+    const common = { height: getWindowHeight() };
 
     if (hasClickedContent) {
       return {
