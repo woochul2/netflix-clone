@@ -1,14 +1,3 @@
-html {
-  font-family: 'Noto Sans KR', sans-serif;
-  line-height: 1.5;
-  word-break: keep-all;
-}
-
-body {
-  overflow: hidden;
-  background-color: var(--gray-900);
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -20,9 +9,23 @@ body {
   box-sizing: border-box;
 }
 
+html {
+  font-size: max(10px, 1rem);
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 1.5;
+  word-break: keep-all;
+}
+
+body {
+  overflow: hidden;
+  background-color: hsl(0, 0%, 8%);
+}
+
 img,
 iframe {
   display: block;
+  width: 100%;
+  user-select: none;
 }
 
 button {

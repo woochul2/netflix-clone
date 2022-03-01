@@ -11,13 +11,9 @@
 ## 기술 스택
 
 - React
-- TypeScript
+- React Router
 - styled-components
 
 ## API
 
 모든 콘텐츠 정보는 [The Movie DB](https://www.themoviedb.org/)에서 제공하는 [API](https://www.themoviedb.org/documentation/api)로 받아왔습니다.
-
-## 참고 자료
-
-[Karl Hadwen](https://github.com/karlhadwen)'s [Netflix Clone - React Tutorial](https://youtu.be/x_EEwGe-a9o)

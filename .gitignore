@@ -1,9 +1,4 @@
-.netlify
+/node_modules
+/build
 
-.eslintcache
 .env
-
-node_modules
-build
-
-src/react-app-env.d.ts
