@@ -85,7 +85,7 @@ function ContentModal({ variant, content, onMouseLeave, browseRef }) {
   return (
     <FocusTrap focusTrapOptions={{ initialFocus: false }}>
       <ContentModalBackground
-        className={`content-modal-background${isOpen ? ' open' : ''}`}
+        className={'content-modal-background'}
         style={{ height: backgroundHeight }}
         onClick={handleClickContentModalBackground}
       >

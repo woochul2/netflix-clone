@@ -81,6 +81,9 @@ function useContentModalStyle(content, browseRef, isOpen) {
     browse.style.paddingRight = `${getScrollbarWidth(browse)}px`;
     browse.classList.add('open-modal');
 
+    const background = browse.querySelector('.content-modal-background');
+    background.classList.add('open');
+
     const { width, top, left } = content.element.getBoundingClientRect();
     const modalWidth = width * initialFullScaleRatio;
     const browseWidth = document.body.clientWidth - getScrollbarWidth();
