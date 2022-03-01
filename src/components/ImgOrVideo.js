@@ -1,6 +1,7 @@
 import isMobile from 'ismobilejs';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { TRANSITION_DURATION } from '../constants';
 import CloseIcon from '../icons/CloseIcon';
 import ContentTitle from './ContentTitle';
 
@@ -15,8 +16,18 @@ import ContentTitle from './ContentTitle';
  */
 function ImgOrVideo({ content, onClickImg, isOpen, close, width, videos }) {
   const imgRef = useRef(null);
-  const video = videos[0];
   const { name, title, backdrop_path } = content.info;
+  const [video, setVideo] = useState(null);
+
+  useEffect(() => {
+    const timeoutID = setTimeout(() => {
+      setVideo(videos[0]);
+    }, parseInt(TRANSITION_DURATION));
+
+    return () => {
+      clearTimeout(timeoutID);
+    };
+  }, [videos]);
 
   useEffect(() => {
     const setOriginalImg = () => {
@@ -46,6 +57,7 @@ function ImgOrVideo({ content, onClickImg, isOpen, close, width, videos }) {
         <ImgContainer onClick={onClickImg}>
           <img
             ref={imgRef}
+            height={getHeight()}
             src={`https://image.tmdb.org/t/p/w500${backdrop_path}`}
             alt={`${name || title}`}
           />
@@ -64,6 +76,7 @@ function ImgOrVideo({ content, onClickImg, isOpen, close, width, videos }) {
 const ImgOrVideoBlock = styled.div`
   iframe {
     border: 0;
+    background: hsl(0, 0%, 0%);
   }
 `;
 

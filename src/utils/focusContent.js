@@ -12,8 +12,7 @@ const focusContent = (event, index) => {
   const contentsWrapper = event.target.closest('.contents-wrapper');
   const selector = `.content[data-index="${index}"]`;
   const content = contentsWrapper.querySelector(selector);
-  const button = content.querySelector('button');
-  button.focus();
+  content.focus();
 };
 
 export default focusContent;

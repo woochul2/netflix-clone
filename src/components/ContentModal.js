@@ -36,6 +36,8 @@ function ContentModal({ variant, content, onMouseLeave, browseRef }) {
     onMouseLeave();
     shrinkModal();
     setContentModalBottomStyle(null);
+    const contentModal = document.querySelector('.content-modal');
+    contentModal.classList.add('shrink');
   };
 
   useEffect(() => {
@@ -144,6 +146,10 @@ const ContentModalBlock = styled.div`
   transform-origin: top;
   transition: transform cubic-bezier(0.5, 0, 0.1, 1) ${TRANSITION_DURATION};
   box-shadow: 0 0.25rem 0.5rem hsla(0, 0%, 0%, 0.75);
+
+  &.shrink iframe {
+    background: none;
+  }
 `;
 
 export default ContentModal;

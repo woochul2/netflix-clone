@@ -32,10 +32,9 @@ function Browse({ variant, genres }) {
   const [currentContent, setCurrentContent] = useState(null);
 
   const removeCurrentContent = useCallback(() => {
-    currentContent.element.classList.remove('hidden');
     setCurrentContent(null);
     clickedContent = false;
-  }, [currentContent]);
+  }, []);
 
   // ContentModal의 onMouseLeave가 제대로 동작하지 않을 때가 있어서 사용하는 함수
   const handleMouseOverBrowser = (event) => {
@@ -91,7 +90,6 @@ function Browse({ variant, genres }) {
     clickedContent = true;
     document.activeElement.blur();
     const element = event.target.closest('.content');
-    element.classList.add('hidden');
     setCurrentContent({ info, element, transformOrigin, clicked: true });
   };
 

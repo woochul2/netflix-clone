@@ -46,44 +46,32 @@ function Content({
   return (
     <ContentBlock
       className="content"
+      aria-label={`${name || title} 상세 정보 보기`}
+      tabIndex={imgButtonTabIndex}
       data-index={index}
       onMouseEnter={handleMouseEnterContent}
       onMouseLeave={onMouseLeaveContent}
+      onClick={handleClickContent}
     >
-      <ImgButton
-        aria-label={`${name || title} 상세 정보 보기`}
-        tabIndex={imgButtonTabIndex}
-        onClick={handleClickContent}
-      >
-        <LazyImg
-          src={`https://image.tmdb.org/t/p/w500${backdrop_path}`}
-          onLoad={onImgLoad}
-        />
-      </ImgButton>
+      <LazyImg
+        src={`https://image.tmdb.org/t/p/w500${backdrop_path}`}
+        onLoad={onImgLoad}
+      />
       {imgLoaded && <ContentTitle name={name || title} />}
     </ContentBlock>
   );
 }
 
-const ContentBlock = styled.div`
+const ContentBlock = styled.button`
+  cursor: pointer;
   position: relative;
   width: var(--content-width);
   font-size: calc(var(--content-width) / 10);
-  color: hsl(0, 0%, 90%);
-
-  &.hidden {
-    visibility: hidden;
-  }
-`;
-
-const ImgButton = styled.button`
-  cursor: pointer;
-  display: block;
-  overflow: hidden;
-  width: 100%;
-  padding: 0;
+  line-height: 1.5;
   border: 0;
   border-radius: 0.2vw;
+  overflow: hidden;
+  color: hsl(0, 0%, 90%);
   background: none;
 `;
 
