@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { getContentDetail } from '../api';
 import { BREAKPOINTS, TRANSITION_DURATION } from '../constants';
+import useIsMounted from '../hooks/useIsMounted';
 import addComma from '../utils/addComma';
 import DetailLinks from './DetailLinks';
 import Tag from './Tag';
@@ -14,9 +15,11 @@ import Tag from './Tag';
  * @param {VideoResult} props.videos
  */
 function ContentModalDetail({ variant, id, style, ...rest }) {
+  const isMounted = useIsMounted();
+
   const [detail, setDetail] = useState(() => {
     getContentDetail(variant, id).then((value) => {
-      setDetail(value);
+      if (isMounted()) setDetail(value);
     });
   });
 

@@ -10,6 +10,8 @@ import {
   TRANSITION_DURATION,
 } from '../constants';
 import useContentWidth from '../hooks/useContentWidth';
+import useIsMounted from '../hooks/useIsMounted';
+import useSafeTimeout from '../hooks/useSafeTimeout';
 import useWindowHeight from '../hooks/useWindowHeight';
 import setDocumentSubTitle from '../utils/setDocumentSubTitle';
 import ContentModal from './ContentModal';
@@ -35,6 +37,8 @@ function Browse({ variant, genres }) {
   const [initialID, setInitialID] = useState(() => id);
   const sliderContentCount = useContentWidth(initialID, contentsWrapperRef);
   const navigate = useNavigate();
+  const safeTimeout = useSafeTimeout();
+  const isMounted = useIsMounted();
 
   useEffect(() => {
     if (variant === 'tv') setDocumentSubTitle('시리즈');
@@ -44,6 +48,8 @@ function Browse({ variant, genres }) {
   const setContentFromParam = useCallback(() => {
     getContentDetail(variant, id)
       .then((info) => {
+        if (!isMounted()) return;
+
         const { networks } = info;
         if (networks && !networks.find(({ id }) => id === 213)) {
           throw new Error('넷플릭스에 있는 시리즈가 아닙니다.');
@@ -54,9 +60,9 @@ function Browse({ variant, genres }) {
         navigate('/', { replace: true });
       })
       .finally(() => {
-        setInitialID(null);
+        if (isMounted()) setInitialID(null);
       });
-  }, [variant, id, navigate]);
+  }, [variant, id, navigate, isMounted]);
 
   useEffect(() => {
     if (initialID) setContentFromParam();
@@ -99,8 +105,7 @@ function Browse({ variant, genres }) {
 
   const handleMouseLeaveContentModal = () => {
     leavedContentModal = true;
-
-    setTimeout(() => {
+    safeTimeout(() => {
       leavedContentModal = false;
       removeCurrentContent();
     }, parseInt(TRANSITION_DURATION));
