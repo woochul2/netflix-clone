@@ -1,6 +1,8 @@
 import isMobile from 'ismobilejs';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { getContentDetail } from '../api';
 import {
   BREAKPOINTS,
   SIDE_PADDING,
@@ -9,6 +11,7 @@ import {
 } from '../constants';
 import useContentWidth from '../hooks/useContentWidth';
 import useWindowHeight from '../hooks/useWindowHeight';
+import setDocumentSubTitle from '../utils/setDocumentSubTitle';
 import ContentModal from './ContentModal';
 import Header from './Header';
 import Notification from './Notification';
@@ -16,7 +19,7 @@ import Row from './Row';
 
 let contentTimeoutID;
 let leavedContentModal;
-let clickedContent;
+let hasClickedContent;
 
 /**
  * @param {Object} props
@@ -26,19 +29,51 @@ let clickedContent;
 function Browse({ variant, genres }) {
   const browseRef = useRef(null);
   const contentsWrapperRef = useRef(null);
-
   const browseHeight = useWindowHeight();
-  const sliderContentCount = useContentWidth(contentsWrapperRef);
   const [currentContent, setCurrentContent] = useState(null);
+  const { id } = useParams();
+  const [initialID, setInitialID] = useState(() => id);
+  const sliderContentCount = useContentWidth(initialID, contentsWrapperRef);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (variant === 'tv') setDocumentSubTitle('TV 프로그램');
+    else if (variant === 'movie') setDocumentSubTitle('영화');
+  }, [variant]);
+
+  const setContentFromParam = useCallback(() => {
+    getContentDetail(variant, id)
+      .then((info) => {
+        const { networks } = info;
+        if (networks && !networks.find(({ id }) => id === 213)) {
+          throw new Error('넷플릭스에 있는 시리즈가 아닙니다.');
+        }
+        setCurrentContent({ info, open: true });
+      })
+      .catch(() => {
+        navigate('/', { replace: true });
+      })
+      .finally(() => {
+        setInitialID(null);
+      });
+  }, [variant, id, navigate]);
+
+  useEffect(() => {
+    if (initialID) setContentFromParam();
+  }, [initialID, setContentFromParam]);
+
+  useEffect(() => {
+    if (id && !currentContent) setContentFromParam();
+  }, [id, currentContent, setContentFromParam]);
 
   const removeCurrentContent = useCallback(() => {
     setCurrentContent(null);
-    clickedContent = false;
+    hasClickedContent = false;
   }, []);
 
   // ContentModal의 onMouseLeave가 제대로 동작하지 않을 때가 있어서 사용하는 함수
   const handleMouseOverBrowser = (event) => {
-    if (currentContent && !leavedContentModal && !clickedContent) {
+    if (currentContent && !leavedContentModal && !hasClickedContent) {
       const isModalOpen = browseRef.current.matches('.open-modal');
       if (isModalOpen) return;
 
@@ -71,26 +106,34 @@ function Browse({ variant, genres }) {
     }, parseInt(TRANSITION_DURATION));
   };
 
+  const removeHoveredModal = useCallback(() => {
+    if (!currentContent) return;
+
+    const isModalOpen = browseRef.current.matches('.open-modal');
+    if (!isModalOpen) removeCurrentContent();
+  }, [currentContent, removeCurrentContent]);
+
   useEffect(() => {
-    const removeHoveredModal = () => {
-      if (!currentContent) return;
-
-      const isModalOpen = browseRef.current.matches('.open-modal');
-      if (!isModalOpen) removeCurrentContent();
-    };
-
     window.addEventListener('resize', removeHoveredModal);
 
     return () => {
       window.removeEventListener('resize', removeHoveredModal);
     };
-  }, [currentContent, removeCurrentContent]);
+  }, [removeHoveredModal]);
+
+  useEffect(() => {
+    window.addEventListener('popstate', removeHoveredModal);
+
+    return () => {
+      window.removeEventListener('popstate', removeHoveredModal);
+    };
+  }, [removeHoveredModal]);
 
   const handleClickContent = (event, info, transformOrigin) => {
-    clickedContent = true;
+    hasClickedContent = true;
     document.activeElement.blur();
     const element = event.target.closest('.content');
-    setCurrentContent({ info, element, transformOrigin, clicked: true });
+    setCurrentContent({ info, element, transformOrigin, open: true });
   };
 
   return (
@@ -102,18 +145,19 @@ function Browse({ variant, genres }) {
       <Header browseRef={browseRef} />
       <Notification />
       <main>
-        {genres.map((genre) => (
-          <Row
-            key={genre.id}
-            variant={variant}
-            genre={genre}
-            sliderContentCount={sliderContentCount}
-            onMouseEnterContent={handleMouseEnterContent}
-            onClickContent={handleClickContent}
-            contentsWrapperRef={contentsWrapperRef}
-            onMouseLeaveContent={handleMouseLeaveContent}
-          />
-        ))}
+        {!initialID &&
+          genres.map((genre) => (
+            <Row
+              key={genre.id}
+              variant={variant}
+              genre={genre}
+              sliderContentCount={sliderContentCount}
+              onMouseEnterContent={handleMouseEnterContent}
+              onClickContent={handleClickContent}
+              contentsWrapperRef={contentsWrapperRef}
+              onMouseLeaveContent={handleMouseLeaveContent}
+            />
+          ))}
         {currentContent && (
           <ContentModal
             variant={variant}

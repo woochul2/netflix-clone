@@ -10,7 +10,7 @@ import ChevronDownIcon from '../icons/ChevronDownIcon';
 function ContentModalHoverButton({ style, open }) {
   return (
     <ContentModalBottomBlock style={style}>
-      <DetailButton onClick={open}>
+      <DetailButton onClick={open} aria-label="상세 정보 보기">
         <ChevronDownIcon />
       </DetailButton>
     </ContentModalBottomBlock>

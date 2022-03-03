@@ -21,7 +21,7 @@ function Header({ browseRef }) {
         <NavTab to="/" aria-label="TV 프로그램" onClick={scrollToTop}>
           TV 프로그램
         </NavTab>
-        <NavTab to="/movies" aria-label="영화" onClick={scrollToTop}>
+        <NavTab to="/movie" aria-label="영화" onClick={scrollToTop}>
           영화
         </NavTab>
       </Nav>

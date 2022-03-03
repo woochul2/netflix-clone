@@ -36,12 +36,7 @@ function ImgOrVideo({ content, onClickImg, isOpen, close, width, videos }) {
     if (!video) setOriginalImg();
   }, [video, imgRef, backdrop_path]);
 
-  const getHeight = () => {
-    const { offsetWidth, offsetHeight } = content.element;
-    const scaleRatio = parseFloat(width) / parseFloat(offsetWidth);
-    const result = scaleRatio * parseFloat(offsetHeight);
-    return `${result}px`;
-  };
+  const getHeight = () => `${(parseFloat(width) * 9) / 16}px`;
 
   return (
     <ImgOrVideoBlock>

@@ -1,14 +1,18 @@
 import FocusTrap from 'focus-trap-react';
 import { useCallback, useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { TRANSITION_DURATION } from '../constants';
 import useContentModalStyle from '../hooks/useContentModalStyle';
 import { useVideos } from '../hooks/useVideos';
 import useWindowHeight from '../hooks/useWindowHeight';
 import doOnNextFrame from '../utils/doOnNextFrame';
+import setDocumentSubTitle from '../utils/setDocumentSubTitle';
 import ContentModalDetail from './ContentModalDetail';
 import ContentModalHoverButton from './ContentModalHoverButton';
 import ImgOrVideo from './ImgOrVideo';
+
+let closed;
 
 /**
  * @param {Object} props
@@ -23,8 +27,15 @@ function ContentModal({ variant, content, onMouseLeave, browseRef }) {
   const styleResult = useContentModalStyle(content, browseRef, isOpen);
   const { contentModalStyle, shrinkModal, openModal, closeModal } = styleResult;
   const [contentModalBottomStyle, setContentModalBottomStyle] = useState(null);
-  const { id } = content.info;
+  const { id, name, title } = content.info;
   const videos = useVideos(variant, id);
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const params = useParams();
+
+  useEffect(() => {
+    if (isOpen) setDocumentSubTitle(name || title);
+  }, [isOpen, name, title]);
 
   useEffect(() => {
     setContentModalBottomStyle({ opacity: 1 });
@@ -41,8 +52,8 @@ function ContentModal({ variant, content, onMouseLeave, browseRef }) {
   };
 
   useEffect(() => {
-    if (content.clicked) {
-      content.clicked = false;
+    if (content.open) {
+      content.open = false;
       setIsOpen(true);
       doOnNextFrame(openModal);
     }
@@ -51,17 +62,29 @@ function ContentModal({ variant, content, onMouseLeave, browseRef }) {
   const open = () => {
     setIsOpen(true);
     openModal();
+    navigate(`/${variant}/${id}`, { state: { hasPrevHistory: true } });
   };
 
   const close = useCallback(() => {
     onMouseLeave();
     closeModal();
     setContentModalBottomStyle(null);
+
+    closed = true;
+    setTimeout(() => {
+      closed = false;
+    }, parseInt(TRANSITION_DURATION));
   }, [onMouseLeave, closeModal]);
+
+  const closeWithNavigate = useCallback(() => {
+    close();
+    if (state?.hasPrevHistory) navigate(-1);
+    else navigate(`${variant === 'tv' ? '/' : 'movie'}`);
+  }, [close, state, navigate, variant]);
 
   useEffect(() => {
     const contentModalKeydownEvent = (event) => {
-      if (event.key === 'Escape') close();
+      if (event.key === 'Escape') closeWithNavigate();
     };
 
     window.addEventListener('keydown', contentModalKeydownEvent);
@@ -69,18 +92,22 @@ function ContentModal({ variant, content, onMouseLeave, browseRef }) {
     return () => {
       window.removeEventListener('keydown', contentModalKeydownEvent);
     };
-  }, [close]);
+  }, [closeWithNavigate]);
 
   const handleClickContentModalBackground = (event) => {
     if (event.target.matches('.content-modal-background')) {
-      close();
+      closeWithNavigate();
     }
   };
 
   const handleClickImg = () => {
     if (!isOpen) open();
-    else close();
+    else closeWithNavigate();
   };
+
+  useEffect(() => {
+    if (!params.id && !closed && isOpen) close();
+  }, [params, close, isOpen]);
 
   return (
     <FocusTrap focusTrapOptions={{ initialFocus: false }}>
@@ -98,7 +125,7 @@ function ContentModal({ variant, content, onMouseLeave, browseRef }) {
             content={content}
             onClickImg={handleClickImg}
             isOpen={isOpen}
-            close={close}
+            close={closeWithNavigate}
             width={contentModalStyle?.width}
             videos={videos}
           />
@@ -144,7 +171,8 @@ const ContentModalBlock = styled.div`
   border-radius: 0.375rem;
   overflow: hidden;
   transform-origin: top;
-  transition: transform cubic-bezier(0.5, 0, 0.1, 1) ${TRANSITION_DURATION};
+  transition: transform cubic-bezier(0.5, 0, 0.1, 1) ${TRANSITION_DURATION},
+    opacity ${TRANSITION_DURATION};
   box-shadow: 0 0.25rem 0.5rem hsla(0, 0%, 0%, 0.75);
 
   &.shrink iframe {

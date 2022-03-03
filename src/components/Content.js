@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ContentTitle from './ContentTitle';
 import LazyImg from './LazyImg';
 
 /**
  * @param {Object} props
+ * @param {'tv'|'movie'} props.variant
  * @param {TVShowResult|MovieResult} props.content
  * @param {number} props.index
  * @param {number} props.firstContentIndex
@@ -16,6 +18,7 @@ import LazyImg from './LazyImg';
  * @param {function} props.onClickContent
  */
 function Content({
+  variant,
   content,
   index,
   firstContentIndex,
@@ -27,7 +30,7 @@ function Content({
   onClickContent,
 }) {
   const [imgButtonTabIndex, setImgButtonTabIndex] = useState(null);
-  const { name, title, backdrop_path } = content;
+  const { name, title, backdrop_path, id } = content;
 
   useEffect(() => {
     const isOnLeft = index < firstContentIndex;
@@ -45,6 +48,8 @@ function Content({
 
   return (
     <ContentBlock
+      to={`/${variant}/${id}`}
+      state={{ hasPrevHistory: true }}
       className="content"
       aria-label={`${name || title} 상세 정보 보기`}
       tabIndex={imgButtonTabIndex}
@@ -62,17 +67,14 @@ function Content({
   );
 }
 
-const ContentBlock = styled.button`
+const ContentBlock = styled(Link)`
   cursor: pointer;
   position: relative;
   width: var(--content-width);
   font-size: calc(var(--content-width) / 10);
-  line-height: 1.5;
-  border: 0;
   border-radius: 0.2vw;
   overflow: hidden;
   color: hsl(0, 0%, 90%);
-  background: none;
 `;
 
 export default Content;

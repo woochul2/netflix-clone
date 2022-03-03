@@ -15,12 +15,14 @@ const getNextSliderContentCount = () => {
  * 화면 너비에 따라 슬라이더에 들어갈 콘텐츠 개수를 정하고,
  * 콘텐츠 너비를 css 변수로 저장한다.
  *
+ * @param {string} initialID
  * @param {React.MutableRefObject<HTMLElement>} contentsWrapperRef
  */
-function useContentWidth(contentsWrapperRef) {
+function useContentWidth(initialID, contentsWrapperRef) {
   const [sliderContentCount, setSliderContentCount] = useState(0);
 
   useLayoutEffect(() => {
+    if (initialID) return;
     const contentsWrapper = contentsWrapperRef.current;
 
     const setContentWidth = (nextSliderContentCount) => {
@@ -46,7 +48,7 @@ function useContentWidth(contentsWrapperRef) {
       resizeObserver.unobserve(contentsWrapper);
       document.documentElement.style.removeProperty('--content-width');
     };
-  }, [contentsWrapperRef]);
+  }, [initialID, contentsWrapperRef]);
 
   return sliderContentCount;
 }

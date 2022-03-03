@@ -194,8 +194,8 @@
 
 /**
  * @typedef {Object} Content
- * @property {TVShowResult|MovieResult} info
- * @property {HTMLElement} element
- * @property {string} transformOrigin
- * @property {boolean} clicked
+ * @property {TVShowResult|MovieResult|TVShowDetail|MovieDetail} info
+ * @property {HTMLElement|undefined} element
+ * @property {string|undefined} transformOrigin
+ * @property {boolean|undefined} open
  */

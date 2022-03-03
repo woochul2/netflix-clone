@@ -16,22 +16,26 @@ const HOVER_SCALE_RATIO = 1.5;
  * @param {boolean} isOpen
  */
 function useContentModalStyle(content, browseRef, isOpen) {
-  const [contentModalStyle, setContentModalStyle] = useState(null);
+  const [contentModalStyle, setContentModalStyle] = useState({
+    opacity: 0,
+  });
   const [initialFullScaleRatio, setInitialFullScaleRatio] = useState(0);
 
   useLayoutEffect(() => {
+    if (!content.element) return;
+
     const { scrollTop } = browseRef.current;
     const { width, top, left } = content.element.getBoundingClientRect();
     const browseWidth = document.body.clientWidth - getScrollbarWidth();
-    const fullScaleRatio = Math.min(browseWidth * 0.99, MAX_WIDTH) / width;
-    const modalWidth = width * fullScaleRatio;
+    const maxWidth = Math.min(browseWidth * 0.99, MAX_WIDTH);
+    const fullScaleRatio = maxWidth / width;
 
     setInitialFullScaleRatio(fullScaleRatio);
     setContentModalStyle({
-      width: `${modalWidth}px`,
-      fontSize: `${modalWidth / 10}px`,
+      width: `${maxWidth}px`,
+      fontSize: `${maxWidth / 10}px`,
       top: `${top + scrollTop}px`,
-      left: `${left - (modalWidth - width) / 2}px`,
+      left: `${left - (maxWidth - width) / 2}px`,
       transition: 'none',
       transform: `scale(${1 / fullScaleRatio})`,
     });
@@ -76,6 +80,21 @@ function useContentModalStyle(content, browseRef, isOpen) {
     }));
   };
 
+  const openWithoutAnimation = () => {
+    const browseWidth = document.body.clientWidth - getScrollbarWidth();
+    const maxWidth = Math.min(browseWidth * 0.99, MAX_WIDTH);
+
+    setContentModalStyle({
+      opacity: '',
+      transition: '',
+      transform: '',
+      width: `${maxWidth}px`,
+      fontSize: `${maxWidth / 10}px`,
+      top: `32px`,
+      left: `${(browseWidth - maxWidth) / 2}px`,
+    });
+  };
+
   const openModal = useCallback(() => {
     const browse = browseRef.current;
     browse.style.paddingRight = `${getScrollbarWidth(browse)}px`;
@@ -84,21 +103,30 @@ function useContentModalStyle(content, browseRef, isOpen) {
     const background = browse.querySelector('.content-modal-background');
     background.classList.add('open');
 
-    const { width, top, left } = content.element.getBoundingClientRect();
-    const modalWidth = width * initialFullScaleRatio;
-    const browseWidth = document.body.clientWidth - getScrollbarWidth();
-    const sidePadding = browseWidth - modalWidth;
-    const translateX = `${-left + (modalWidth - width + sidePadding) / 2}px`;
-    const translateY = `${-top + 32}px`;
-    const translate = `translate(${translateX}, ${translateY})`;
+    if (!content.element) {
+      setContentModalStyle({
+        opacity: 0,
+        transition: 'none',
+        transform: 'scale(0.9)',
+      });
+      doOnNextFrame(openWithoutAnimation);
+    } else {
+      const { width, top, left } = content.element.getBoundingClientRect();
+      const maxWidth = width * initialFullScaleRatio;
+      const browseWidth = document.body.clientWidth - getScrollbarWidth();
+      const sidePadding = browseWidth - maxWidth;
+      const translateX = `${-left + (maxWidth - width + sidePadding) / 2}px`;
+      const translateY = `${-top + 32}px`;
+      const translate = `translate(${translateX}, ${translateY})`;
 
-    setContentModalStyle((prev) => ({
-      ...prev,
-      borderRadius: '',
-      transition: '',
-      top: `${top}px`,
-      transform: `${translate} scale(1)`,
-    }));
+      setContentModalStyle((prev) => ({
+        ...prev,
+        borderRadius: '',
+        transition: '',
+        top: `${top}px`,
+        transform: `${translate} scale(1)`,
+      }));
+    }
   }, [initialFullScaleRatio, content, browseRef]);
 
   useEffect(() => {
@@ -106,24 +134,27 @@ function useContentModalStyle(content, browseRef, isOpen) {
       if (!isOpen) return;
 
       const resize = () => {
-        const { width, top, left } = content.element.getBoundingClientRect();
-        const browseWidth = document.body.clientWidth - getScrollbarWidth();
-        const fullScaleRatio = Math.min(browseWidth * 0.99, MAX_WIDTH) / width;
-        const modalWidth = width * fullScaleRatio;
-        const sidePadding = browseWidth - modalWidth;
-        const transX = `${-left + (modalWidth - width + sidePadding) / 2}px`;
-        const transY = `${-top + 32}px`;
-        const translate = `translate(${transX}, ${transY})`;
+        if (!content.element) {
+          openWithoutAnimation();
+        } else {
+          const { width, top, left } = content.element.getBoundingClientRect();
+          const browseWidth = document.body.clientWidth - getScrollbarWidth();
+          const maxWidth = Math.min(browseWidth * 0.99, MAX_WIDTH);
+          const sidePadding = browseWidth - maxWidth;
+          const transX = `${-left + (maxWidth - width + sidePadding) / 2}px`;
+          const transY = `${-top + 32}px`;
+          const translate = `translate(${transX}, ${transY})`;
 
-        setContentModalStyle((prev) => ({
-          ...prev,
-          width: `${modalWidth}px`,
-          fontSize: `${modalWidth / 10}px`,
-          top: `${top}px`,
-          left: `${left - (modalWidth - width) / 2}px`,
-          transition: 'none',
-          transform: `${translate} scale(1)`,
-        }));
+          setContentModalStyle((prev) => ({
+            ...prev,
+            width: `${maxWidth}px`,
+            fontSize: `${maxWidth / 10}px`,
+            top: `${top}px`,
+            left: `${left - (maxWidth - width) / 2}px`,
+            transition: 'none',
+            transform: `${translate} scale(1)`,
+          }));
+        }
       };
 
       resize();
@@ -139,24 +170,31 @@ function useContentModalStyle(content, browseRef, isOpen) {
 
   const closeModal = () => {
     const browse = browseRef.current;
-
-    const browseWidth = document.body.clientWidth - getScrollbarWidth();
-    const { width } = content.element.getBoundingClientRect();
-    const fullScaleRatio = Math.min(browseWidth * 0.99, MAX_WIDTH) / width;
-    const background = browse.querySelector('.content-modal-background');
-    background.style.background = 'none';
-
-    setContentModalStyle((prev) => ({
-      ...prev,
-      transition: '',
-      boxShadow: 'none',
-      transform: `scale(${1 / fullScaleRatio})`,
-    }));
-
     setTimeout(() => {
       browse.style.paddingRight = '';
       browse.classList.remove('open-modal');
     }, parseInt(TRANSITION_DURATION));
+
+    if (!content.element) {
+      setContentModalStyle((prev) => ({
+        ...prev,
+        opacity: 0,
+      }));
+    } else {
+      const browseWidth = document.body.clientWidth - getScrollbarWidth();
+      const { width } = content.element.getBoundingClientRect();
+      const maxWidth = Math.min(browseWidth * 0.99, MAX_WIDTH);
+      const fullScaleRatio = maxWidth / width;
+      const background = browse.querySelector('.content-modal-background');
+      background.style.background = 'none';
+
+      setContentModalStyle((prev) => ({
+        ...prev,
+        transition: '',
+        boxShadow: 'none',
+        transform: `scale(${1 / fullScaleRatio})`,
+      }));
+    }
   };
 
   return { contentModalStyle, shrinkModal, openModal, closeModal };

@@ -91,6 +91,7 @@ function Row({
         <Slider
           contents={contents}
           firstContentIndex={firstContentIndex}
+          variant={variant}
           sliderContentCount={sliderContentCount}
           imgLoaded={imgLoaded}
           onImgLoad={handleImgLoad}

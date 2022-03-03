@@ -43,5 +43,9 @@ export async function getVideos(variant, contentID) {
 export async function getContentDetail(variant, contentID) {
   const url = `https://api.themoviedb.org/3/${variant}/${contentID}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko`;
   const response = await fetchData(url);
+  if (response.success === false) {
+    const error = `status code: ${response.status_code}. ${response.status_message}`;
+    throw new Error(error);
+  }
   return response;
 }

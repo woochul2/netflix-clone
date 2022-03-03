@@ -8,6 +8,7 @@ import Content from './Content';
  * @param {Object} props
  * @param {TVShowResult[]|MovieResult[]} props.contents
  * @param {number} props.firstContentIndex
+ * @param {'tv'|'movie'} props.variant
  * @param {number} props.sliderContentCount
  * @param {boolean} props.imgLoaded
  * @param {function} props.onImgLoad
