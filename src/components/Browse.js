@@ -37,7 +37,7 @@ function Browse({ variant, genres }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (variant === 'tv') setDocumentSubTitle('TV 프로그램');
+    if (variant === 'tv') setDocumentSubTitle('시리즈');
     else if (variant === 'movie') setDocumentSubTitle('영화');
   }, [variant]);
 

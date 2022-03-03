@@ -18,8 +18,8 @@ function Header({ browseRef }) {
         NETFLIX.clone
       </LogoLink>
       <Nav>
-        <NavTab to="/" aria-label="TV 프로그램" onClick={scrollToTop}>
-          TV 프로그램
+        <NavTab to="/" aria-label="시리즈" onClick={scrollToTop}>
+          시리즈
         </NavTab>
         <NavTab to="/movie" aria-label="영화" onClick={scrollToTop}>
           영화
