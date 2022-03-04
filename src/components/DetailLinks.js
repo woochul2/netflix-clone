@@ -13,7 +13,7 @@ function DetailLinks({ homepage, videos }) {
         공식 홈페이지
       </a>
       {videos.map(({ id, key, name }) => {
-        const title = name.split('|')[1];
+        const title = name.split('|')[1] || name;
         return (
           <a
             key={id}
@@ -44,7 +44,7 @@ const DetailLinksBlock = styled.div`
   a {
     display: inline-block;
     text-decoration: none;
-    margin-right: 1.5rem;
+    margin-right: 2rem;
     margin-bottom: 0.25rem;
     color: hsl(0, 0%, 100%);
 
@@ -53,11 +53,11 @@ const DetailLinksBlock = styled.div`
     }
 
     @media (max-width: ${BREAKPOINTS.md}) {
-      margin-right: 1rem;
+      margin-right: 1.75rem;
     }
 
     @media (max-width: ${BREAKPOINTS.sm}) {
-      margin-right: 0.875rem;
+      margin-right: 1rem;
     }
   }
 `;
