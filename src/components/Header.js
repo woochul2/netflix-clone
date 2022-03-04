@@ -1,3 +1,4 @@
+import isMobile from 'ismobilejs';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { BREAKPOINTS, SIDE_PADDING } from '../constants';
@@ -13,7 +14,7 @@ function Header({ browseRef }) {
   };
 
   return (
-    <HeaderBlock>
+    <HeaderBlock className={isMobile().any ? 'mobile' : ''}>
       <LogoLink to="/" aria-label="홈" onClick={scrollToTop}>
         NETFLIX.clone
       </LogoLink>
@@ -58,7 +59,9 @@ const HeaderBlock = styled.header`
 
   @media (max-width: ${BREAKPOINTS.md}) {
     font-size: 0.75rem;
-    padding: 0.875rem ${SIDE_PADDING.md};
+    &:not(.mobile) {
+      padding: 0.875rem ${SIDE_PADDING.md};
+    }
   }
 
   @media (max-width: ${BREAKPOINTS.sm}) {

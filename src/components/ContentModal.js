@@ -34,7 +34,12 @@ function ContentModal({ variant, content, onMouseLeave, browseRef }) {
   const params = useParams();
 
   useEffect(() => {
+    const prevDocumentTitle = document.title;
     if (isOpen) setDocumentSubTitle(name || title);
+
+    return () => {
+      document.title = prevDocumentTitle;
+    };
   }, [isOpen, name, title]);
 
   useEffect(() => {

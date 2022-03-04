@@ -1,9 +1,10 @@
+import isMobile from 'ismobilejs';
 import styled from 'styled-components';
 import { BREAKPOINTS, SIDE_PADDING } from '../constants';
 
 function Notification() {
   return (
-    <NotificationBlock>
+    <NotificationBlock className={isMobile().any ? 'mobile' : ''}>
       모든 데이터베이스는
       <TMDBLink href="https://www.themoviedb.org/" aria-label="The Movie DB">
         <img
@@ -46,8 +47,13 @@ const NotificationBlock = styled.div`
   }
 
   @media (max-width: ${BREAKPOINTS.md}) {
-    margin: 0 ${SIDE_PADDING.md} 4vw;
     font-size: 0.875rem;
+    &:not(.mobile) {
+      margin: 0 ${SIDE_PADDING.md} 4vw;
+    }
+    &.mobile {
+      margin: 0 4% 4vw;
+    }
   }
 
   @media (max-width: ${BREAKPOINTS.sm}) {

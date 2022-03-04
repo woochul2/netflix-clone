@@ -149,7 +149,7 @@ function Browse({ variant, genres }) {
     >
       <Header browseRef={browseRef} />
       <Notification />
-      <main>
+      <main className={isMobile().any ? 'mobile' : ''}>
         {!initialID &&
           genres.map((genre) => (
             <Row
@@ -190,8 +190,10 @@ const BrowseBlock = styled.div`
 
     padding: 0 4vw 5vw;
 
-    @media (max-width: ${BREAKPOINTS.md}) {
-      padding: 0 ${SIDE_PADDING.md} 5vw;
+    &:not(.mobile) {
+      @media (max-width: ${BREAKPOINTS.md}) {
+        padding: 0 ${SIDE_PADDING.md} 5vw;
+      }
     }
   }
 

@@ -1,3 +1,4 @@
+import isMobile from 'ismobilejs';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { BREAKPOINTS, TRANSITION_DURATION } from '../constants';
@@ -84,8 +85,11 @@ function Row({
   return (
     <RowBlock>
       <Title>{name}</Title>
-      <ContentsWrapper ref={contentsWrapperRef} className="contents-wrapper">
-        {imgLoaded && firstContentIndex > 0 && (
+      <ContentsWrapper
+        ref={contentsWrapperRef}
+        className={`contents-wrapper${isMobile().any ? ' mobile' : ''}`}
+      >
+        {!isMobile().any && imgLoaded && firstContentIndex > 0 && (
           <SliderButton variant="prev" onClick={handleClickPrevButton} />
         )}
         <Slider
@@ -99,7 +103,8 @@ function Row({
           onClickContent={handleClickContent}
           {...rest}
         />
-        {imgLoaded &&
+        {!isMobile().any &&
+          imgLoaded &&
           firstContentIndex + sliderContentCount < contents.length && (
             <SliderButton variant="next" onClick={handleClickNextButton} />
           )}
@@ -136,6 +141,14 @@ const Title = styled.h2`
 const ContentsWrapper = styled.div`
   position: relative;
   display: flex;
+
+  &.mobile {
+    overflow-x: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 export default Row;

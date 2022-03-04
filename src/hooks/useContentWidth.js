@@ -1,3 +1,4 @@
+import isMobile from 'ismobilejs';
 import { useLayoutEffect, useState } from 'react';
 import { BREAKPOINTS, SLIDER_GAP } from '../constants';
 import pxToRem from '../utils/pxToRem';
@@ -27,7 +28,8 @@ function useContentWidth(initialID, contentsWrapperRef) {
 
     const setContentWidth = (nextSliderContentCount) => {
       const gap = parseFloat(SLIDER_GAP);
-      const wrapperWidth = pxToRem(contentsWrapper.clientWidth);
+      const mobilePadding = isMobile().any ? 1.5 : 0;
+      const wrapperWidth = pxToRem(contentsWrapper.clientWidth) - mobilePadding;
       const contentsWidth = wrapperWidth - gap * (nextSliderContentCount - 1);
       const contentWidth = contentsWidth / nextSliderContentCount;
       const html = document.documentElement;
