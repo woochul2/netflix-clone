@@ -9,9 +9,11 @@ import { BREAKPOINTS } from '../constants';
 function DetailLinks({ homepage, videos }) {
   return (
     <DetailLinksBlock>
-      <a href={homepage} aria-label="공식 홈페이지">
-        공식 홈페이지
-      </a>
+      {homepage && (
+        <a href={homepage} aria-label="공식 홈페이지">
+          공식 홈페이지
+        </a>
+      )}
       {videos.map(({ id, key, name }) => {
         const title = name.split('|')[1] || name;
         return (
