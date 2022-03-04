@@ -99,7 +99,7 @@ function useContentModalStyle(content, browseRef, isOpen) {
 
   const openModal = useCallback(() => {
     const browse = browseRef.current;
-    browse.style.paddingRight = `${getScrollbarWidth(browse)}px`;
+    browse.style.paddingRight = `${getScrollbarWidth()}px`;
     browse.classList.add('open-modal');
 
     const background = browse.querySelector('.content-modal-background');
