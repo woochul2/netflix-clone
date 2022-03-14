@@ -2,7 +2,6 @@ import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { TRANSITION_DURATION } from '../constants';
 import doOnNextFrame from '../utils/doOnNextFrame';
 import getScrollbarWidth from '../utils/getScrollbarWidth';
-import useSafeTimeout from './useSafeTimeout';
 
 /** 단위: px */
 const MAX_WIDTH = 970;
@@ -21,7 +20,6 @@ function useContentModalStyle(content, browseRef, isOpen) {
     opacity: 0,
   });
   const [initialFullScaleRatio, setInitialFullScaleRatio] = useState(0);
-  const safeTimeout = useSafeTimeout();
 
   useLayoutEffect(() => {
     if (!content.element) return;
@@ -172,7 +170,7 @@ function useContentModalStyle(content, browseRef, isOpen) {
 
   const closeModal = () => {
     const browse = browseRef.current;
-    safeTimeout(() => {
+    setTimeout(() => {
       browse.style.paddingRight = '';
       browse.classList.remove('open-modal');
     }, parseInt(TRANSITION_DURATION));
