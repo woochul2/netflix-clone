@@ -42,7 +42,7 @@ function ContentModalDetail({ variant, id, style, ...rest }) {
     <ContentModalDetailBlock style={style}>
       <DetailLinks homepage={homepage} {...rest} />
       <Overview>
-        {overview.split('. ').join('.\n').split('?').join('?\n')}
+        {overview.split('. ').join('.\n').split('? ').join('?\n')}
       </Overview>
       <Tag
         label="장르"
