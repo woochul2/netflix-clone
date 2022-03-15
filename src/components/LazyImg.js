@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import placeholder from '../assets/placeholder.png';
 
 /**
  * @param {Object} props
@@ -16,7 +16,6 @@ function LazyImg({ src, alt, onLoad }) {
         if (entry.isIntersecting) {
           const image = entry.target;
           image.src = image.dataset.src;
-          image.classList.remove('hidden');
           imageObserver.unobserve(image);
         }
       });
@@ -28,22 +27,14 @@ function LazyImg({ src, alt, onLoad }) {
   useEffect(lazyLoad, [imgRef]);
 
   return (
-    <Img
+    <img
       ref={imgRef}
-      className="hidden"
       data-src={src}
+      src={placeholder}
       alt={alt}
       onLoad={onLoad}
     />
   );
 }
-
-const Img = styled.img`
-  &.hidden {
-    width: 1px;
-    height: 1px;
-    visibility: hidden;
-  }
-`;
 
 export default LazyImg;

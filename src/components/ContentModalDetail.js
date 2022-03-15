@@ -40,7 +40,6 @@ function ContentModalDetail({ variant, id, style, ...rest }) {
     budget,
     name,
     title,
-    backdrop_path,
   } = detail;
 
   return (
@@ -49,7 +48,7 @@ function ContentModalDetail({ variant, id, style, ...rest }) {
       <Overview>
         {overview.split('. ').join('.\n').split('? ').join('?\n')}
       </Overview>
-      <Videos backdrop_path={backdrop_path} {...rest} />
+      <Videos {...rest} />
       <hr />
       <h2>
         {name || title} <span>상세 정보</span>

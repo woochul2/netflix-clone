@@ -1,21 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import placeholder from '../assets/placeholder.png';
 import { BREAKPOINTS } from '../constants';
 
 /**
  * @param {object} props
  * @param {VideoResult} props.videos
  */
-function Videos({ backdrop_path, videos }) {
-  const placeholderRef = useRef(null);
+function Videos({ videos }) {
+  const imgRef = useRef(null);
   const [videoHeight, setVideoHeight] = useState();
 
   useEffect(() => {
-    const placeholder = placeholderRef.current;
-    if (!placeholder) return;
+    const img = imgRef.current;
+    if (!img) return;
 
-    setVideoHeight(placeholder.clientHeight);
-  }, [placeholderRef]);
+    const observer = new ResizeObserver(() => {
+      setVideoHeight(img.clientHeight);
+    });
+
+    observer.observe(img);
+
+    return () => {
+      observer.unobserve(img);
+    };
+  }, [imgRef]);
 
   return (
     <>
@@ -25,11 +34,7 @@ function Videos({ backdrop_path, videos }) {
           <VideosBox>
             <h2>다른 영상</h2>
             <div>
-              <img
-                ref={placeholderRef}
-                src={`https://image.tmdb.org/t/p/original${backdrop_path}`}
-                alt=""
-              />
+              <img ref={imgRef} src={placeholder} alt="" />
               {videos.slice(1).map(({ name, key }) => {
                 return (
                   <iframe

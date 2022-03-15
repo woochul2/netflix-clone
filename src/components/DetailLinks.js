@@ -40,6 +40,7 @@ const DetailLinksBlock = styled.div`
   a {
     display: inline-flex;
     align-items: center;
+    white-space: nowrap;
     text-decoration: none;
     margin-bottom: 0.25rem;
     color: hsl(0, 0%, 80%);
