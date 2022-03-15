@@ -32,6 +32,7 @@ function ContentModalDetail({ variant, id, style, ...rest }) {
     first_air_date,
     number_of_seasons,
     vote_average,
+    vote_count,
     created_by,
     release_date,
     runtime,
@@ -61,7 +62,10 @@ function ContentModalDetail({ variant, id, style, ...rest }) {
       {variant === 'tv' && (
         <Tag label="시즌 수" text={`${number_of_seasons}개`} />
       )}
-      <Tag label="회원 평점" text={vote_average} />
+      <Tag
+        label="회원 평점"
+        text={`${vote_average} (${vote_count.toLocaleString('en-US')}개)`}
+      />
       {variant === 'tv' && created_by.length !== 0 && (
         <Tag
           label="제작"
