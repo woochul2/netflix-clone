@@ -6,6 +6,7 @@ import useIsMounted from '../hooks/useIsMounted';
 import addComma from '../utils/addComma';
 import DetailLinks from './DetailLinks';
 import Tag from './Tag';
+import Videos from './Videos';
 
 /**
  * @param {Object} props
@@ -37,14 +38,22 @@ function ContentModalDetail({ variant, id, style, ...rest }) {
     release_date,
     runtime,
     budget,
+    name,
+    title,
+    backdrop_path,
   } = detail;
 
   return (
     <ContentModalDetailBlock style={style}>
-      <DetailLinks homepage={homepage} {...rest} />
+      <DetailLinks homepage={homepage} id={id} {...rest} />
       <Overview>
         {overview.split('. ').join('.\n').split('? ').join('?\n')}
       </Overview>
+      <Videos backdrop_path={backdrop_path} {...rest} />
+      <hr />
+      <h2>
+        {name || title} <span>상세 정보</span>
+      </h2>
       <Tag
         label="장르"
         text={genres.map((genre, index) => (
@@ -91,12 +100,6 @@ function ContentModalDetail({ variant, id, style, ...rest }) {
           )}
         </>
       )}
-      <EditLink
-        href={`https://www.themoviedb.org/tv/${id}/edit`}
-        aria-label="편집하기"
-      >
-        편집하기
-      </EditLink>
     </ContentModalDetailBlock>
   );
 }
@@ -108,6 +111,37 @@ const ContentModalDetailBlock = styled.div`
   color: hsl(0, 0%, 100%);
   opacity: 0;
   transition: opacity ${TRANSITION_DURATION};
+
+  hr {
+    border-color: hsl(0, 0%, 25%);
+    margin: 1.5rem 0;
+
+    @media (max-width: ${BREAKPOINTS.md}) {
+      margin: 1.25rem 0;
+    }
+
+    @media (max-width: ${BREAKPOINTS.sm}) {
+      margin: 1rem 0;
+    }
+  }
+
+  h2 {
+    margin-bottom: 0.5rem;
+
+    span {
+      font-weight: normal;
+    }
+
+    font-size: 1.5rem;
+
+    @media (max-width: ${BREAKPOINTS.md}) {
+      font-size: 1.375rem;
+    }
+
+    @media (max-width: ${BREAKPOINTS.sm}) {
+      font-size: 1rem;
+    }
+  }
 
   @media (min-width: ${BREAKPOINTS.xxl}) {
     padding: 1.75rem 3rem;
@@ -127,7 +161,6 @@ const ContentModalDetailBlock = styled.div`
 const Overview = styled.p`
   white-space: pre-line;
   font-size: 1.25rem;
-  margin-bottom: 1rem;
 
   @media (max-width: ${BREAKPOINTS.lg}) {
     font-size: 1.125rem;
@@ -135,30 +168,6 @@ const Overview = styled.p`
 
   @media (max-width: ${BREAKPOINTS.sm}) {
     font-size: 0.875rem;
-  }
-`;
-
-const EditLink = styled.a`
-  align-self: baseline;
-  text-decoration: none;
-  color: hsl(0, 0%, 65%);
-  transition: color 0.2s;
-
-  margin-top: 2rem;
-  font-size: 1rem;
-
-  &:hover {
-    color: hsl(32, 98%, 46%);
-  }
-
-  @media (max-width: ${BREAKPOINTS.lg}) {
-    margin-top: 1.5rem;
-    font-size: 0.875rem;
-  }
-
-  @media (max-width: ${BREAKPOINTS.sm}) {
-    margin-top: 1rem;
-    font-size: 0.75rem;
   }
 `;
 

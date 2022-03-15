@@ -187,6 +187,7 @@ function useContentModalStyle(content, browseRef, isOpen) {
       const fullScaleRatio = maxWidth / width;
       const background = browse.querySelector('.content-modal-background');
       background.style.background = 'none';
+      background.scrollTo(0, 0);
 
       setContentModalStyle((prev) => ({
         ...prev,

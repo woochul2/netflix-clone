@@ -70,7 +70,6 @@ function ImgOrVideo({ content, onClickImg, isOpen, close, width, videos }) {
 
 const ImgOrVideoBlock = styled.div`
   iframe {
-    border: 0;
     background: hsl(0, 0%, 0%);
   }
 `;
