@@ -34,7 +34,14 @@ function Videos({ videos }) {
           <VideosBox>
             <h2>다른 영상</h2>
             <div>
-              <img ref={imgRef} src={placeholder} alt="" />
+              <img
+                ref={imgRef}
+                src={placeholder}
+                alt=""
+                onLoad={(event) => {
+                  setVideoHeight(event.target.clientHeight);
+                }}
+              />
               {videos.slice(1).map(({ name, key }) => {
                 return (
                   <iframe
