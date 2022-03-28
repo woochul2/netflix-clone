@@ -31,7 +31,7 @@ function Videos({ videos }) {
       {videos.slice(1).length > 0 && (
         <>
           <hr />
-          <VideosBox>
+          <VideosBox data-testid="videos">
             <h2>다른 영상</h2>
             <div>
               <img

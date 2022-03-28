@@ -9,7 +9,7 @@ import LinkIcon from '../icons/LinkIcon';
  */
 function DetailLinks({ homepage, id }) {
   return (
-    <DetailLinksBlock>
+    <DetailLinksBlock data-testid="detail-links">
       {homepage && (
         <a href={homepage} aria-label="공식 홈페이지">
           공식 홈페이지

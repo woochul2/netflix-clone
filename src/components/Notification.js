@@ -4,7 +4,10 @@ import { BREAKPOINTS, SIDE_PADDING } from '../constants';
 
 function Notification() {
   return (
-    <NotificationBlock className={isMobile().any ? 'mobile' : ''}>
+    <NotificationBlock
+      className={isMobile().any ? 'mobile' : ''}
+      data-testid="notification"
+    >
       모든 데이터베이스는
       <TMDBLink href="https://www.themoviedb.org/" aria-label="The Movie DB">
         <img

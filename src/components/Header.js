@@ -6,15 +6,14 @@ import GithubIcon from '../icons/GithubIcon';
 
 /**
  * @param {Object} props
- * @param {React.MutableRefObject<HTMLElement>} props.browseRef
+ * @param {function} props.scrollToTop
  */
-function Header({ browseRef }) {
-  const scrollToTop = () => {
-    browseRef.current.scrollTop = 0;
-  };
-
+function Header({ scrollToTop }) {
   return (
-    <HeaderBlock className={isMobile().any ? 'mobile' : ''}>
+    <HeaderBlock
+      className={isMobile().any ? 'mobile' : ''}
+      data-testid="header"
+    >
       <LogoLink to="/" aria-label="홈" onClick={scrollToTop}>
         NETFLIX.clone
       </LogoLink>

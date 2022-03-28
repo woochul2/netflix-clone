@@ -60,6 +60,7 @@ function Content({
     >
       <LazyImg
         src={`https://image.tmdb.org/t/p/w500${backdrop_path}`}
+        alt={name || title}
         onLoad={onImgLoad}
       />
       {imgLoaded && <ContentTitle name={name || title} />}

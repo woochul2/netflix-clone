@@ -147,7 +147,11 @@ function Browse({ variant, genres }) {
       style={{ height: browseHeight }}
       onMouseOver={handleMouseOverBrowser}
     >
-      <Header browseRef={browseRef} />
+      <Header
+        scrollToTop={() => {
+          browseRef.current.scrollTop = 0;
+        }}
+      />
       <Notification />
       <main className={isMobile().any ? 'mobile' : ''}>
         {!initialID &&

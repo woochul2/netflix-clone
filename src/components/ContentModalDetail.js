@@ -45,7 +45,7 @@ function ContentModalDetail({ variant, id, style, ...rest }) {
   return (
     <ContentModalDetailBlock style={style}>
       <DetailLinks homepage={homepage} id={id} {...rest} />
-      <Overview>
+      <Overview data-testid="overview">
         {overview.split('. ').join('.\n').split('? ').join('?\n')}
       </Overview>
       <Videos {...rest} />
