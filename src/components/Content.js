@@ -63,7 +63,9 @@ function Content({
         alt={name || title}
         onLoad={onImgLoad}
       />
-      {imgLoaded && <ContentTitle name={name || title} />}
+      {imgLoaded && (
+        <ContentTitle name={name || title} style={{ visibility: 'hidden' }} />
+      )}
     </ContentBlock>
   );
 }

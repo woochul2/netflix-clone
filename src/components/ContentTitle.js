@@ -3,10 +3,11 @@ import styled from 'styled-components';
 /**
  * @param {Object} props
  * @param {string} props.name
+ * @param {React.CSSProperties} props.style
  */
-function ContentTitle({ name }) {
+function ContentTitle({ name, style }) {
   return (
-    <Title className="content-title" style={{ visibility: 'hidden' }}>
+    <Title className="content-title" style={style}>
       {name}
     </Title>
   );
