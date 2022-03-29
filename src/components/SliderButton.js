@@ -6,13 +6,15 @@ import ChevronDownIcon from '../icons/ChevronDownIcon';
  * @param {Object} props
  * @param {'prev'|'next'} props.variant
  * @param {function} props.onClick
+ * @param {React.CSSProperties} props.style
  */
-function SliderButton({ variant, onClick }) {
+function SliderButton({ variant, onClick, style }) {
   return (
     <SliderButtonBlock
       className={`slider-button ${variant}`}
       onClick={onClick}
       aria-label={variant === 'prev' ? '이전 콘텐츠 보기' : '콘텐츠 더 보기'}
+      style={style}
     >
       <ChevronDownIcon />
     </SliderButtonBlock>

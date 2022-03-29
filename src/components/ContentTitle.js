@@ -5,7 +5,11 @@ import styled from 'styled-components';
  * @param {string} props.name
  */
 function ContentTitle({ name }) {
-  return <Title>{name}</Title>;
+  return (
+    <Title className="content-title" style={{ visibility: 'hidden' }}>
+      {name}
+    </Title>
+  );
 }
 
 const Title = styled.h3`

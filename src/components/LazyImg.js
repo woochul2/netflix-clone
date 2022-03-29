@@ -17,6 +17,12 @@ function LazyImg({ src, alt, onLoad }) {
           const image = entry.target;
           image.src = image.dataset.src;
           imageObserver.unobserve(image);
+
+          image.addEventListener('load', () => {
+            const content = image.closest('.content');
+            const contentTitle = content.querySelector('.content-title');
+            contentTitle.style.visibility = '';
+          });
         }
       });
     });

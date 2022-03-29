@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { BREAKPOINTS, TRANSITION_DURATION } from '../constants';
 import useGenreContents from '../hooks/useGenreContents';
 import focusContent from '../utils/focusContent';
+import ContentsPlaceholder from './ContentsPlaceholder';
 import Slider from './Slider';
 import SliderButton from './SliderButton';
 
@@ -89,8 +90,15 @@ function Row({
         ref={contentsWrapperRef}
         className={`contents-wrapper${isMobile().any ? ' mobile' : ''}`}
       >
-        {!isMobile().any && imgLoaded && firstContentIndex > 0 && (
-          <SliderButton variant="prev" onClick={handleClickPrevButton} />
+        {!imgLoaded && <ContentsPlaceholder />}
+        {firstContentIndex > 0 && (
+          <SliderButton
+            variant="prev"
+            onClick={handleClickPrevButton}
+            style={{
+              display: !isMobile().any && imgLoaded ? '' : 'none',
+            }}
+          />
         )}
         <Slider
           contents={contents}
@@ -103,11 +111,15 @@ function Row({
           onClickContent={handleClickContent}
           {...rest}
         />
-        {!isMobile().any &&
-          imgLoaded &&
-          firstContentIndex + sliderContentCount < contents.length && (
-            <SliderButton variant="next" onClick={handleClickNextButton} />
-          )}
+        {firstContentIndex + sliderContentCount < contents.length && (
+          <SliderButton
+            variant="next"
+            onClick={handleClickNextButton}
+            style={{
+              display: !isMobile().any && imgLoaded ? '' : 'none',
+            }}
+          />
+        )}
       </ContentsWrapper>
     </RowBlock>
   );
