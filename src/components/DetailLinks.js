@@ -4,10 +4,11 @@ import LinkIcon from '../icons/LinkIcon';
 
 /**
  * @param {Object} props
+ * @param {'tv'|'movie'} props.variant
  * @param {string} props.homepage
  * @param {string} props.id
  */
-function DetailLinks({ homepage, id }) {
+function DetailLinks({ variant, homepage, id }) {
   return (
     <DetailLinksBlock data-testid="detail-links">
       {homepage && (
@@ -16,7 +17,7 @@ function DetailLinks({ homepage, id }) {
           <LinkIcon />
         </a>
       )}
-      <a href={`https://www.themoviedb.org/tv/${id}/edit`}>
+      <a href={`https://www.themoviedb.org/${variant}/${id}/edit`}>
         편집하기
         <LinkIcon />
       </a>
