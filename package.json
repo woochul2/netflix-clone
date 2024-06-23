@@ -1,16 +1,13 @@
 {
   "name": "netflix-clone",
-  "homepage": "https://woochul2.github.io/netflix-clone",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "deploy": "vercel"
   },
   "dependencies": {
     "focus-trap-react": "^8.9.2",
-    "gh-pages": "^6.1.1",
     "ismobilejs": "^1.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

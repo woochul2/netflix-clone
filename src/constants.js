@@ -1,4 +1,4 @@
-const BASE_URL = '/netflix-clone';
+const BASE_URL = '';
 
 export const TMDB_API_KEY = 'f743f008211a5be86890815246c79592';
 
