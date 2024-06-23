@@ -2,6 +2,16 @@ import fetchData from './utils/fetchData';
 
 const API_ENDPOINT = '/api';
 
+function queryParamsToString(queryParams) {
+  return Object.keys(queryParams)
+    .map((key) => `${key}=${queryParams[key]}`)
+    .join('&');
+}
+
+function buildURL(pathname, queryParams) {
+  return `${API_ENDPOINT}/${pathname}/?${queryParamsToString(queryParams)}`;
+}
+
 /**
  * 해당 장르의 콘텐츠들을 가져온다.
  *
@@ -11,7 +21,7 @@ const API_ENDPOINT = '/api';
  * @returns {Promise<TVShows|Movies>}
  */
 export async function getGenreContents(variant, genreID, page) {
-  const url = `${API_ENDPOINT}/contents?variant=${variant}&genreID=${genreID}&page=${page}`;
+  const url = buildURL('contents', { variant, genreID, page });
   const response = await fetchData(url);
   return response;
 }
@@ -24,7 +34,7 @@ export async function getGenreContents(variant, genreID, page) {
  * @returns {Promise<Videos>}
  */
 export async function getVideos(variant, contentID) {
-  const url = `${API_ENDPOINT}/videos?variant=${variant}&contentID=${contentID}`;
+  const url = buildURL('videos', { variant, contentID });
   const response = await fetchData(url);
   return response;
 }
@@ -37,7 +47,7 @@ export async function getVideos(variant, contentID) {
  * @returns {Promise<TVShowDetail|MovieDetail>}
  */
 export async function getContentDetail(variant, contentID) {
-  const url = `${API_ENDPOINT}/content?variant=${variant}&contentID=${contentID}`;
+  const url = buildURL('content', { variant, contentID });
   const response = await fetchData(url);
   return response;
 }
