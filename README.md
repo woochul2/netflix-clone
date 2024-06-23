@@ -4,7 +4,7 @@
 
 ![demo](https://user-images.githubusercontent.com/49304239/158429742-701846ec-285a-429a-8b50-14358e104ca4.gif)
 
-데모 링크: https://netflix-clone-ko.netlify.app/
+데모 링크: https://woochul2.github.io/netflix-clone
 
 데모 링크는 모바일에서도 접속할 수 있습니다.
 

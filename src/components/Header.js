@@ -1,7 +1,7 @@
 import isMobile from 'ismobilejs';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { BREAKPOINTS, SIDE_PADDING } from '../constants';
+import { BREAKPOINTS, SIDE_PADDING, URLS } from '../constants';
 import GithubIcon from '../icons/GithubIcon';
 
 /**
@@ -14,14 +14,14 @@ function Header({ scrollToTop }) {
       className={isMobile().any ? 'mobile' : ''}
       data-testid="header"
     >
-      <LogoLink to="/" aria-label="홈" onClick={scrollToTop}>
+      <LogoLink to={URLS.home} aria-label="홈" onClick={scrollToTop}>
         NETFLIX.clone
       </LogoLink>
       <Nav>
-        <NavTab to="/" aria-label="시리즈" onClick={scrollToTop}>
+        <NavTab to={URLS.home} aria-label="시리즈" onClick={scrollToTop}>
           시리즈
         </NavTab>
-        <NavTab to="/movie" aria-label="영화" onClick={scrollToTop}>
+        <NavTab to={URLS.movie} aria-label="영화" onClick={scrollToTop}>
           영화
         </NavTab>
       </Nav>

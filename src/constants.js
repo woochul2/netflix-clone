@@ -1,3 +1,12 @@
+const BASE_URL = '/netflix-clone';
+
+export const TMDB_API_KEY = 'f743f008211a5be86890815246c79592';
+
+export const URLS = {
+  home: `${BASE_URL}`,
+  movie: `${BASE_URL}/movie`,
+};
+
 export const BREAKPOINTS = Object.freeze({
   sm: '31.25rem',
   md: '50rem',

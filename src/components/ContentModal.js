@@ -2,7 +2,7 @@ import FocusTrap from 'focus-trap-react';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { TRANSITION_DURATION } from '../constants';
+import { TRANSITION_DURATION, URLS } from '../constants';
 import useContentModalStyle from '../hooks/useContentModalStyle';
 import { useVideos } from '../hooks/useVideos';
 import useWindowHeight from '../hooks/useWindowHeight';
@@ -67,7 +67,9 @@ function ContentModal({ variant, content, onMouseLeave, browseRef }) {
   const open = () => {
     setIsOpen(true);
     openModal();
-    navigate(`/${variant}/${id}`, { state: { hasPrevHistory: true } });
+    navigate(`${URLS.home}/${variant}/${id}`, {
+      state: { hasPrevHistory: true },
+    });
   };
 
   const close = useCallback(() => {

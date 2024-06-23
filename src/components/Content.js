@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ContentTitle from './ContentTitle';
 import LazyImg from './LazyImg';
+import { URLS } from '../constants';
 
 /**
  * @param {Object} props
@@ -48,7 +49,7 @@ function Content({
 
   return (
     <ContentBlock
-      to={`/${variant}/${id}`}
+      to={`${URLS.home}/${variant}/${id}`}
       state={{ hasPrevHistory: true }}
       className="content"
       aria-label={`${name || title} 상세 정보 보기`}
