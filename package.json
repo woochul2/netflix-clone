@@ -1,10 +1,10 @@
 {
   "name": "netflix-clone",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "vercel dev",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "deploy": "vercel"
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "focus-trap-react": "^8.9.2",

@@ -1,6 +1,6 @@
 const BASE_URL = '';
 
-export const TMDB_API_KEY = 'f743f008211a5be86890815246c79592';
+export const API_ENDPOINT = 'https://api.themoviedb.org/3/discover';
 
 export const URLS = {
   home: `${BASE_URL}`,

@@ -1,7 +1,6 @@
-import { TMDB_API_KEY } from './constants';
 import fetchData from './utils/fetchData';
 
-const API_ENDPOINT = 'https://api.themoviedb.org/3/discover';
+const API_ENDPOINT = '/api';
 
 /**
  * 해당 장르의 콘텐츠들을 가져온다.
@@ -12,11 +11,7 @@ const API_ENDPOINT = 'https://api.themoviedb.org/3/discover';
  * @returns {Promise<TVShows|Movies>}
  */
 export async function getGenreContents(variant, genreID, page) {
-  const baseURL = `${API_ENDPOINT}/${variant}?api_key=${TMDB_API_KEY}&language=ko&sort_by=popularity.desc&page=${page}&with_genres=${genreID}`;
-  const url =
-    variant === 'tv'
-      ? `${baseURL}&with_networks=213`
-      : `${baseURL}&region=KR&with_watch_providers=8&watch_region=KR`;
+  const url = `${API_ENDPOINT}/contents?variant=${variant}&genreID=${genreID}&page=${page}`;
   const response = await fetchData(url);
   return response;
 }
@@ -29,7 +24,7 @@ export async function getGenreContents(variant, genreID, page) {
  * @returns {Promise<Videos>}
  */
 export async function getVideos(variant, contentID) {
-  const url = `https://api.themoviedb.org/3/${variant}/${contentID}/videos?api_key=${TMDB_API_KEY}&language=ko`;
+  const url = `${API_ENDPOINT}/videos?variant=${variant}&contentID=${contentID}`;
   const response = await fetchData(url);
   return response;
 }
@@ -42,11 +37,7 @@ export async function getVideos(variant, contentID) {
  * @returns {Promise<TVShowDetail|MovieDetail>}
  */
 export async function getContentDetail(variant, contentID) {
-  const url = `https://api.themoviedb.org/3/${variant}/${contentID}?api_key=${TMDB_API_KEY}&language=ko`;
+  const url = `${API_ENDPOINT}/content?variant=${variant}&contentID=${contentID}`;
   const response = await fetchData(url);
-  if (response.success === false) {
-    const error = `status code: ${response.status_code}. ${response.status_message}`;
-    throw new Error(error);
-  }
   return response;
 }
